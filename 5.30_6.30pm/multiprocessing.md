@@ -231,3 +231,229 @@ asyncio.run(main())
 * **Async** → lightweight, single-thread concurrency, perfect for I/O waits.
 * Often combined in **real-world projects**: e.g., Web API server (async) + background ML model processing (multiprocessing).
 
+
+
+
+
+
+#  ___________________________________________________________
+#  🟢 Case 1: without multi processing
+
+# import os, time
+
+# def work(n):
+#     print(f"Process {os.getpid()} working on {n}", flush=True)
+#     time.sleep(2)
+#     print(f"Done {n}", flush=True)
+
+# for i in range(3):   # direct function call
+#     work(i)
+
+
+
+# 👉 All tasks same PID (12345) → because everything runs in main process only.
+# 👉 Tasks run one by one (sequential).
+
+# ___________________________________________________________
+
+
+# 🟢 Case 2: With Multiprocessing
+
+
+
+# from multiprocessing import Process
+# import os, time
+
+# def work(n):
+#     print(f"Process {os.getpid()} working on {n}", flush=True)
+#     time.sleep(2)
+#     print(f"Done {n}", flush=True)
+
+# if __name__ == "__main__":
+#     tasks = [Process(target=work, args=(i,)) for i in range(5)]
+#     for t in tasks: 
+#         t.start()
+#     for t in tasks: 
+#         t.join()
+
+
+
+# 👉 Different PIDs → each task runs in a separate child process.
+# 👉 Tasks run parallel (simultaneous) → all “working on …” print first, then after ~2 seconds all “Done …” appear.
+
+
+# ___________________________________________________________________
+
+
+# | Feature          | Without Multiprocessing | With Multiprocessing        |
+# | ---------------- | ----------------------- | --------------------------- |
+# | **Process ID**   | Same for all (main PID) | Different PID for each task |
+# | **Execution**    | Sequential (one by one) | Parallel (simultaneous)     |
+# | **Speed**        | Slower (waits for each) | Faster (tasks overlap)      |
+# | **Output order** | Predictable             | Mixed / interleaved         |
+
+
+# ____________________________________________________________
+
+
+## 🟢 Python Demo: Timing Comparison
+
+```python
+import threading, time, os
+
+# ---------------------------
+# Case 1: Without Multithreading
+# ---------------------------
+def work(n):
+    print(f"Process {os.getpid()} working on {n}", flush=True)
+    time.sleep(2)
+    print(f"Done {n}", flush=True)
+
+print("=== Without Multithreading ===")
+start = time.time()
+
+for i in range(3):
+    work(i)
+
+end = time.time()
+print(f"Total time (no threading): {end - start:.2f} seconds\n")
+
+# ---------------------------
+# Case 2: With Multithreading
+# ---------------------------
+def work_thread(n):
+    print(f"Thread {threading.get_ident()} in PID {os.getpid()} working on {n}", flush=True)
+    time.sleep(2)
+    print(f"Done {n}", flush=True)
+
+print("=== With Multithreading ===")
+start = time.time()
+
+threads = [threading.Thread(target=work_thread, args=(i,)) for i in range(3)]
+for t in threads:
+    t.start()
+for t in threads:
+    t.join()
+
+end = time.time()
+print(f"Total time (with threading): {end - start:.2f} seconds")
+```
+
+---
+
+## 🔹 Expected Output
+
+```
+=== Without Multithreading ===
+Process 12345 working on 0
+Done 0
+Process 12345 working on 1
+Done 1
+Process 12345 working on 2
+Done 2
+Total time (no threading): 6.00 seconds
+
+=== With Multithreading ===
+Thread 45678 in PID 12345 working on 0
+Thread 45679 in PID 12345 working on 1
+Thread 45680 in PID 12345 working on 2
+Done 0
+Done 2
+Done 1
+Total time (with threading): 2.01 seconds
+```
+
+---
+
+### 🔹 Explanation (Thunglish)
+
+1. **Without threading** → tasks run **one by one** → 3 tasks × 2 sec each = ~6 sec total.
+2. **With threading** → tasks run **concurrently** → all sleep(2) happens at the same time → total ~2 sec.
+3. **Output order** → With threading, `Done` lines **may shuffle** because threads finish at slightly different times.
+4. **PID** → Same for all, **Thread ID** → different for each thread.
+
+---
+
+💡 **Conclusion:**
+
+* **Threading** helps **I/O-bound tasks** finish much faster.
+* CPU-bound tasks won’t see much speedup in Python because of **GIL**, but I/O tasks benefit big time.
+
+---
+
+# _______________________________________________________________
+
+
+## 🟢 Case 3: With Multithreading
+
+```python
+import threading, os, time
+
+def work(n):
+    print(f"Thread {threading.get_ident()} working on {n}", flush=True)
+    time.sleep(2)
+    print(f"Done {n}", flush=True)
+
+threads = [threading.Thread(target=work, args=(i,)) for i in range(5)]
+for t in threads:
+    t.start()
+for t in threads:
+    t.join()
+```
+
+### 👉 Behavior
+
+* **Thread ID** is different for each thread (not PID).
+* Runs **concurrently** (all “working on …” prints appear quickly).
+* But in **CPython**, because of the **GIL (Global Interpreter Lock)**, only one thread executes Python bytecode at a time.
+* Still useful for **I/O-bound tasks** (e.g., waiting, network requests).
+* Output order = **not guaranteed** (like multiprocessing).
+
+---
+
+## 🟢 Case 4: With AsyncIO (Asynchronous Programming)
+
+```python
+import asyncio, os
+
+async def work(n):
+    print(f"Task {n} running in PID {os.getpid()}", flush=True)
+    await asyncio.sleep(2)
+    print(f"Done {n}", flush=True)
+
+async def main():
+    tasks = [asyncio.create_task(work(i)) for i in range(5)]
+    await asyncio.gather(*tasks)
+
+asyncio.run(main())
+```
+
+### 👉 Behavior
+
+* All tasks run in **the same process and same thread**.
+* `asyncio` switches between tasks **during waiting (await)**.
+* Very efficient for **I/O-bound tasks** (network calls, file ops, DB queries).
+* Output order = **not guaranteed**, depends on scheduling, but usually all "working on" first, then all "Done".
+* Fastest for many I/O operations since no process/thread overhead.
+
+---
+
+## 🟢 Final Comparison Table
+
+| Feature            | Without Multiprocessing | With Multiprocessing          | With Multithreading             | With AsyncIO                |
+| ------------------ | ----------------------- | ----------------------------- | ------------------------------- | --------------------------- |
+| **Process/Thread** | Same PID (main process) | Different PID for each task   | Same PID, diff Thread IDs       | Same PID, same Thread       |
+| **Execution**      | Sequential (blocking)   | Parallel (true multi-core)    | Concurrent (GIL limits CPU)     | Cooperative concurrency     |
+| **Best For**       | Very small tasks        | CPU-bound (heavy compute)     | I/O-bound (network, disk, etc.) | Massive I/O-bound tasks     |
+| **Speed**          | Slow (one by one)       | Fast (tasks overlap on cores) | Medium (context switches)       | Fastest for I/O-bound tasks |
+| **Output order**   | Predictable             | Mixed / interleaved           | Mixed / interleaved             | Mixed / interleaved         |
+
+---
+
+✅ **Thunglish summary:**
+
+* **Without Multiprocessing** → எல்லாமே main process-ல sequential.
+* **Multiprocessing** → ஒவ்வொரு task-க்கும் தனி process, true parallelism (CPU-boundக்கு best).
+* **Multithreading** → எல்லாம் same process-ல, different threads. GIL காரணமா CPU tasks slow, ஆனா I/O tasks super.
+* **AsyncIO** → ஒரே thread-ல cooperative switching, thousands of I/O tasks handle பண்ண முடியும்.
+
