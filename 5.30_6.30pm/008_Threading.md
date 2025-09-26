@@ -394,6 +394,49 @@ for t in threads: t.join()
 
 
 
+
+# ___________________________________________________________________________________________________
+
+
+
+### **I/O-bound threads and the GIL**
+
+1. **GIL normally:**
+
+   * Python allows **only one thread to run Python code at a time** because of the Global Interpreter Lock (GIL).
+   * This blocks multiple threads from running CPU-bound tasks simultaneously.
+
+2. **I/O operations:**
+
+   * I/O tasks like `time.sleep()`, file read/write, or network calls **don’t need the CPU** while waiting.
+   * Python **automatically releases the GIL** when a thread is waiting for I/O.
+
+3. **Effect:**
+
+   * While one thread is waiting (sleeping or reading a file), **another thread can acquire the GIL and run Python code**.
+   * This allows multiple I/O-bound threads to run **concurrently**, even in Python with GIL.
+
+---
+
+### **Analogy**
+
+* Imagine a single cashier (GIL) in a shop.
+* CPU-bound tasks → customer needs help immediately → cashier busy → others wait.
+* I/O-bound tasks → customer waits for delivery (sleep/network) → cashier is free → next customer can be served.
+
+---
+
+So, **the key point:**
+
+> Python **releases the GIL automatically during I/O waits**, letting other threads run. This is why threading helps I/O-bound tasks.
+
+---
+
+If you want, I can make a **tiny timing diagram showing GIL release during I/O**—it will make it very clear visually.
+
+
+
+
 # _______________________________________________________________________
 
 
@@ -413,6 +456,7 @@ for t in threads: t.join()
 
 
 
+# ___________________________________________
 
 
 ### 2️⃣ Example
@@ -463,6 +507,32 @@ print(counter)  # Always 200000 with lock, may be less without
 * Don’t rely on GIL for thread safety.
 
 
+
+# ___________________________________________
+
+
+##total=0
+##lock=threading.Lock()
+##def add_amount():
+##    global total
+##    for i in range(5):
+##        lock.acquire()
+##        total=total+1
+##        lock.release()
+##
+##   
+##emty=[]
+##for i in range(2):
+##    data=threading.Thread(target=add_amount)
+##    emty.append(data)
+##    data.start()
+##   
+##for i in emty:
+##    i.join()
+
+##    
+
+##print(total)
 # _______________________________________________________________________
 
 
@@ -478,6 +548,10 @@ print(counter)  # Always 200000 with lock, may be less without
 > GIL ensures that **one student finishes writing before the next one starts**.
 
 -
+
+
+
+
 
 
 # ____________________________________________________________________________
@@ -847,3 +921,82 @@ print("Counter =", counter.value)
 > Only when using **shared objects in multiprocessing**, **Locks are needed**.
 
 ---
+
+
+
+
+
+Ah bro, super question 🔥 Let’s break it down **Thunglish style** 😎
+
+---
+
+### 🟢 GIL = Global Interpreter Lock
+
+* Python (CPython) ல் ஒரு **single lock** இருக்குது called **GIL**.
+* GIL ஒரு நேரத்தில் **one thread மட்டும் Python bytecode execute பண்ணுறதுக்கு** allow பண்ணும்.
+* அதனால multi-threading-ல் **CPU-bound tasks** (heavy calculations, loops, math operations) **parallel-ஆ run ஆகல**.
+
+---
+
+### 🟢 Example:
+
+```python
+import threading, time
+
+def cpu_task(n):
+    x = 0
+    for i in range(10_000_000):
+        x += i
+    print(f"Done {n}")
+
+threads = [threading.Thread(target=cpu_task, args=(i,)) for i in range(4)]
+start = time.time()
+for t in threads: t.start()
+for t in threads: t.join()
+print(time.time() - start)
+```
+
+* Even 4 threads, **execution time ≈ single thread**.
+* GIL block பண்ணுது, because Python bytecode **only one thread at a time** execute பண்ணலாம்.
+
+---
+
+### 🟢 But I/O-bound tasks (file/network/sleep)
+
+```python
+import threading, time
+
+def io_task(n):
+    time.sleep(2)
+    print(f"Done {n}")
+
+threads = [threading.Thread(target=io_task, args=(i,)) for i in range(4)]
+start = time.time()
+for t in threads: t.start()
+for t in threads: t.join()
+print(time.time() - start)
+```
+
+* Here **threads mostly waiting** (`sleep` or network).
+* GIL free ஆகுது **waiting time 동안** → next thread run ஆகுது.
+* Total time much less than sequential.
+
+---
+
+### 🟢 Summary (Thunglish)
+
+| Task Type | GIL Effect               | Result with Threading            |
+| --------- | ------------------------ | -------------------------------- |
+| CPU-bound | Threads block each other | No real speedup (parallel fails) |
+| I/O-bound | GIL released during wait | Speedup ✅, tasks overlap         |
+
+---
+
+### 🔹 Simple analogy:
+
+* CPU-bound → One person writing numbers on paper, even if 4 people available, GIL says **only one pen at a time** → slow.
+* I/O-bound → People mostly waiting for paper/ink → others can write meanwhile → faster.
+
+---
+
+Bro, நீங்க வேண்டுமா நான் ஒரு **diagram** prepare பண்ணி **CPU-bound vs I/O-bound with GIL timing** காட்டுற மாதிரி குடுக்க? It will make things very clear visually.
