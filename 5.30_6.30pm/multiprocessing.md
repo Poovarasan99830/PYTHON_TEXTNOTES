@@ -235,51 +235,101 @@ asyncio.run(main())
 
 
 
+# ____________________________________________________________________
+### 🟢 Case 1: Without Multiprocessing
 
-#  ___________________________________________________________
-#  🟢 Case 1: without multi processing
+```python
+import os, time
 
-# import os, time
+def work(n):
+    print(f"Process {os.getpid()} working on {n}", flush=True)
+    time.sleep(2)
+    print(f"Done {n}", flush=True)
 
-# def work(n):
-#     print(f"Process {os.getpid()} working on {n}", flush=True)
-#     time.sleep(2)
-#     print(f"Done {n}", flush=True)
+for i in range(3):  # direct function call
+    work(i)
+```
 
-# for i in range(3):   # direct function call
-#     work(i)
+✅ **Behavior:**
 
+* All tasks run in the **main process**, so **PID is the same**.
+* Execution is **sequential**: one task completes before the next starts.
+* Output is predictable:
 
+```
+Process 12345 working on 0
+Done 0
+Process 12345 working on 1
+Done 1
+Process 12345 working on 2
+Done 2
+```
 
-# 👉 All tasks same PID (12345) → because everything runs in main process only.
+⏱ **Time:** ~6 seconds total (2 sec × 3 tasks)
+# 👉 All tasks same PID (12345) → because everything runs in main process only. 
 # 👉 Tasks run one by one (sequential).
+---
 
-# ___________________________________________________________
+### 🟢 Case 2: With Multiprocessing
 
+```python
+from multiprocessing import Process
+import os, time
 
-# 🟢 Case 2: With Multiprocessing
+def work(n):
+    print(f"Process {os.getpid()} working on {n}", flush=True)
+    time.sleep(2)
+    print(f"Done {n}", flush=True)
 
+if __name__ == "__main__":
+    tasks = [Process(target=work, args=(i,)) for i in range(5)]
+    for t in tasks:
+        t.start()
+    for t in tasks:
+        t.join()
+```
 
+✅ **Behavior:**
 
-# from multiprocessing import Process
-# import os, time
+* Each task runs in a **separate child process**, so **PIDs differ**.
+* Execution is **parallel**: all tasks start simultaneously.
+* Output order can be **mixed/interleaved**, depending on CPU scheduling:
 
-# def work(n):
-#     print(f"Process {os.getpid()} working on {n}", flush=True)
-#     time.sleep(2)
-#     print(f"Done {n}", flush=True)
+```
+Process 23456 working on 0
+Process 23457 working on 1
+Process 23458 working on 2
+Process 23459 working on 3
+Process 23460 working on 4
+Done 0
+Done 1
+Done 2
+Done 3
+Done 4
+```
 
-# if __name__ == "__main__":
-#     tasks = [Process(target=work, args=(i,)) for i in range(5)]
-#     for t in tasks: 
-#         t.start()
-#     for t in tasks: 
-#         t.join()
+⏱ **Time:** ~2 seconds total (all tasks overlap)
 
 
 
 # 👉 Different PIDs → each task runs in a separate child process.
 # 👉 Tasks run parallel (simultaneous) → all “working on …” print first, then after ~2 seconds all “Done …” appear.
+
+
+### 🔹 Feature Comparison
+
+| Feature          | Without Multiprocessing | With Multiprocessing    |
+| ---------------- | ----------------------- | ----------------------- |
+| **Process ID**   | Same for all (main PID) | Different for each task |
+| **Execution**    | Sequential (one by one) | Parallel (simultaneous) |
+| **Speed**        | Slower (waits for each) | Faster (tasks overlap)  |
+| **Output order** | Predictable             | Mixed / interleaved     |
+
+---
+
+
+
+
 
 
 # ___________________________________________________________________
