@@ -1,0 +1,113 @@
+| Command  | Use For              | Example                            |
+| -------- | -------------------- | ---------------------------------- |
+| `GRANT`  | Giving permissions   | `GRANT SELECT ON emp TO user1;`    |
+| `REVOKE` | Removing permissions | `REVOKE SELECT ON emp FROM user1;` |
+
+
+| DBMS       | Supports DCL? | Notes                                 |
+| ---------- | ------------- | ------------------------------------- |
+| MySQL      | ✅             | Uses `GRANT`, `REVOKE`, `CREATE USER` |
+| PostgreSQL | ✅             | Uses roles and `GRANT`, `REVOKE`      |
+| SQL Server | ✅             | Uses `GRANT`, `DENY`, `REVOKE`        |
+| Oracle     | ✅             | Uses `GRANT`, `REVOKE`, `CREATE ROLE` |
+
+
+| Point                              | Description                                        |
+| ---------------------------------- | -------------------------------------------------- |
+| 🛡️ Use roles                      | Group privileges into roles for easier management  |
+| 🔍 Audit privileges                | Regularly check who has what access                |
+| 🚫 Revoke when not needed          | Least privilege principle: give only what's needed |
+| 💡 Use WITH GRANT OPTION carefully | Prevent unauthorized privilege escalation          |
+
+
+
+| Privilege | Description                                             |
+| --------- | ------------------------------------------------------- |
+| `SELECT`  | Read data from a table/view                             |
+| `INSERT`  | Add new rows                                            |
+| `UPDATE`  | Modify existing rows                                    |
+| `DELETE`  | Remove rows                                             |
+| `ALL`     | Grants all privileges                                   |
+| `EXECUTE` | Run a stored procedure                                  |
+| `USAGE`   | Required to access some objects without specific rights |
+
+
+
+
+"Library Management Access Control System"
+
+
+| User Type     | Access Level                    |
+| ------------- | ------------------------------- |
+| **Librarian** | Full access (read/write/delete) |
+| **Assistant** | Read & insert only              |
+| **Visitor**   | Read-only access                |
+
+
+
+
+CREATE DATABASE LibraryDB;
+USE LibraryDB;
+
+CREATE TABLE Books (
+    book_id INT PRIMARY KEY,
+    title VARCHAR(100),
+    author VARCHAR(100),
+    available BOOLEAN
+);
+
+CREATE TABLE Members (
+    member_id INT PRIMARY KEY,
+    name VARCHAR(100),
+    membership_date DATE
+);
+
+
+
+
+CREATE USER 'librarian'@'localhost' IDENTIFIED BY 'lib123';
+CREATE USER 'assistant'@'localhost' IDENTIFIED BY 'asst123';
+CREATE USER 'visitor'@'localhost' IDENTIFIED BY 'visit123';
+
+
+
+
+
+ Librarian - Full Access
+
+
+GRANT ALL PRIVILEGES
+ON LibraryDB.*
+TO 'librarian'@'localhost';
+
+
+Assistant - Can Read & Insert Books
+
+GRANT SELECT, INSERT
+ON LibraryDB.Books
+TO 'assistant'@'localhost';
+
+
+Visitor - Read-only Access to Books
+
+GRANT SELECT
+ON LibraryDB.Books
+TO 'visitor'@'localhost';
+
+
+#_______________________________________________________________________________________
+
+
+
+| Command                           | Purpose                                             |
+| --------------------------------- | --------------------------------------------------- |
+| `START TRANSACTION` / `BEGIN`     | Begins a transaction                                |
+| `COMMIT`                          | Saves all changes made                              |
+| `ROLLBACK`                        | Cancels all changes since the last commit           |
+| `SAVEPOINT name`                  | Marks a point to roll back to                       |
+| `ROLLBACK TO name`                | Undoes changes after the savepoint                  |
+| `SET TRANSACTION ISOLATION LEVEL` | Controls visibility between concurrent transactions |
+
+
+
+#____________________________________________________________________________

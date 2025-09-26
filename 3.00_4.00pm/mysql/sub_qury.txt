@@ -1,0 +1,257 @@
+
+
+#__________________________________________________________________
+
+#1. What is a Subquery?
+
+
+
+>A subquery is always enclosed in parentheses `( )`
+
+
+
+#__________________________________________________________________
+
+# 2. Why Use Subqueries?
+
+* To **filter** results based on a computed set.
+* To perform **comparisons** against results from another table.
+* To **return aggregated** data for another query.
+* To make **dynamic filters** using inner results.
+
+
+
+#__________________________________________________________________
+
+#3. Types of Subqueries (Based on Usage)
+
+| Type                      | Description                          | Example Syntax                                                           |
+| ------------------------- | ------------------------------------ | ------------------------------------------------------------------------ |
+| **Single-row subquery**   | Returns **one value**                | `WHERE price > (SELECT AVG(price) FROM products)`                        |
+| **Multiple-row subquery** | Returns **a list of values**         | `WHERE category_id IN (SELECT id FROM categories)`                       |
+| **Multiple-column**       | Returns **more than one column**     | `SELECT * FROM ... WHERE (a, b) IN (SELECT x, y FROM ...)`               |
+| **Correlated subquery**   | Uses data from the **outer query**   | `WHERE salary > (SELECT AVG(salary) FROM emp WHERE dept_id = e.dept_id)` |
+| **Nested subquery**       | Subquery **inside another subquery** | `SELECT * FROM ... WHERE id IN (SELECT id FROM (SELECT ...))`            |
+
+
+
+#__________________________________________________________________
+
+# 4. Subqueries Can Be Used In...
+
+| Clause              | Description                       | Example                                                                 |
+| ------------------- | --------------------------------- | ----------------------------------------------------------------------- |
+| `SELECT`            | Compute values dynamically        | `SELECT name, (SELECT AVG(salary) FROM emp) AS avg_sal FROM emp`        |
+| `FROM`              | Treat subquery as a derived table | `SELECT * FROM (SELECT * FROM emp WHERE salary > 5000) AS temp`         |
+| `WHERE` / `HAVING`  | Filter data conditionally         | `WHERE dept_id IN (SELECT id FROM dept WHERE location = 'NY')`          |
+| `UPDATE` / `DELETE` | Apply conditions dynamically      | `DELETE FROM emp WHERE dept_id = (SELECT id FROM dept WHERE name='HR')` |
+
+
+
+#__________________________________________________________________
+
+#5. Subquery vs Join – Comparison
+
+| Feature     | Subquery                            | JOIN                               |
+| ----------- | ----------------------------------- | ---------------------------------- |
+| Simplicity  | Easier for single-value comparisons | Better for multi-table combination |
+| Performance | Slower for large datasets           | Faster due to optimized joins      |
+| Readability | Easier in nested logic              | Easier when combining datasets     |
+
+
+
+
+#__________________________________________________________________
+
+# 6. Teaching Aids
+
+ 
+
+Main Query
+   |
+   --> Subquery (inner, in WHERE or FROM)
+
+EG:
+
+SELECT name
+FROM employees
+WHERE salary > (
+    SELECT AVG(salary)
+    FROM employees
+);
+
+
+
+#__________________________________________________________________
+
+#7. Practice Queries (With Sales Table or Your Own Schema)
+
+##Single-Row Subquery
+
+SELECT * FROM sales
+WHERE price > (SELECT AVG(price) FROM sales);
+
+
+# Multi-Row Subquery with IN
+
+SELECT * FROM sales
+WHERE region IN (
+  SELECT region FROM sales WHERE quantity > 8
+);
+
+
+# Correlated Subquery
+
+
+SELECT product, price
+FROM sales s1
+WHERE price > (
+    SELECT AVG(price)
+    FROM sales s2
+    WHERE s1.category = s2.category
+);
+
+
+#Subquery in FROM Clause
+
+
+SELECT category, total_qty
+FROM (
+  SELECT category, SUM(quantity) AS total_qty
+  FROM sales
+  GROUP BY category
+) AS sub
+WHERE total_qty > 15;
+
+
+
+#__________________________________________________________________
+
+
+#8. Teaching Methodology
+
+# Step-by-Step Approach
+
+1. **Start with the outer query alone**
+2. Add **basic subquery** in `WHERE` clause
+3. Show subquery in **SELECT** clause
+4. Introduce **correlated subqueries**
+5. Transition to **nested subqueries**
+6. Compare with **JOINs**
+7. Use **real-world scenarios**
+
+
+#__________________________________________________________________
+
+
+# 9. Common Mistakes Students Make
+
+| Mistake                                   | Solution                                            |
+| ----------------------------------------- | --------------------------------------------------- |
+| Forgetting parentheses `()`               | Always wrap subqueries in parentheses               |
+| Expecting a single value but getting many | Use `IN` or `ANY`, not `=`                          |
+| Not aliasing a derived table              | Always give subqueries in `FROM` clause an alias    |
+| Misunderstanding correlated logic         | Trace execution row by row, or use EXPLAIN for help |
+
+
+
+#__________________________________________________________________
+
+##10. Use Case Examples for Subqueries
+
+| Scenario                                    | Subquery Example                                       |
+| ------------------------------------------- | ------------------------------------------------------ |
+| Highest priced product                      | `WHERE price = (SELECT MAX(price) FROM sales)`         |
+| Customers who bought more than avg quantity | `WHERE quantity > (SELECT AVG(quantity) FROM sales)`   |
+| Categories with total quantity > 20         | Subquery with `GROUP BY` and `HAVING` in `FROM` clause |
+
+
+
+#__________________________________________________________________
+
+# 11. Assignments & Challenges
+
+# Level 1 (Basic)
+
+* Find products with price above average.
+* List sales from regions where quantity > 5.
+
+### Level 2 (Intermediate)
+
+* Show customers who bought more than any single customer in 'West'.
+* Use a subquery to find the top 3 products by quantity.
+
+### Level 3 (Advanced)
+
+* Use a correlated subquery to find the most expensive product per category.
+* Subquery in `FROM` to get sales summary and filter the result.
+
+
+
+
+#__________________________________________________________________
+
+
+#12. Tools to Use While Teaching
+
+* **MySQL Workbench / phpMyAdmin**: to run queries live
+* **DrawSQL or dbdiagram.io**: to visualize schemas
+* **EXPLAIN keyword**: to show query execution
+* **Slide/PDF**: with patterns: WHERE, SELECT, FROM, HAVING subqueries
+
+
+
+#__________________________________________________________________
+
+
+
+## ✅ Summary Table: Subquery Cheat Sheet
+
+| Feature                                         | Supported |
+| ----------------------------------------------- | --------- |
+| Used in `WHERE`                                 | ✅         |
+| Used in `FROM`                                  | ✅         |
+| Used in `SELECT`                                | ✅         |
+| Correlated                                      | ✅         |
+| Aggregates                                      | ✅         |
+| Nested Subquery                                 | ✅         |
+| Supports `IN`, `NOT IN`, `EXISTS`, `ANY`, `ALL` | ✅         |
+
+
+
+
+#________________________________________________________________
+
+
+
+| Keyword  | Purpose                         | Returns true if...                           |
+| -------- | ------------------------------- | -------------------------------------------- |
+| `EXISTS` | Checks if subquery returns rows | At least one row exists in subquery          |
+| `ANY`    | Compare with any one value      | Condition is true for **at least one** value |
+| `ALL`    | Compare with every value        | Condition is true for **all values**         |
+
+
+
+
+
+
+_________________________________________________________________
+
+
+SELECT count(product), price, product 
+FROM sales 
+WHERE price > 28.43 
+GROUP BY product;
+product is in the GROUP BY, ✅
+
+price is not aggregated and not in GROUP BY, ❌
+
+_____________________________________________________________________
+
+ Add all non-aggregated columns to GROUP BY
+SELECT COUNT(product), price, product
+FROM sales
+WHERE price > 28.43
+GROUP BY product, price;
+
+This works if each product can have different prices (e.g., different rows for the same product name with different prices).

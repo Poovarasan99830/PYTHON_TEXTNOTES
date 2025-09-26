@@ -1,0 +1,14 @@
+
+
+| Feature                 | View                                                             |Stored Procedure                                        |
+| ----------------------- | ---------------------------------------------------------------- | ------------------------------------------------------------- |
+| **Definition**          | A virtual table based on a `SELECT` query                        | A set of SQL statements saved and executed as a block         |
+| **Returns**             | A result set (like a table)                                      | Can return result sets, output parameters, or status          |
+| **Usage**               | Used like a table in `SELECT` statements                         | Used to perform operations like querying, inserting, updating |
+| **Input Parameters**    | ❌ No input parameters                                            | ✅ Accepts input, output, and INOUT parameters                 |
+| **Data Manipulation**   | Only used for viewing/querying data (read-only unless updatable) | Can perform complex operations: insert, update, delete, loops |
+| **Execution**           | Used implicitly via `SELECT * FROM view_name`                    | Called explicitly with `CALL procedure_name()`                |
+| **Stored In**           | `information_schema.VIEWS`                                       | `information_schema.ROUTINES`                                 |
+| **Security**            | Can restrict access to specific columns or rows                  | Can control access to certain operations or logic             |
+| **Performance**         | May be slower for large data (since it runs the query each time) | Can be optimized for performance with stored logic            |
+| **Transaction Control** | ❌ No transaction control                                         | ✅ Can use `START TRANSACTION`, `COMMIT`, `ROLLBACK`           |

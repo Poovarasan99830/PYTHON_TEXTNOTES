@@ -1,0 +1,243 @@
+
+
+#_______________________________________________________________________________________________
+
+# 📝 **MYSQL ASSESSMENT STRUCTURE**
+
+# ✅ **Total Duration**: 60–90 minutes
+
+# ✅ **Total Marks**: 100
+
+# ✅ **Sections**:
+
+1. **Basic Concepts (20 marks)**
+2. **Query Writing (30 marks)**
+3. **Joins and Subqueries (20 marks)**
+4. **Database Design & Normalization (10 marks)**
+5. **Indexes, Transactions & Performance (10 marks)**
+6. **Practical Problem Solving / Case Study (10 marks)**
+
+#______________________________________________________________________________________________________
+
+### 🧠 **1. BASIC CONCEPTS (20 Marks)**
+
+* **Q1.** What is the difference between `CHAR` and `VARCHAR`? (2 marks)
+* **Q2.** Define `PRIMARY KEY` and `UNIQUE`. Can a table have multiple primary keys? (2 marks)
+* **Q3.** What is the use of the `AUTO_INCREMENT` attribute? (2 marks)
+* **Q4.** Differentiate between `DELETE`, `TRUNCATE`, and `DROP`. (3 marks)
+* **Q5.** What is a foreign key? How does it help in relational integrity? (3 marks)
+* **Q6.** What is the difference between `WHERE` and `HAVING`? (3 marks)
+* **Q7.** Explain `ACID` properties in MySQL. (5 marks)
+
+#_________________________________________________________________________________________________
+
+### 🧾 **2. QUERY WRITING (30 Marks)**
+
+Provide a sample schema (e.g., `Employees`, `Departments`, `Salaries`) for these.
+
+* **Q1.** Write a query to fetch the top 3 highest paid employees. (5 marks)
+* **Q2.** Write a query to list the number of employees in each department. (5 marks)
+* **Q3.** Write a query to find employees who joined in the last 3 months. (5 marks)
+* **Q4.** Write a query to update salary by 10% for employees in the 'HR' department. (5 marks)
+* **Q5.** Write a query to delete employees who haven't logged in for over a year. (5 marks)
+* **Q6.** Write a query to fetch duplicate emails from a `users` table. (5 marks)
+
+#__________________________________________________________________________________________________
+
+### 🔗 **3. JOINS AND SUBQUERIES (20 Marks)**
+
+* **Q1.** What is the difference between INNER JOIN, LEFT JOIN, RIGHT JOIN, and FULL OUTER JOIN? (5 marks)
+* **Q2.** Write a query using JOIN to fetch employee names and their department names. (5 marks)
+* **Q3.** Write a subquery to find employees whose salary is above the average salary. (5 marks)
+* **Q4.** How would you write a correlated subquery? Give an example. (5 marks)
+
+#________________________________________________________________________________________________
+
+### 🗃️ **4. DATABASE DESIGN & NORMALIZATION (10 Marks)**
+
+* **Q1.** Explain 1NF, 2NF, and 3NF with examples. (5 marks)
+* **Q2.** Design a schema for a Library Management System (brief version). (5 marks)
+
+
+#________________________________________________________________________________________________
+
+
+### 🚀 **5. INDEXES, TRANSACTIONS & PERFORMANCE (10 Marks)**
+
+* **Q1.** What are indexes? How do they improve performance? Any downsides? (3 marks)
+* **Q2.** How would you optimize a slow query? (3 marks)
+* **Q3.** Explain `COMMIT`, `ROLLBACK`, and `SAVEPOINT`. (4 marks)
+
+
+
+#________________________________________________________________________________________________
+
+
+### 🔍 **6. CASE STUDY / PRACTICAL QUESTION (10 Marks)**
+
+**Case:**
+A company wants to track customer orders. Create tables for `Customers`, `Orders`, and `Products`. Write queries to:
+
+* Fetch total amount spent by each customer.
+* List customers who have not placed any order.
+* Find the most frequently purchased product.
+
+(10 marks)
+
+
+#________________________________________________________________________________________________
+
+
+### 🧾 **EVALUATION CRITERIA**
+
+| Skill Area                         | Max Marks | Evaluation Focus                            |
+| ---------------------------------- | --------- | ------------------------------------------- |
+| SQL Syntax & Understanding         | 20        | Basic commands, data types, constraints     |
+| Query Logic & Problem Solving      | 30        | Ability to write correct, optimized queries |
+| Join & Subquery Mastery            | 20        | Complex query formation                     |
+| Database Design Thinking           | 10        | Normalization, schema design                |
+| Performance & Transaction Handling | 10        | Index usage, query tuning, transactions     |
+| Practical Application              | 10        | End-to-end problem-solving                  |
+
+
+
+
+
+
+#______________________________________________________________________________________________
+
+## ✅ **Project-Based MySQL Assessment**
+
+### 🕒 Duration: 2–3 hours
+
+### 🎯 Goal: Assess MySQL skills through schema design, query writing, normalization, performance understanding, and real-world data operations.
+
+
+
+## 🔧 **Project Theme Options** (Choose one)
+
+1. **E-Commerce Order Management System**
+2. **Student Course Enrollment System**
+3. **Library Management System**
+4. **Hospital Patient Record System**
+5. **Movie Ticket Booking System**
+
+#______________________________________________________________________________________________________
+
+## 📦 Sample Project: **E-Commerce Order Management System**
+
+### 🧱 1. Project Brief:
+
+Design and implement a database for an e-commerce platform that:
+
+* Stores customer details
+* Stores product catalog
+* Records orders and order details
+* Supports querying for insights
+
+
+#______________________________________________________________________________________________________
+
+## 📋 **Project Tasks & Evaluation Breakdown**
+
+### 🧰 **A. Database Design & Schema Creation (20 Marks)**
+
+> Create the schema with proper data types, constraints, and relationships.
+
+* **Tables Required**:
+
+  * `Customers` (id, name, email, phone, address)
+  * `Products` (id, name, category, price, stock)
+  * `Orders` (id, customer\_id, order\_date, total\_amount)
+  * `OrderDetails` (id, order\_id, product\_id, quantity, price)
+* **Evaluation**:
+
+  * Appropriate use of primary and foreign keys (5)
+  * Correct data types and constraints (5)
+  * Normalization (up to 3NF) (5)
+  * Use of `AUTO_INCREMENT`, `NOT NULL`, etc. (5)
+
+
+#______________________________________________________________________________________________________
+
+### ✍️ **B. Query Writing (30 Marks)**
+
+> Write SQL queries for the following:
+
+1. List all orders with customer name, order date, and total amount. (5)
+2. Find the total sales (in ₹) for each product. (5)
+3. Show customers who ordered more than 3 different products. (5)
+4. Find the top 3 customers by purchase amount. (5)
+5. Update stock after each order is placed. (5)
+6. Delete orders older than 2 years (archive first if needed). (5)
+
+
+#______________________________________________________________________________________________________
+
+### 🔄 **C. Join, Subquery, Aggregation (20 Marks)**
+
+1. Find products never ordered. (5)
+2. Find average order value per customer using subquery. (5)
+3. Show order details with product name, quantity, and line total using JOIN. (5)
+4. List products where stock < 10 and category is 'Electronics'. (5)
+
+
+#______________________________________________________________________________________________________
+
+### 🧠 **D. Business Insight Queries (10 Marks)**
+
+* Find the day with highest number of orders.
+* Identify the best-selling category.
+* Check monthly sales trend (group by month).
+* Evaluate product returns/refunds if included (optional extension).
+
+
+#______________________________________________________________________________________________________
+
+### 🚀 **E. Performance & Optimization (10 Marks)**
+
+1. Create indexes to improve queries. (3)
+2. Use EXPLAIN to analyze a slow query. (3)
+3. Suggest changes if table sizes grow 10x. (4)
+
+
+#______________________________________________________________________________________________________
+
+### 🧪 **F. BONUS – Stored Procedures/Triggers/Views (Optional – 10 Marks)**
+
+* Create a stored procedure for placing an order (inserting into `Orders` and `OrderDetails`, and updating stock).
+* Create a view for recent orders in the last 30 days.
+* Add a trigger to log deleted orders.
+
+
+#______________________________________________________________________________________________________
+
+## 📊 **Total: 90–100 Marks**
+
+---
+
+## ✅ Deliverables:
+
+* SQL script(s) for:
+
+  * Table creation
+  * Insert sample data (at least 10 rows per table)
+  * All queries mentioned
+  * Indexes / triggers (if done)
+* Short document or README explaining assumptions and how to run the scripts.
+
+---
+
+## 🎯 Evaluation Rubric:
+
+| Criteria                     | Excellent (Full) | Partial | Poor/None |
+| ---------------------------- | ---------------- | ------- | --------- |
+| Schema Design                | 20               | 10–15   | <10       |
+| Query Accuracy & Performance | 30               | 15–25   | <15       |
+| Join/Subquery Proficiency    | 20               | 10–15   | <10       |
+| Insight Extraction           | 10               | 5–8     | <5        |
+| Indexing & Optimization      | 10               | 5–7     | <5        |
+| Bonus Implementation         | 10               | 5–7     | 0         |
+
+
+#______________________________________________________________________________________________________

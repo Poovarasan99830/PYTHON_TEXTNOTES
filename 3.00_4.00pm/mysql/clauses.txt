@@ -1,0 +1,72 @@
+
+
+| Clause        | Purpose                                       | Applies To              | Position in Query     | Aggregate?             |
+| ------------- | --------------------------------------------- | ----------------------- | --------------------- | ---------------------- |
+| `SELECT`      | Choose which columns or expressions to return | Columns or expressions  | 1st (after `FROM`)    | ✅ (can use COUNT, SUM) |
+| `FROM`        | Specify the table(s) to query from            | Tables                  | After `SELECT`        | ❌                      |
+| `WHERE`       | Filter rows before grouping/aggregation       | Individual rows         | After `FROM`          | ❌                      |
+| `GROUP BY`    | Group rows to apply aggregate functions       | Group columns           | After `WHERE`         | ❌ (prepares for agg.)  |
+| `HAVING`      | Filter groups after aggregation               | Aggregated groups       | After `GROUP BY`      | ✅                      |
+| `ORDER BY`    | Sort the result set                           | Final result rows       | Last                  | ✅/❌                    |
+| `LIMIT`       | Limit number of rows returned                 | Final result            | Very last             | ❌                      |
+| `JOIN`        | Combine rows from multiple tables             | Tables                  | After `FROM`          | ❌                      |
+| `ON`          | Join condition for tables                     | Join conditions         | With `JOIN`           | ❌                      |
+| `AS`          | Rename columns or tables                      | Aliases                 | In `SELECT` or `FROM` | ❌                      |
+| `DISTINCT`    | Remove duplicate rows                         | Selected rows           | After `SELECT`        | ❌                      |
+| `IN`          | Match a value against a list or subquery      | In `WHERE`, `HAVING`    | With conditions       | ❌                      |
+| `BETWEEN`     | Check if value lies within a range            | In `WHERE`, `HAVING`    | With conditions       | ❌                      |
+| `LIKE`        | Pattern matching                              | In `WHERE`, `HAVING`    | With conditions       | ❌                      |
+| `IS NULL`     | Check for NULL values                         | In `WHERE`, `HAVING`    | With conditions       | ❌                      |
+| `CASE...WHEN` | Conditional logic                             | In `SELECT`, `ORDER BY` | Inside expressions    | ✅/❌                    |
+| `UNION`       | Combine results of two queries                | Two result sets         | After both queries    | ❌                      |
+| `EXISTS`      | Check if subquery returns rows                | In `WHERE`              | With subqueries       | ❌                      |
+| `ALL`, `ANY`  | Compare values with subquery results          | In conditions           | With operators        | ❌                      |
+
+
+
+
+
+
+
+| Step | Clause     | Explanation                                                                 |
+| ---- | ---------- | --------------------------------------------------------------------------- |
+| 1️⃣  | `FROM`     | Pulls data from the `employees` table.                                      |
+| 2️⃣  | `WHERE`    | Filters only those employees where `salary > 50000`.                        |
+| 3️⃣  | `GROUP BY` | Groups the remaining records by `department`.                               |
+| 4️⃣  | `HAVING`   | Filters out groups where the number of employees is **not greater than 2**. |
+| 5️⃣  | `SELECT`   | Selects the `department` name and the count of employees in that group.     |
+| 6️⃣  | `ORDER BY` | Sorts the result based on the `emp_count` column in **descending order**.   |
+| 7️⃣  | `LIMIT`    | Returns only the **top 5 departments** from the sorted list.                |
+
+
+
+
+
+
+ Suggested Order of SQL Execution:
+FROM (and JOIN)
+
+WHERE
+
+GROUP BY
+
+HAVING
+
+SELECT
+
+DISTINCT
+
+ORDER BY
+
+LIMIT
+
+
+
+SELECT department, COUNT(*) AS emp_count
+FROM employees
+WHERE salary > 50000
+GROUP BY department
+HAVING COUNT(*) > 2
+ORDER BY emp_count DESC
+LIMIT 5;
+

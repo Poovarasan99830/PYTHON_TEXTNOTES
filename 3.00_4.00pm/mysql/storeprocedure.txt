@@ -1,0 +1,363 @@
+
+#What is a Stored Procedure?
+
+#Why Use Stored Procedures?
+
+| Benefit               | Description                                                                    |
+| --------------------- | ------------------------------------------------------------------------------ |
+| ✅ **Performance**     | Precompiled, so they execute faster.                                           |
+| ✅ **Reusability**     | Write once, use multiple times.                                                |
+| ✅ **Security**        | Restrict access to direct table operations; grant access to procedure instead. |
+| ✅ **Maintainability** | Centralized logic makes debugging and maintenance easier.                      |
+| ✅ **Reduced Traffic** | Client sends just the procedure call instead of long SQL code.                 |
+
+
+# Key Components
+
+1. **Name** – Procedure identifier.
+2. **Parameters** – Can be IN (input), OUT (output), or INOUT.
+3. **Body** – Contains SQL statements and logic.
+4. **Return Type** – Procedures typically don't return values like functions, but use `OUT` parameters or result sets.
+
+
+# Syntax (MySQL Example)
+
+
+DELIMITER $$
+
+CREATE PROCEDURE GetEmployeeByDept(IN dept_id INT)
+BEGIN
+    SELECT * FROM employees WHERE department_id = dept_id;
+END$$
+
+DELIMITER ;
+
+
+
+
+#calling a Procedure
+
+
+CALL GetEmployeeByDept(101);
+
+
+
+
+#Parameter Modes
+
+| Mode    | Description                   | Example                            |
+| ------- | ----------------------------- | ---------------------------------- |
+| `IN`    | Input to procedure            | `IN emp_id INT`                    |
+| `OUT`   | Output from procedure         | `OUT emp_name VARCHAR(50)`         |
+| `INOUT` | Acts as both input and output | `INOUT total_salary DECIMAL(10,2)` |
+
+
+
+#Example with IN and OUT
+
+
+DELIMITER $$
+
+CREATE PROCEDURE GetSalary(
+    IN emp_id INT,
+    OUT salary DECIMAL(10,2)
+)
+BEGIN
+    SELECT emp_salary INTO salary FROM employees WHERE id = emp_id;
+END$$
+
+DELIMITER ;
+
+
+CALL GetSalary(1, @sal);
+SELECT @sal;
+
+
+
+# Control Flow in Stored Procedures
+
+You can use typical programming structures:
+
+* **IF ... THEN**
+* **CASE**
+* **LOOP**, **WHILE**, **REPEAT**
+* **DECLARE**, **CURSOR**, **EXCEPTION HANDLING**
+
+
+
+
+Example:
+
+IF salary < 50000 THEN
+    SET grade = 'Low';
+ELSE
+    SET grade = 'High';
+END IF;
+
+
+#Error Handling
+
+MySQL:
+
+
+DECLARE CONTINUE HANDLER FOR SQLEXCEPTION
+BEGIN
+    -- error handling logic
+END;
+
+
+
+
+## Limitations of Stored Procedures
+
+| Limitation             | Explanation                                                   |
+| ---------------------- | ------------------------------------------------------------- |
+| ❌ Difficult to debug   | Some DBMS don't offer good debugging tools.                   |
+| ❌ Vendor-specific      | Syntax varies across MySQL, SQL Server, Oracle, etc.          |
+| ❌ Poor version control | Unlike application code, harder to version and track changes. |
+| ❌ Performance overhead | Overuse can cause memory usage and performance issues.        |
+
+
+
+##  Best Practices
+
+* Use **naming conventions** (`sp_GetUser`, `sp_UpdateInventory`)
+* Avoid **business logic** in procedures unless needed
+* Comment your procedures
+* Use **transactions** where needed
+* Keep procedures **modular and small**
+* Prefer **parameterized queries** to avoid SQL injection
+
+
+
+#Comparison With Functions
+
+| Feature      | Stored Procedure                         | Function                      |
+| ------------ | ---------------------------------------- | ----------------------------- |
+| Returns      | 0 or more values via `OUT` or result set | Must return a value           |
+| Use in SQL   | Not allowed directly in `SELECT`         | Can be used in `SELECT`       |
+| Side-effects | Can perform insert/update/delete         | Typically avoids side-effects |
+
+
+
+
+##stored Procedure Use Cases
+
+1. **Data validation** before insert/update
+2. **Complex reports** generation
+3. **Batch processing**
+4. **CRUD operations**
+5. **Audit logging**
+6. **Triggering business rules**
+
+---
+
+# Stored Procedure in Different DBMS
+
+### MySQL:
+
+* Supports `DELIMITER`, `CALL`, `IN`, `OUT`, `INOUT`
+
+### SQL Server (T-SQL):
+
+
+CREATE PROCEDURE spGetOrders @CustomerID INT
+AS
+BEGIN
+    SELECT * FROM Orders WHERE CustomerID = @CustomerID
+END
+
+
+### PostgreSQL:
+
+CREATE OR REPLACE PROCEDURE my_proc(IN p1 INT)
+LANGUAGE plpgsql
+AS $$
+BEGIN
+    -- logic here
+END;
+$$;
+
+
+
+### Oracle:
+
+
+CREATE OR REPLACE PROCEDURE GetDeptInfo(p_deptno IN NUMBER) IS
+BEGIN
+    SELECT * INTO ...;
+END;
+
+
+
+
+## 🔷 Interview/Exam Tips
+
+* Be clear about parameter types (`IN`, `OUT`, `INOUT`)
+* Know how to handle exceptions
+* Understand how to use cursors for row-by-row processing
+* Be able to explain when to use stored procedures over app-side logic
+
+
+
+
+__________________________________________________________________________
+
+
+
+#] What is `INOUT` in Stored Procedures?
+
+* **`INOUT` parameters** are used in **stored procedures** to both **receive input** from the caller and **send output** back after modifying the value.
+* They act like **read-write** variables passed by reference.
+
+
+## 🔹 Comparison with Other Parameters
+
+| Parameter Type | Behavior                                                          |
+| -------------- | ----------------------------------------------------------------- |
+| `IN`           | Value passed **into** the procedure (read-only).                  |
+| `OUT`          | Procedure assigns a value and returns it (write-only).            |
+| `INOUT`        | Procedure **receives** and **modifies** the value (read + write). |
+
+
+
+
+# Syntax in MySQL (Same logic in other DBMS with minor changes)
+
+### Step 1: Create Procedure with `INOUT`
+
+
+
+DELIMITER $$
+
+CREATE PROCEDURE AdjustSalary(INOUT emp_salary DECIMAL(10,2))
+BEGIN
+    SET emp_salary = emp_salary + 1000;
+END$$
+
+DELIMITER ;
+
+
+
+
+
+### Step 2: Call with User-defined Variable
+
+
+-- Define a variable
+SET @salary = 50000;
+
+-- Call procedure
+CALL AdjustSalary(@salary);
+
+-- Check the modified value
+SELECT @salary;
+-- Output: 51000
+
+
+
+
+
+
+
+_______________________________________________________________________________
+
+### 🧾 Example: Calculate Price with Tax and Discount
+
+
+DELIMITER $$
+
+CREATE PROCEDURE FinalPrice(
+    IN tax_rate DECIMAL(5,2),
+    IN discount DECIMAL(5,2),
+    INOUT base_price DECIMAL(10,2)
+)
+BEGIN
+    -- Apply tax
+    SET base_price = base_price + (base_price * tax_rate / 100);
+
+    -- Apply discount
+    SET base_price = base_price - (base_price * discount / 100);
+END$$
+
+DELIMITER ;
+
+-- Call the procedure
+SET @price = 1000;
+CALL FinalPrice(10, 5, @price);
+SELECT @price;  -- Final price after tax and discount
+
+
+
+#____________________________________________________________________
+
+## ⚠️ Points to Remember
+
+| Concept                   | Explanation                                                                         |
+| ------------------------- | ----------------------------------------------------------------------------------- |
+| ✅ **Variable Required**   | You must pass a **user-defined variable** (`@var`) when calling `INOUT` parameters. |
+| ✅ **Order Matters**       | Parameters must be passed in the **exact order**.                                   |
+| ❌ **Can't Use Literals**  | You cannot pass direct values (like `1000`) to an `INOUT` param.                    |
+| ⚠️ **Data Type Mismatch** | Always ensure the input matches the expected data type.                             |
+
+#_________________________________________________________________________________________________
+
+## 💬 Use Cases of `INOUT`
+
+| Scenario             | Example                                |
+| -------------------- | -------------------------------------- |
+| Cumulative totals    | Add and return running totals          |
+| Adjusted balances    | Banking systems (withdrawals/deposits) |
+| Incremental updates  | Step-wise transformation of input      |
+| Complex calculations | Tax, discount, price adjustments       |
+| Logging systems      | Modify log levels, counters            |
+
+
+
+#__________________________________________________________________________
+
+
+
+# INOUT in Other DBMS
+
+### SQL Server (T-SQL equivalent with `OUTPUT`)
+
+
+CREATE PROCEDURE AddBonus 
+    @Salary MONEY OUTPUT
+AS
+BEGIN
+    SET @Salary = @Salary + 2000;
+END;
+
+-- Usage
+DECLARE @EmpSal MONEY = 50000;
+EXEC AddBonus @Salary = @EmpSal OUTPUT;
+SELECT @EmpSal;
+```
+
+### PostgreSQL
+
+PostgreSQL handles input/output via **`INOUT`** similarly but uses **named parameters**.
+
+```sql
+CREATE OR REPLACE PROCEDURE update_price(INOUT price NUMERIC)
+LANGUAGE plpgsql
+AS $$
+BEGIN
+    price := price * 1.2;
+END;
+$$;
+```
+
+---
+
+## 🧠 Summary
+
+| Feature       | INOUT                                                                                               |
+| ------------- | --------------------------------------------------------------------------------------------------- |
+| Pass input    | ✅ Yes                                                                                               |
+| Return output | ✅ Yes                                                                                               |
+| Usage         | When you want to pass a value, manipulate it inside the procedure, and retrieve the modified value. |
+| Syntax        | Use `INOUT` in procedure definition, and pass user-defined variables while calling.                 |
+
