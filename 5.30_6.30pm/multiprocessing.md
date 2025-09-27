@@ -283,10 +283,15 @@ def work(n):
 
 if __name__ == "__main__":
     tasks = [Process(target=work, args=(i,)) for i in range(5)]
+    print("Starting processes...")
     for t in tasks:
         t.start()
+
+    # Wait for all processes to finish
     for t in tasks:
         t.join()
+
+     print("Main program finished!")
 ```
 
 ✅ **Behavior:**
@@ -294,6 +299,11 @@ if __name__ == "__main__":
 * Each task runs in a **separate child process**, so **PIDs differ**.
 * Execution is **parallel**: all tasks start simultaneously.
 * Output order can be **mixed/interleaved**, depending on CPU scheduling:
+
+
+
+---
+
 
 ```
 Process 23456 working on 0
@@ -327,23 +337,105 @@ Done 4
 
 ---
 
-
-
-
-
-
 # ___________________________________________________________________
 
 
-# | Feature          | Without Multiprocessing | With Multiprocessing        |
-# | ---------------- | ----------------------- | --------------------------- |
-# | **Process ID**   | Same for all (main PID) | Different PID for each task |
-# | **Execution**    | Sequential (one by one) | Parallel (simultaneous)     |
-# | **Speed**        | Slower (waits for each) | Faster (tasks overlap)      |
-# | **Output order** | Predictable             | Mixed / interleaved         |
+
+### What happens **without `join()`**
+
+```python
+from multiprocessing import Process
+import os, time
+
+def work(n):
+    print(f"Process {os.getpid()} working on {n}", flush=True)
+    time.sleep(2)
+    print(f"Done {n}", flush=True)
+
+if __name__ == "__main__":
+    tasks = [Process(target=work, args=(i,)) for i in range(3)]
+
+    print("Starting processes...")
+    for t in tasks:
+        t.start()
+
+    # No join here
+    print("Main program finished!")
+```
+
+**Possible Output:**
+
+```
+Starting processes...
+Main program finished!
+Process 12345 working on 0
+Process 12346 working on 1
+Process 12347 working on 2
+Done 0
+Done 1
+Done 2
+```
+
+⚠️ Notice:
+
+* `"Main program finished!"` prints immediately.
+* The child processes are still running in the background.
+
+---
+
+### What happens **with `join()`**
+
+```python
+from multiprocessing import Process
+import os, time
+
+def work(n):
+    print(f"Process {os.getpid()} working on {n}", flush=True)
+    time.sleep(2)
+    print(f"Done {n}", flush=True)
+
+if __name__ == "__main__":
+    tasks = [Process(target=work, args=(i,)) for i in range(3)]
+
+    print("Starting processes...")
+    for t in tasks:
+        t.start()
+
+    # Wait for all processes to finish
+    for t in tasks:
+        t.join()
+
+    print("Main program finished!")
+```
+
+**Possible Output:**
+
+```
+Starting processes...
+Process 12345 working on 0
+Process 12346 working on 1
+Process 12347 working on 2
+Done 0
+Done 1
+Done 2
+Main program finished!
+```
+
+✅ Here:
+
+* The main program **waits** until all child processes are done.
+* Only after all `"Done n"` messages appear, you see `"Main program finished!"`.
+
+---
+
+👉 **Summary:**
+
+* `start()` → begins the process.
+* `join()` → makes the main program wait until that process finishes.
+* Without `join()`, the main process may end before child processes finish.
 
 
-# ____________________________________________________________
+# ___________________________________________
 
 
 ## 🟢 Python Demo: Timing Comparison
