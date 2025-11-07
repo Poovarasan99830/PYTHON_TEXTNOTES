@@ -241,3 +241,162 @@ Design and implement a database for an e-commerce platform that:
 
 
 #______________________________________________________________________________________________________
+
+
+
+
+
+# 💎 SQL COMMANDS — 360° MASTER LIST
+
+SQL commands are grouped into **five major categories**:
+
+| Category | Full Form                    | Purpose                                 |
+| -------- | ---------------------------- | --------------------------------------- |
+| **DDL**  | Data Definition Language     | Define or modify **database structure** |
+| **DML**  | Data Manipulation Language   | Insert, update, or delete **data**      |
+| **DCL**  | Data Control Language        | Control **access and permissions**      |
+| **TCL**  | Transaction Control Language | Manage **transactions and savepoints**  |
+| **DQL**  | Data Query Language          | Retrieve **data** from the database     |
+
+---
+
+## 🧱 1️⃣ DDL — Data Definition Language
+
+**Purpose:** Defines and manages database structures (tables, views, indexes, etc.)
+**Auto-commit:** ✅ Yes (changes are permanent)
+
+### 🔹 Commands List
+
+| Command             | Description                                       | Example                                                         |
+| ------------------- | ------------------------------------------------- | --------------------------------------------------------------- |
+| **CREATE**          | Creates a new database object                     | `CREATE TABLE students (id INT, name VARCHAR(50));`             |
+| **ALTER**           | Modifies existing object (add/drop/modify column) | `ALTER TABLE students ADD email VARCHAR(100);`                  |
+| **DROP**            | Deletes an object permanently                     | `DROP TABLE students;`                                          |
+| **TRUNCATE**        | Deletes all data but keeps structure              | `TRUNCATE TABLE students;`                                      |
+| **RENAME**          | Renames a table or column                         | `ALTER TABLE students RENAME TO learners;`                      |
+
+
+
+
+
+
+
+
+| **COMMENT**         | Adds comments to tables or columns                | `COMMENT ON TABLE students IS 'Stores student info';`           |
+| **CREATE DATABASE** | Creates a new database                            | `CREATE DATABASE school_db;`                                    |
+| **DROP DATABASE**   | Deletes an entire database                        | `DROP DATABASE school_db;`                                      |
+| **CREATE VIEW**     | Creates a virtual table (view)                    | `CREATE VIEW student_view AS SELECT name, email FROM students;` |
+| **DROP VIEW**       | Deletes a view                                    | `DROP VIEW student_view;`                                       |
+| **CREATE INDEX**    | Creates an index for faster searching             | `CREATE INDEX idx_name ON students(name);`                      |
+| **DROP INDEX**      | Removes an index                                  | `DROP INDEX idx_name;`                                          |
+| **CREATE SEQUENCE** | Creates an auto-increment sequence                | `CREATE SEQUENCE student_seq START WITH 1 INCREMENT BY 1;`      |
+| **ALTER SEQUENCE**  | Modifies a sequence                               | `ALTER SEQUENCE student_seq INCREMENT BY 5;`                    |
+| **DROP SEQUENCE**   | Deletes a sequence                                | `DROP SEQUENCE student_seq;`                                    |
+
+---
+
+## 🧩 2️⃣ DML — Data Manipulation Language
+
+**Purpose:** Manipulates (changes) the data inside tables.
+**Auto-commit:** ❌ No (can use `COMMIT` or `ROLLBACK`)
+
+### 🔹 Commands List
+
+| Command          | Description                          | Example                                                                                                                              |
+| ---------------- | ------------------------------------ | ------------------------------------------------------------------------------------------------------------------------------------ |
+| **INSERT**       | Adds new data rows                   | `INSERT INTO students VALUES (1, 'Ravi', 20, 'B.Tech');`                                                                             |
+| **UPDATE**       | Modifies existing rows               | `UPDATE students SET age = 21 WHERE id = 1;`                                                                                         |
+| **DELETE**       | Removes specific rows                | `DELETE FROM students WHERE id = 2;`                                                                                                 |
+| **MERGE**        | Combines INSERT & UPDATE             | `MERGE INTO students USING new_data ON students.id = new_data.id WHEN MATCHED THEN UPDATE SET ... WHEN NOT MATCHED THEN INSERT ...;` |
+| **CALL**         | Calls a stored procedure             | `CALL calculate_bonus(101);`                                                                                                         |
+| **EXPLAIN PLAN** | Shows the execution plan of a query  | `EXPLAIN PLAN FOR SELECT * FROM students;`                                                                                           |
+| **LOCK TABLE**   | Locks a table for transaction safety | `LOCK TABLE students IN EXCLUSIVE MODE;`                                                                                             |
+
+---
+
+## 🧰 3️⃣ DCL — Data Control Language
+
+**Purpose:** Controls access to the database (security, permissions).
+**Auto-commit:** ✅ Yes
+
+### 🔹 Commands List
+
+| Command                  | Description                    | Example                                      |
+| ------------------------ | ------------------------------ | -------------------------------------------- |
+| **GRANT**                | Gives privileges to a user     | `GRANT SELECT, INSERT ON students TO user1;` |
+| **REVOKE**               | Removes privileges from a user | `REVOKE INSERT ON students FROM user1;`      |
+| **DENY** *(in some DBs)* | Explicitly blocks permission   | `DENY DELETE ON students TO user2;`          |
+
+---
+
+## 🔄 4️⃣ TCL — Transaction Control Language
+
+**Purpose:** Manages transactions (ensures data integrity).
+**Auto-commit:** ❌ No (controls commit behavior)
+
+### 🔹 Commands List
+
+| Command             | Description                          | Example                       |
+| ------------------- | ------------------------------------ | ----------------------------- |
+| **COMMIT**          | Saves all changes permanently        | `COMMIT;`                     |
+| **ROLLBACK**        | Cancels uncommitted changes          | `ROLLBACK;`                   |
+| **SAVEPOINT**       | Creates a checkpoint to roll back to | `SAVEPOINT sp1;`              |
+| **ROLLBACK TO**     | Rolls back to a specific savepoint   | `ROLLBACK TO sp1;`            |
+| **SET TRANSACTION** | Sets transaction properties          | `SET TRANSACTION READ WRITE;` |
+
+---
+
+## 🔍 5️⃣ DQL — Data Query Language
+
+**Purpose:** Retrieves (queries) data from the database.
+**Auto-commit:** ❌ Not applicable (read-only)
+
+### 🔹 Commands List
+
+| Command         | Description                        | Example                                                                              |
+| --------------- | ---------------------------------- | ------------------------------------------------------------------------------------ |
+| **SELECT**      | Fetches data from tables           | `SELECT * FROM students;`                                                            |
+| **WHERE**       | Filters records                    | `SELECT * FROM students WHERE age > 20;`                                             |
+| **ORDER BY**    | Sorts results                      | `SELECT * FROM students ORDER BY name;`                                              |
+| **GROUP BY**    | Groups rows                        | `SELECT course, COUNT(*) FROM students GROUP BY course;`                             |
+| **HAVING**      | Filters grouped data               | `SELECT course, COUNT(*) FROM students GROUP BY course HAVING COUNT(*) > 2;`         |
+| **JOIN**        | Combines data from multiple tables | `SELECT s.name, c.course_name FROM students s JOIN courses c ON s.course_id = c.id;` |
+| **DISTINCT**    | Removes duplicates                 | `SELECT DISTINCT course FROM students;`                                              |
+| **LIMIT / TOP** | Limits number of rows              | `SELECT * FROM students LIMIT 5;`                                                    |
+
+---
+
+## 🧾 BONUS: Other Useful SQL Commands
+
+| Category | Command                                  | Description                  |
+| -------- | ---------------------------------------- | ---------------------------- |
+| Utility  | **DESCRIBE / DESC**                      | Shows table structure        |
+| Utility  | **SHOW TABLES**                          | Lists tables in the database |
+| Utility  | **USE**                                  | Switches between databases   |
+| Utility  | **ALTER USER / CREATE USER / DROP USER** | Manage database users        |
+| Utility  | **BACKUP DATABASE / RESTORE DATABASE**   | Backup and recovery commands |
+
+---
+
+## ⚖️ Full Comparison Table
+
+| Category | Purpose             | Examples                    | Auto Commit | Rollback |
+| -------- | ------------------- | --------------------------- | ----------- | -------- |
+| **DDL**  | Define structure    | CREATE, ALTER, DROP         | ✅ Yes       | ❌ No     |
+| **DML**  | Manipulate data     | INSERT, UPDATE, DELETE      | ❌ No        | ✅ Yes    |
+| **DCL**  | Control access      | GRANT, REVOKE               | ✅ Yes       | ❌ No     |
+| **TCL**  | Manage transactions | COMMIT, ROLLBACK, SAVEPOINT | ❌ No        | ✅ Yes    |
+| **DQL**  | Retrieve data       | SELECT                      | ❌ N/A       | ❌ N/A    |
+
+---
+
+## 🧠 Real-World Analogy
+
+| Category | Analogy                                       |
+| -------- | --------------------------------------------- |
+| **DDL**  | Designing the house (walls, rooms, structure) |
+| **DML**  | Putting furniture and decorations             |
+| **DQL**  | Looking inside the house                      |
+| **DCL**  | Giving keys or restricting entry              |
+| **TCL**  | Deciding whether to save or undo your changes |
+

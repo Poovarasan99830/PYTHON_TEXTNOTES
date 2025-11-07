@@ -441,3 +441,15 @@ Transaction ID: TXN002, Amount: $1000, Type: Debit, Status: Completed
 * Default values make object creation **flexible**.
 * Objects are immediately **ready to use** after creation.
 
+
+
+
+task discussion
+instance variable,class variable
+constructor overloading
+
+
+inheritance intro
+types of inheritance
+MRO method
+super method

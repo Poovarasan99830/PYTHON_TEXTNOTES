@@ -1,6 +1,4 @@
-Alright — I’ll prepare a **complete Flask + SQLite project** that’s ready for deployment on **Render** with persistent database storage.
 
-Here’s the **folder structure** you’ll get:
 
 ```
 flask_sqlite_app/
@@ -10,7 +8,16 @@ flask_sqlite_app/
 ├── render.yaml
 ├── Procfile
 └── database.db  (created automatically when you run the app)
-```
+
+
+
+
+
+
+
+
+
+
 
 ---
 
@@ -77,7 +84,14 @@ if __name__ == "__main__":
 ```txt
 Flask==3.0.3
 gunicorn==22.0.0
+
 ```
+
+
+
+
+
+
 
 ---
 
@@ -134,7 +148,15 @@ git push -u origin main
    * Select your GitHub repo.
    * Render will read `render.yaml` and deploy automatically.
 
----
+.
 
-I can also add **HTML templates and a form** so you can add users through a webpage instead of Postman.
-Do you want me to make that version too? That way, the deployed app is directly usable in a browser without API calls.
+| File            | Purpose                                           | Example                                       |
+| --------------- | ------------------------------------------------- | --------------------------------------------- |
+| **Procfile**    | Tells Render how to start your app                | `web: gunicorn todo_project.wsgi:application` |
+
+
+| **render.yaml** | Defines deployment settings, build/start commands | auto-deploy setup      
+
+
+                       |
+| **.gitignore**  | Excludes unnecessary files from GitHub            | avoids `.venv`, cache, db files               |

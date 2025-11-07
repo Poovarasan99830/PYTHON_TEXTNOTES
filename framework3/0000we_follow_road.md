@@ -3,12 +3,19 @@
 
 **Goal:** Be comfortable with Flask/Django microservices and package them into containers.
 
+
+
+
+# ____________________________________________________________
+
 **Day 1–5: Microservices Basics**
 
 * Understand monolithic vs microservice architecture.
 * Build a **simple Flask API** (e.g., user management).
 * Build a **simple Django API** (e.g., blog posts) using Django REST Framework.
 * Learn how to separate services (each has its own routes, DB, configs).
+
+
 
 **Day 6–10: Docker Basics**
 
@@ -17,11 +24,19 @@
 * Write your first `Dockerfile` for a Flask API.
 * Run and access the container via browser.
 
+
+
 **Day 11–15: Docker Compose**
 
 * Learn multi-container setup (API + MySQL/PostgreSQL).
 * Use `docker-compose.yml` to start both.
 * Connect containers via Docker network.
+
+
+
+# ____________________________________________________________
+
+
 
 **Day 16–20: Practice Project**
 
@@ -60,7 +75,7 @@
 * Add scaling (2–5 pods per service).
 * Test with **load testing tool** (e.g., `locust`).
 
----
+# ____________________________________________________________
 
 ## **Phase 3 (Days 46–70): Cloud Deployment**
 
@@ -82,21 +97,27 @@
 * Use a managed DB (AWS RDS / GCP CloudSQL).
 * Connect Kubernetes pods to cloud DB securely.
 
----
+# ____________________________________________________________
 
 ## **Phase 4 (Days 71–90): Serverless + Auto-scaling**
 
 **Goal:** Add efficiency & modern scaling.
+
 
 **Day 71–75: Serverless Basics**
 
 * Learn AWS Lambda.
 * Deploy a small Flask API as a Lambda function using Zappa/Chalice.
 
+
+
 **Day 76–80: Kubernetes HPA**
 
 * Install **metrics-server**.
 * Enable Horizontal Pod Autoscaler (scale pods based on CPU usage).
+
+
+
 
 **Day 81–85: Auto-deployment Pipelines**
 
@@ -106,9 +127,13 @@
   2. Push to Docker Hub.
   3. Deploy to Kubernetes automatically.
 
+
+
+
 **Day 86–90: Final Capstone Project**
 
 * Create **3–4 Flask/Django microservices** (User, Product, Order, Auth).
 * Deploy with Docker → Kubernetes → Cloud.
 * Enable auto-scaling + CI/CD pipeline.
 * Write documentation.
+# ____________________________________________________________

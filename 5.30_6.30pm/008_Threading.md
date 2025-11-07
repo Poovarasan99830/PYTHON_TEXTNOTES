@@ -22,12 +22,15 @@
 ### ✅ Definition
 
 **Threading** in Python means running multiple tasks **concurrently** within the same process.
+
 **Multithreading** allows multiple threads to run at the same time, improving efficiency for tasks that can run **independently**.
 
 **Key points:**
 
 * **Thread:** Smallest unit of execution inside a program.
+
 * **Multithreading:** Multiple threads running **concurrently** in the same program.
+
 * Useful for **I/O-bound tasks** (file read/write, network calls, menus traversal).
 
 ---
@@ -62,6 +65,7 @@
    * Waiter serves customers → takes 3 mins
 
    If done **sequentially**, the first customer waits 6 minutes.
+
    With **threads**, all tasks happen concurrently → the customer gets served faster.
 
    ✅ This is exactly how **multithreading** helps programs run multiple independent tasks at the same time.
@@ -384,6 +388,7 @@ for t in threads: t.join()
 2️⃣ What it affects
 
      CPU-bound threads: Only one thread executes Python bytecode at a time because of GIL → no true parallelism.
+
      I/O-bound threads: Threads can still appear to run concurrently because GIL is released during I/O operations.
 
 3️⃣ When you create multithreading
@@ -545,6 +550,7 @@ print(counter)  # Always 200000 with lock, may be less without
 **Analogy:**
 
 > If two students write in the same notebook at the same time, content may get mixed up.
+
 > GIL ensures that **one student finishes writing before the next one starts**.
 
 -
