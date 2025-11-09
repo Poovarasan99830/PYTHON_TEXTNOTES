@@ -96,7 +96,10 @@ Great! Let me explain a bit more about `super()` and constructor chaining in Pyt
 ## Why use `super()` for constructor chaining?
 
 * When you have a subclass (child class) that extends a superclass (parent class), you want to **reuse the initialization logic of the parent** so you don’t duplicate code.
+
+
 * Calling `super().__init__()` runs the parent’s constructor, initializing attributes defined there.
+
 * After that, the child can initialize its own attributes.
 
 ---
@@ -627,13 +630,17 @@ print(c.name)   # ❌ AttributeError: 'Child' object has no attribute 'name'
 ## 5️⃣ The logic behind the rule
 
 * **If a class defines `__init__`, Python assumes you want to handle all initialization yourself.**
+
 * It will **not** run any parent constructors automatically (unlike Java or C# where `super()` is sometimes implicit).
+
 * This gives you full control but means you must remember to chain constructors if needed.
 
 ---
 
 ✅ **Bottom line:**
-In Python, constructor chaining is **manual**. If you override `__init__` in a child class, the parent’s `__init__` will not be called unless you explicitly tell Python to call it (usually via `super().__init__()`).
+In Python, constructor chaining is **manual**. If you override `__init__` in a child class, the parent’s `__init__` will not be called unless 
+
+you explicitly tell Python to call it (usually via `super().__init__()`).
 
 ---
 
