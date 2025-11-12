@@ -3,8 +3,6 @@
 # ___________________________________________________________________
 
 
-
-
 ### *(Protect Data — Control Access — Maintain Integrity)*
 
 ---
@@ -12,21 +10,31 @@
 ### **1️⃣ Definition**
 
 **Encapsulation** means **wrapping data (variables)** and **methods (functions)** into a **single unit** — typically a class.
+
 It is one of the **four pillars of OOP** (with inheritance, abstraction, and polymorphism).
+
+
 
 In simple words —
 
 > “Encapsulation hides internal data and only exposes what’s necessary through controlled interfaces (getters/setters).”
 
 ✅ Protects data from unauthorized modification
+
+
 ✅ Enables controlled access to class attributes
+
 ✅ Improves code modularity, security, and maintainability
+
 
 ---
 
 ### 🔹 **Python Approach**
 
-Unlike some strictly-typed OOP languages (like Java/C++), Python does not have strict access modifiers like `private` or `protected`.
+Unlike some strictly-typed OOP languages (like Java/C++), Python does not have s
+
+trict access modifiers like `private` or `protected`.
+
 Instead, it **relies on conventions and name mangling**:
 
 | Convention    | Syntax       | Meaning                                   |
@@ -135,7 +143,7 @@ print(acc.get_balance())
 ✅ `__balance` cannot be directly accessed from outside (due to name mangling).
 
 
-
+print(acc._BankAccount__balance)
 
 
 ---
@@ -371,4 +379,201 @@ print(model.get_weights())
 | Validation        | Add checks before setting     | `@property` setter    |
 | Name Mangling     | Prevent accidental conflict   | `_ClassName__attr`    |
 | Maintainability   | Modular, secure design        | APIs, SDKs, ML Models |
+
+
+
+
+# _____________________________________________________________________________________
+
+
+
+
+# 🧠 **Encapsulation with `@property` — From First Principles**
+
+---
+
+## **1️⃣ First, What Is Encapsulation?**
+
+**Encapsulation** means **binding data (variables)** and **methods (functions)** that operate on that data **into a single unit (class)** — and **restricting direct access** to some parts of the object.
+
+It’s like **putting sensitive data inside a box** and providing **controlled access** through safe doors (methods).
+
+
+
+# _____________________________________________________________________________________
+
+### 🔒 **Goal of Encapsulation**
+
+* **Hide internal details**
+* **Control how data is modified**
+* **Protect object’s integrity**
+
+# _____________________________________________________________________________________
+
+
+
+
+## **2️⃣ The Old (Traditional) Way — Using Getters and Setters**
+
+```python
+class Product:
+    def __init__(self, price):
+        self.__price = price
+
+    def get_price(self):
+        return self.__price
+
+    def set_price(self, value):
+        if value > 0:
+            self.__price = value
+        else:
+            print("Invalid Price")
+
+item = Product(100)
+print(item.get_price())  # Access
+item.set_price(250)      # Modify safely
+print(item.get_price())
+```
+
+✅ Works fine,
+❌ But it looks **un-Pythonic** and **verbose**.
+
+
+
+# _____________________________________________________________________________________
+
+
+
+
+
+## **3️⃣ The Pythonic Way — Using `@property` Decorator**
+
+Python introduces the **`@property` decorator** to make encapsulation **simpler, elegant, and natural**.
+
+---
+
+### 🔧 How It Works Step-by-Step
+
+#### Step 1 — Private Variable
+
+```python
+self.__price = price
+```
+
+Encapsulation begins here — `__price` is private.
+
+
+# _____________________________________________________________________________________
+
+
+
+#### Step 2 — The Getter (`@property`)
+
+```python
+@property
+def price(self):
+    return self.__price
+```
+
+* Acts like a **method**, but can be **used as an attribute**.
+* Allows **read-only access** to private data.
+
+
+
+# _____________________________________________________________________________________
+
+
+
+#### Step 3 — The Setter (`@price.setter`)
+
+```python
+@price.setter
+def price(self, value):
+    if value > 0:
+        self.__price = value
+    else:
+        print("Invalid Price")
+```
+
+* Provides **controlled write access**.
+* Executes logic before assignment (validation, security, etc.).
+
+
+# _____________________________________________________________________________________
+
+
+
+## **4️⃣ Full Example**
+
+```python
+class Product:
+    def __init__(self, price):
+        self.__price = price
+
+    @property
+    def price(self):
+        return self.__price
+
+    @price.setter
+    def price(self, value):
+        if value > 0:
+            self.__price = value
+        else:
+            print("Invalid Price")
+
+item = Product(100)
+print(item.price)   # ✅ Calls getter
+item.price = 250    # ✅ Calls setter
+print(item.price)
+item.price = -50    # ❌ Invalid Price
+```
+
+# _____________________________________________________________________________________
+
+
+
+## **5️⃣ Why `@property` Is Better**
+
+| Feature     | Traditional Get/Set                      | `@property` Approach            |
+| ----------- | ---------------------------------------- | ------------------------------- |
+| Syntax      | `obj.get_price()` / `obj.set_price(100)` | `obj.price` / `obj.price = 100` |
+| Readability | Verbose                                  | Clean, natural                  |
+| Control     | Full                                     | Full                            |
+| Style       | Java-like                                | Pythonic                        |
+
+
+
+# _____________________________________________________________________________________
+
+## **6️⃣ Behind the Scenes (How Python Translates It)**
+
+```python
+item.price      →  item.price()
+item.price = x  →  item.price(x)
+```
+
+So even though it looks like attribute access,
+Python internally **calls getter/setter methods**!
+
+
+
+# _____________________________________________________________________________________
+
+## **7️⃣ Real-World Analogy**
+
+Imagine you’re in a **hotel room**:
+
+* You **can’t access** the main control panel directly (`__private` data)
+* You use a **remote control** (`@property`) to change settings safely
+  (e.g., increase temperature, but not to dangerous levels)
+
+
+
+
+# _____________________________________________________________________________________
+## **8️⃣ In One Line Summary**
+
+> `@property` lets you **encapsulate data** while **exposing a clean attribute-style interface** —
+> protecting your class **without sacrificing simplicity**.
+
 

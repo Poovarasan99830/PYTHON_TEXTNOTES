@@ -244,3 +244,20 @@ You now have:
 ---
 
 Would you like me to make this version **with class-based views (CBV)** instead of function-based (FBV)?
+
+
+
+
+
+
+register --->data stored in data base
+
+          POST(username,password)
+login -->request--->logic--->login_username==register_username ===>session id
+
+       cookies  <--- response 
+
+
+logout --->delete the session id
+
+profile

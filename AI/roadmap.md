@@ -47,6 +47,7 @@ Here’s the **final optimized version**, structured as a **progressive 4-Month 
 
 * [ ] Reflect in Notion: write what you *understood*, not what you *copied*
 
+
 💬 **Tanglish Reminder:**
 
 > “Tool marum da… concept same.”
@@ -241,7 +242,6 @@ Here’s the **final optimized version**, structured as a **progressive 4-Month 
 
 ------_______________________________________________________________________________________
 
-Would you like me to turn this into a **printable Notion-style checklist or PDF version** (with daily tick boxes and progress tracker)?
 
 
 

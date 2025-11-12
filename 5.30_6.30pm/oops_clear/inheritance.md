@@ -21,10 +21,10 @@ we can **reuse logic, reduce duplication, and maintain consistency**.
 
 
 
----________________________________________________________________________
+________________________________________________________________________
 
 ✅ **Core Idea:**
----________________________________________________________________________
+________________________________________________________________________
 
 
 > Inheritance enables “code reusability” — we write logic once in a parent class and share it across multiple child classes.
@@ -39,9 +39,13 @@ class Child(Parent):
     # inherits all features of Parent
 ```
 
+
+
+
+
 _______________________________________________________________________
 ### **2️⃣ Industry Use Cases**
----________________________________________________________________________
+________________________________________________________________________
 
 
 | Use Case                                   | Description                                                                                           |
@@ -54,9 +58,9 @@ _______________________________________________________________________
 | **E-commerce Apps**                        | Base `Product` class → `Clothing`, `Electronics`, `Food` extend behavior.                             |
 
 ---
----________________________________________________________________________
+________________________________________________________________________
 ### **3️⃣ Example Code (Multiple Examples)**
----________________________________________________________________________
+________________________________________________________________________
 
 
 
@@ -110,10 +114,14 @@ ________________________________________________________________________
 class Animal:
     def __init__(self, species):
         self.species = species
+         self.species = species
+          self.species = species
+           self.species = species
+
 
 class Dog(Animal):
     def __init__(self, species, name):
-        self.   # call parent constructor
+        super().__init__(self,species)
         self.name = name
 
 dog = Dog("Canine", "Buddy")
@@ -138,14 +146,15 @@ class Child(Parent):
 
 obj = Child()
 obj.legacy()
-```
 
-------________________________________________________________________________
+
+
+# ------________________________________________________________________________
 
 
 #### 🧩 Example 5 — Multiple Inheritance
 
-```python
+# ```python
 class A:
     def featureA(self):
         print("Feature A")
@@ -176,7 +185,10 @@ obj.featureB()
 4. Demonstrate multiple inheritance with classes `Flyer`, `Swimmer`, and a child `Duck`.
 5. Build a hierarchy: `Employee → Manager → Director`, each adding a new attribute.
 
----
+
+
+
+
 
 
 
@@ -250,7 +262,7 @@ class User(BaseModel):
     def __init__(self, username):
         super().__init__()
         self.username = username
-
+       
     def __str__(self):
         return f"User({self.username})"
 
