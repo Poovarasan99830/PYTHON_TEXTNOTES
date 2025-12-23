@@ -2,8 +2,10 @@ Let’s break it down:
 
 
 Microservices Architecture:
+
 * Understanding the principles of microservices architecture and its benefits in building scalable and 
 maintainable applications.
+
 * Implementing microservices using frameworks like Flask and Django, and deploying them 
 independently to enable agility and fault isolation.
 

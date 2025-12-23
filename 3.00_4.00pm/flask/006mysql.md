@@ -379,7 +379,7 @@ curl -X DELETE http://127.0.0.1:5000/api/users/1
 
 
 
-Great choice 🚀 — securing your Flask + MySQL CRUD API with **JWT authentication** is the professional way to go. Let’s build on top of the CRUD app I gave you.
+
 
 We’ll use **Flask-JWT-Extended** for JWT handling.
 

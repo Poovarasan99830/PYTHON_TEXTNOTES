@@ -3,6 +3,9 @@
 | Feature                 | View                                                             |Stored Procedure                                        |
 | ----------------------- | ---------------------------------------------------------------- | ------------------------------------------------------------- |
 | **Definition**          | A virtual table based on a `SELECT` query                        | A set of SQL statements saved and executed as a block         |
+
+
+
 | **Returns**             | A result set (like a table)                                      | Can return result sets, output parameters, or status          |
 | **Usage**               | Used like a table in `SELECT` statements                         | Used to perform operations like querying, inserting, updating |
 | **Input Parameters**    | ❌ No input parameters                                            | ✅ Accepts input, output, and INOUT parameters                 |

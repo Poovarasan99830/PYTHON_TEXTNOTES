@@ -1,9 +1,3 @@
-Perfect ✅ You want a **360° view of SQLite3 in Python** — from basics to advanced, including best practices, projects, and even interview-level concepts. Let’s structure this like a **complete roadmap**:
-
----
-
-# 🔹 360° SQLite3 in Python
-
 ## 1. Fundamentals
 
 * **What is SQLite?**
@@ -17,7 +11,9 @@ Perfect ✅ You want a **360° view of SQLite3 in Python** — from basics to ad
   * Lightweight, portable, fast.
   * Perfect for local apps, testing, small-scale projects.
 
----
+
+
+
 
 ## 2. Core Concepts
 
@@ -64,7 +60,11 @@ cur.execute("DELETE FROM users WHERE id = ?", (2,))
 conn.commit()
 ```
 
----
+
+
+
+
+
 
 ## 3. Intermediate Concepts
 
@@ -239,13 +239,13 @@ print(cur.fetchall())
   * Use **indexes** on search-heavy columns.
   * VACUUM command to optimize DB file.
 
----
 
-✅ That’s the **360° SQLite3 roadmap in Python**: basics → intermediate → advanced → best practices → projects → interview prep.
 
-Do you want me to design a **structured 30-day learning plan with exercises & projects** so you can fully master SQLite3 hands-on?
 
-Sure! Let’s break down this snippet **line by line** and explain what it does in a Flask + MySQL context:
+
+
+
+**line by line** and explain what it does in a Flask + MySQL context:
 
 ---
 
@@ -313,8 +313,17 @@ return render_template("index.html", users=users)
 4. Close the cursor.
 5. Pass the data to an HTML template to display it on a webpage.
 
----
 
-If you want, I can **also show an example of how `index.html` would display these users** in a table. That will make it very clear.
 
-Do you want me to do that?
+Without row_factory:
+row = (1, "Alice", 25)
+print(row[1])   # Alice
+
+With row_factory:
+row["name"]     # Alice
+row["age"]      # 25
+
+
+✔ Very useful in Flask templates:
+
+{{ user.name }}

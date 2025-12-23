@@ -82,15 +82,23 @@ Backward Index : -6 -5  -4  -3  -2  -1
 
  | Method                       | Use Case                       |
 | ---------------------------- | ------------------------------ |
-| `upper()`, `lower()`         | Convert case                   |
+<!-- | `upper()`, `lower()`         | Convert case                   |
 | `capitalize()`, `title()`    | Capitalize words               |
-| `strip()`                    | Remove leading/trailing spaces |
+| `strip()`                    | Remove leading/trailing spaces | -->
+
+
 | `replace(old, new)`          | Replace substring              |
+
 | `split(separator)`           | Split string into a list       |
+
 | `join(iterable)`             | Join list into a string        |
+
 | `find(sub)`                  | Find first index of substring  |
+
 | `count(sub)`                 | Count occurrences              |
+
 | `startswith()`, `endswith()` | Check start/end of string      |
+
 | `isalpha()`, `isdigit()`     | Validation                     |
 
 
@@ -158,6 +166,9 @@ Create a function to check if a string is an anagram.
 
 4. **Return the first 3 and last 3 characters concatenated.**
    Input: `"abcdefg"` → Output: `"abcefg"`
+
+
+
 
 5. **Check if a string starts and ends with the same character.**
    Input: `"radar"` → Output: `True`
@@ -250,6 +261,9 @@ a. Longest Common Subsequence (DP)
 Definition of Anagram:
 Two strings are anagrams if they contain the same characters with the same frequency, but possibly in a different order.
 
+
+
+
 🔁 Example:
 "listen" and "silent" → ✅ Anagrams
 
@@ -329,6 +343,9 @@ Enter your password (anagram-based): listen
 
 ✅ What is a Palindrome?
 A palindrome is a word, phrase, or number that reads the same forward and backward.
+
+
+
 
 Examples:
 ✅ "madam" → Palindrome

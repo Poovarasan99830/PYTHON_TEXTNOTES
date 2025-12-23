@@ -1,6 +1,222 @@
 
 
 
+# 📘 **Python Collections **
+
+Python has **4 built-in collection data types**:
+
+1. **List** → Ordered, Mutable, Allows duplicates
+2. **Tuple** → Ordered, Immutable, Allows duplicates
+3. **Set** → Unordered, Mutable, No duplicates
+4. **Dictionary** → Unordered, Key–Value pairs, Mutable, No duplicate keys
+
+---
+
+# 1️⃣ **LIST**
+
+✔ Ordered
+✔ Mutable
+✔ Allows duplicates
+✔ Supports indexing & slicing
+
+### **Create**
+
+```python
+nums = [10, 20, 30, 40]
+```
+
+### **Indexing**
+
+```python
+print(nums[0])     # 10
+print(nums[-1])    # 40
+print(nums[1:3])   # [20, 30]
+```
+
+### **Update**
+
+```python
+nums[1] = 200    # [10, 200, 30, 40]
+```
+
+### **Add**
+
+```python
+nums.append(50)
+nums.insert(1, 15)
+```
+
+### **Delete**
+
+```python
+nums.remove(30)
+nums.pop()        # removes last
+del nums[0]
+```
+
+### **Exceptions**
+
+```
+IndexError → accessing index not available
+ValueError → remove() value not found
+```
+
+---
+
+# 2️⃣ **TUPLE**
+
+✔ Ordered
+✔ Immutable
+✔ Allows duplicates
+✔ Supports indexing
+
+### **Create**
+
+```python
+t = (10, 20, 30)
+```
+
+### **Indexing**
+
+```python
+print(t[1])    # 20
+print(t[-1])   # 30
+```
+
+### ❌ **Update Not Allowed**
+
+```python
+t[1] = 100   # TypeError
+```
+
+### **Workaround (convert to list)**
+
+```python
+x = list(t)
+x[1] = 100
+t = tuple(x)
+```
+
+### **Exceptions**
+
+```
+TypeError → trying to modify tuple
+IndexError → invalid index
+```
+
+---
+
+# 3️⃣ **SET**
+
+✔ Unordered
+✔ Mutable
+✔ No duplicate values
+❌ **No indexing**
+
+### **Create**
+
+```python
+s = {10, 20, 30}
+```
+
+### ❌ No indexing
+
+```python
+s[0]   # TypeError
+```
+
+### **Add / Remove**
+
+```python
+s.add(40)
+s.remove(20)
+s.discard(50)   # no error if missing
+```
+
+### **Exceptions**
+
+```
+KeyError → remove() missing element
+TypeError → trying to index a set
+```
+
+---
+
+# 4️⃣ **DICTIONARY**
+
+✔ Key–Value
+✔ Mutable
+✔ No duplicate keys
+✔ Keys must be unique & hashable
+✔ Access by key (not index)
+
+### **Create**
+
+```python
+student = {"name": "Alex", "age": 21}
+```
+
+### **Access**
+
+```python
+student["name"]         # "Alex"
+student.get("score")    # None (no error)
+```
+
+### **Update**
+
+```python
+student["age"] = 22
+```
+
+### **Add**
+
+```python
+student["score"] = 95
+```
+
+### **Delete**
+
+```python
+del student["age"]
+student.pop("score")
+```
+
+### **Exceptions**
+
+```
+KeyError → key not found
+TypeError → key must be immutable
+```
+
+---
+
+# 📌 **Quick Comparison Table**
+
+| Feature          | List            | Tuple      | Set          | Dict                 |
+| ---------------- | --------------- | ---------- | ------------ | -------------------- |
+| Ordered          | Yes             | Yes        | No           | No                   |
+| Mutable          | Yes             | No         | Yes          | Yes                  |
+| Duplicates       | Yes             | Yes        | No           | Keys No (values Yes) |
+| Indexing         | Yes             | Yes        | No           | By key               |
+| Supports Slicing | Yes             | Yes        | No           | No                   |
+| Best Use         | Multiple values | Fixed data | Unique items | Key-value mapping    |
+
+---
+
+# 📚 Want diagrams?
+
+I can create:
+
+✔ Memory diagram
+✔ CRUD diagram for each datatype
+✔ Real-world examples (Zomato/Flipkart data structures)
+✔ Practice questions with answers
+
+Just tell me!
+
+
+
 # What Are Control Statements?
 
 

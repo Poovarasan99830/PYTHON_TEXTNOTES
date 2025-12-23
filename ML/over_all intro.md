@@ -38,6 +38,12 @@ Now let’s go one level deeper — you said **“/COMPARE — side-by-side comp
 
 ---
 
+
+
+
+
+
+
 ## ⚖️ **Final Summary — One-Line Tanglish Memory Hints**
 
 | Algorithm               | One-Line Memory Hint                          |

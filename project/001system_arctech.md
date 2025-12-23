@@ -86,9 +86,13 @@ We translate requirements into **tables & relationships**.
 **Main Tables:**
 
 * **users** (id, name, email, password, role: customer/provider/admin)
+
 * **service\_centers** (id, provider\_id, name, city, district, pincode, approved\_status)
+
 * **bookings** (id, customer\_id, service\_center\_id, status, date, payment\_status)
+
 * **payments** (id, booking\_id, amount, payment\_method, status)
+
 * **offers** (id, title, description, target\_role, created\_at)
 
 ---

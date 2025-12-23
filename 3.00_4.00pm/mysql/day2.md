@@ -100,7 +100,12 @@ SET o.customer_name = c.name;
 
 ---
 
+# __________________________________________________
 ### 🔴 **C. DELETE — Remove data from tables**
+# __________________________________________________
+
+
+
 
 ```sql
 -- 1. Delete specific record
@@ -128,8 +133,13 @@ WHERE r.status = 'Refunded';
 ```
 
 ---
-
+# ______________________________________________________________________
 ### 🔵 **D. SELECT — Retrieve data from tables**
+# ______________________________________________________________________
+
+
+
+
 
 ```sql
 -- 1. Select all columns
@@ -162,102 +172,12 @@ SELECT name FROM students
 WHERE grade = (SELECT MAX(grade) FROM students);
 ```
 
----
-
-## **3️⃣ Tasks / Practice Questions**
-
-Try the following hands-on:
-
-1. Insert 5 new records into `employee` table.
-2. Update salary of employees in `Sales` department by 10%.
-3. Delete all employees who haven’t logged in for 1 year.
-4. Retrieve employee names and their department names using JOIN.
-5. List all students with grade ‘A’.
-6. Insert records from one table to another using subquery.
-7. Delete records of products with zero stock.
-8. Display all orders sorted by date (latest first).
-9. Show total number of employees in each department.
-10. Update marks of students who scored below average by +5%.
-
----
-
-## **4️⃣ Real-World Inspired Examples**
-
-### 🏦 **Banking System**
-
-```sql
--- Insert new customer
-INSERT INTO customers (cust_id, name, account_type, balance)
-VALUES (101, 'Ramesh Kumar', 'Savings', 15000);
-
--- Update balance after transaction
-UPDATE customers SET balance = balance - 500 WHERE cust_id = 101;
-
--- Delete inactive customers
-DELETE FROM customers WHERE last_login < '2024-01-01';
-
--- Retrieve high-balance customers
-SELECT name, balance FROM customers WHERE balance > 100000;
-```
-
----
-
-### 🛒 **E-Commerce Platform**
-
-```sql
--- Add new product
-INSERT INTO products (product_name, price, stock)
-VALUES ('Wireless Mouse', 750, 100);
-
--- Update stock after sale
-UPDATE products SET stock = stock - 1 WHERE product_id = 3;
-
--- Delete discontinued products
-DELETE FROM products WHERE status = 'discontinued';
-
--- Fetch top 5 selling products
-SELECT product_name, SUM(quantity) AS total_sold
-FROM sales
-GROUP BY product_name
-ORDER BY total_sold DESC
-LIMIT 5;
-```
-
----
-
-### 🏥 **Hospital Management**
-
-```sql
--- Insert new patient record
-INSERT INTO patients (patient_id, name, disease, doctor)
-VALUES (201, 'Priya', 'Fever', 'Dr. Arun');
-
--- Update doctor name for certain cases
-UPDATE patients SET doctor = 'Dr. Karthik' WHERE disease = 'Cold';
-
--- Delete old records
-DELETE FROM patients WHERE admission_date < '2024-01-01';
-
--- Retrieve all admitted patients
-SELECT name, disease, doctor FROM patients WHERE status = 'Admitted';
-```
-
----
-
-## **5️⃣ Industry Use Cases**
-
-| Industry       | DML Use Case               | Description                                        |
-| -------------- | -------------------------- | -------------------------------------------------- |
-| **FinTech**    | Transaction Handling       | Insert, update, and retrieve customer transactions |
-| **E-Commerce** | Product & Order Management | Manage product stock and customer orders           |
-| **Healthcare** | Patient Record Updates     | Insert, modify, or delete patient visit records    |
-| **Banking**    | Account Balances           | Update after deposits or withdrawals               |
-| **Education**  | Student Result Management  | Update scores, retrieve top performers             |
-| **Analytics**  | Data Aggregation           | Query summaries and reports                        |
-
----
-
+# ______________________________________________________________________
 ## **6️⃣ Important Methods + Real-World Usage**
+# ______________________________________________________________________
+
+
+
 
 | Command  | Key Role                    | Real-World Example                              |
 | -------- | --------------------------- | ----------------------------------------------- |
@@ -268,7 +188,11 @@ SELECT name, disease, doctor FROM patients WHERE status = 'Admitted';
 
 ---
 
+# ______________________________________________________________________
 ## ⚙️ **Pro Tip: DML vs DDL Quick Summary**
+# ______________________________________________________________________
+
+
 
 | Feature     | DDL (Structure)          | DML (Data)                     |
 | ----------- | ------------------------ | ------------------------------ |

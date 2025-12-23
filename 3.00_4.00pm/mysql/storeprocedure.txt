@@ -1,6 +1,10 @@
 
 #What is a Stored Procedure?
 
+
+
+
+
 #Why Use Stored Procedures?
 
 | Benefit               | Description                                                                    |

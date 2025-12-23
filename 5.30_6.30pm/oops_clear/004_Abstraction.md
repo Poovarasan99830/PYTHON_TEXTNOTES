@@ -743,3 +743,44 @@ You can’t have an “Employee” object directly — only specific employees (
 
 # ____________________________________________________________________________________
 
+
+
+### *(Show Only What’s Necessary — Hide the Implementation Details)*
+* **Abstract** → not complete, just an *idea* or *template*.
+* **Base Class** → parent class for other classes.
+   **Focus**     --> “What” not “How” 
+
+
+
+
+## **6️⃣ Key Points to Remember**
+
+| Concept         | Meaning                                                |
+| --------------- | ------------------------------------------------------ |
+| Abstract Class  | Blueprint class — can’t be used directly               |
+| Abstract Method | Method without implementation                          |
+| Concrete Class  | Class that provides the actual implementation          |
+| Benefit         | Hides complexity, improves flexibility and scalability |
+
+
+
+
+
+| Concept                | Description                               |
+| ---------------------- | ----------------------------------------- |
+| **ABC**                | Defines a common interface for subclasses |
+| **@abstractmethod**    | Declares method that must be implemented  |
+| **Cannot Instantiate** | You can’t create object directly          |
+| **Purpose**            | Enforce structure and design consistency  |
+
+
+## **7️⃣ Key Rule**
+# ____________________________________________________________________________________
+
+
+| Term                       | Meaning                                               |
+| -------------------------- | ----------------------------------------------------- |
+| Abstract Class             | A class with at least one `@abstractmethod`           |
+| Abstract Method            | A method declared, but not implemented                |
+| Instantiation              | Creating an object from a class                       |
+| ABC Cannot be Instantiated | You cannot create object from abstract class directly |

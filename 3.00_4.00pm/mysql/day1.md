@@ -1,9 +1,128 @@
 
 
-# 🧩 **MySQL DDL Commands 
+
+
+
+# _____________________________________________________
+#  **SQL Data Types with Table Creation Example**
+# _____________________________________________________
+
+
+
+
+SQL data types are used to define **what type of data** a column can store.
+
+Below are the most common data types (MySQL):
+
 ---
 
+# 🔹 **1. Numeric Data Types**
+
+| Data Type     | Description              | Example Value |
+| ------------- | ------------------------ | ------------- |
+| INT           | Whole numbers            | 10, 200       |
+| BIGINT        | Larger whole numbers     | 999999        |
+| FLOAT         | Decimal (less precision) | 45.67         |
+| DOUBLE        | Decimal (more precision) | 78.12345      |
+| DECIMAL(10,2) | Exact decimal values     | 999.99        |
+
+---
+
+# 🔹 **2. String / Character Data Types**
+
+| Data Type  | Description            | Example                |
+| ---------- | ---------------------- | ---------------------- |
+| CHAR(n)    | Fixed-length string    | ’ABC’                  |
+| VARCHAR(n) | Variable-length string | “John”                 |
+| TEXT       | Large text data        | Comments, descriptions |
+
+---
+
+# 🔹 **3. Date & Time Data Types**
+
+| Data Type | Description                   |
+| --------- | ----------------------------- |
+| DATE      | Stores year-month-day         |
+| TIME      | Stores time only              |
+| DATETIME  | Stores both date & time       |
+| TIMESTAMP | Auto time for record creation |
+
+---
+
+# 🔹 **4. Boolean**
+
+| Data Type            | Description         |
+| -------------------- | ------------------- |
+| BOOLEAN / TINYINT(1) | True / False values |
+
+---
+
+# 🔹 **5. Binary / Files**
+
+| Data Type | Description                    |
+| --------- | ------------------------------ |
+| BLOB      | Store images, files, PDFs etc. |
+
+---
+
+---
+# _____________________________________________________
+# 🟢 **REAL TABLE CREATION EXAMPLE WITH ALL DATA TYPES**
+# _____________________________________________________
+
+
+
+
+```sql
+CREATE TABLE students (
+    student_id INT PRIMARY KEY AUTO_INCREMENT,
+    name VARCHAR(50) NOT NULL,
+    age INT,
+    marks DECIMAL(5,2),
+    email VARCHAR(100),
+    phone CHAR(10),
+    is_active BOOLEAN DEFAULT 1,
+    join_date DATE,
+    last_login DATETIME,
+    profile_photo BLOB,
+    description TEXT
+);
+```
+
+
+# _____________________________________________________
+# 🟡 **Insert Sample Data**
+# _____________________________________________________
+
+
+
+
+```sql
+INSERT INTO students 
+(name, age, marks, email, phone, is_active, join_date, last_login, description)
+VALUES
+("Arun", 21, 89.50, "arun@gmail.com", "9876543210", 1, "2025-12-01", "2025-12-01 10:30:00", "Good student");
+```
+
+---
+
+# 🟣 **Select Data**
+
+```sql
+SELECT * FROM students;
+```
+
+
+
+
+
+
+# _____________________________________________________
 ## **1️⃣ Definition**
+# _____________________________________________________
+
+
+
 
 **DDL (Data Definition Language)** commands define, modify, or remove **database structure** — including my, databases, indexes, and views.
 
@@ -11,11 +130,30 @@ It doesn’t handle *data values* — it handles *the design* (like the “bluep
 
 Every DDL command is **auto-committed** → meaning once executed, changes **cannot be rolled back** (unlike DML commands).
 
+
+
+
+
+
+
+
+
+
 ---
-
+# _____________________________________________________
 ## **2️⃣ Example Code (N+ Examples for Each DDL Command)**
+# _____________________________________________________
 
+
+
+
+
+# _____________________________________________________
 ### 🧱 **A. CREATE — Build new database objects**
+# _____________________________________________________
+
+
+
 
 ```sql
 -- 1. Create a new database
@@ -49,9 +187,21 @@ CREATE VIEW high_paid AS
 SELECT emp_name, salary FROM employees WHERE salary > 100000;
 ```
 
----
 
+
+
+
+
+
+
+
+---
+# _____________________________________________________
 ### 🛠️ **B. ALTER — Modify existing database objects**
+# _____________________________________________________
+
+
+
 
 ```sql
 -- 1. Add a new column
@@ -78,9 +228,20 @@ ADD COLUMN doj DATE,
 ADD COLUMN location VARCHAR(50);
 ```
 
----
 
+
+
+
+
+
+---
+# _____________________________________________________
 ### 🧨 **C. DROP — Permanently delete database objects**
+# _____________________________________________________
+
+
+
+
 
 ```sql
 -- 1. Drop a table
@@ -99,9 +260,20 @@ DROP DATABASE school_db;
 ALTER TABLE employees DROP CONSTRAINT unique_email;
 ```
 
----
 
+
+
+
+
+
+---
+# _____________________________________________________
 ### 🧹 **D. TRUNCATE — Remove all rows but keep structure**
+# _____________________________________________________
+
+
+
+
 
 ```sql
 -- 1. Remove all student records, keep table
@@ -114,9 +286,18 @@ TRUNCATE TABLE sales_logs;
 TRUNCATE TABLE staging_orders;
 ```
 
----
 
+
+
+
+---
+# _____________________________________________________
 ### 🪶 **E. RENAME — Change table or database names**
+# _____________________________________________________
+
+
+
+
 
 ```sql
 -- 1. Rename a single table
@@ -131,8 +312,13 @@ RENAME DATABASE old_db TO new_db;  -- (Note: Some MySQL versions don’t support
 ```
 
 ---
-
+# _____________________________________________________
 ### 🧾 **F. COMMENT — Add notes/documentation**
+# _____________________________________________________
+
+
+
+
 
 ```sql
 -- 1. Add comment to a table
@@ -145,108 +331,14 @@ ALTER TABLE employees MODIFY emp_name VARCHAR(100) COMMENT 'Full name of the emp
 SHOW TABLE STATUS LIKE 'employees';
 ```
 
----
 
-## **3️⃣ Tasks / Practice Questions**
-
-Try solving these hands-on:
-
-1. Create a database `company_db`.
-2. Create tables: `department`, `employee`, `project`.
-3. Add `JOINING_DATE` to `employee`.
-4. Rename `employee` to `emp_master`.
-5. Drop `project` table.
-6. Truncate `department`.
-7. Add a column `project_id` in `emp_master`.
-8. Create an index on `emp_name`.
-9. Create a view for employees with salary > 1,00,000.
-10. Add comments to describe each column.
-
----
-
-## **4️⃣ Real-World Inspired Examples**
-
-### 🏦 **Banking System**
-
-* Create accounts table:
-
-  ```sql
-  CREATE TABLE accounts (
-      account_no BIGINT PRIMARY KEY,
-      holder_name VARCHAR(100),
-      balance DECIMAL(15,2),
-      branch_code CHAR(5)
-  );
-  ```
-* Modify structure when adding online banking:
-
-  ```sql
-  ALTER TABLE accounts ADD COLUMN email VARCHAR(100);
-  ```
-* Drop inactive test tables:
-
-  ```sql
-  DROP TABLE test_transactions;
-  ```
-
-### 🛒 **E-commerce**
-
-* Create table for products:
-
-  ```sql
-  CREATE TABLE products (
-      product_id INT AUTO_INCREMENT PRIMARY KEY,
-      product_name VARCHAR(100),
-      price DECIMAL(10,2),
-      stock INT
-  );
-  ```
-* Add discount column:
-
-  ```sql
-  ALTER TABLE products ADD COLUMN discount DECIMAL(5,2) DEFAULT 0;
-  ```
-* Reset monthly temporary cart data:
-
-  ```sql
-  TRUNCATE TABLE temp_cart;
-  ```
-
-### 🏥 **Hospital Management**
-
-* Add new column for doctor specialization:
-
-  ```sql
-  ALTER TABLE doctors ADD COLUMN specialization VARCHAR(50);
-  ```
-* Rename table for clarity:
-
-  ```sql
-  RENAME TABLE patient_data TO patients;
-  ```
-* Drop deprecated tables after system migration:
-
-  ```sql
-  DROP TABLE old_appointments;
-  ```
-
----
-
-## **5️⃣ Industry Use Cases**
-
-| Industry             | DDL Use Case                 | Description                                    |
-| -------------------- | ---------------------------- | ---------------------------------------------- |
-| **FinTech**          | Schema Migration             | Add/remove columns for compliance data         |
-| **E-Commerce**       | Product Catalog Setup        | Create tables for products, orders, reviews    |
-| **Healthcare**       | Patient DB Design            | Define structure for hospital modules          |
-| **Banking**          | Security Audits              | Drop obsolete or test tables                   |
-| **SaaS Platforms**   | Multi-tenant Schema Creation | Automatically create databases for each client |
-| **Data Warehousing** | Truncate for ETL cycles      | Clean staging tables nightly                   |
-| **DevOps**           | Database Automation          | DDL inside deployment scripts                  |
-
----
-
+# _____________________________________________________
 ## **6️⃣ Important Methods + Real-World Usage**
+# _____________________________________________________
+
+
+
+
 
 | Command        | Key Role                   | Real-World Example                    |
 | -------------- | -------------------------- | ------------------------------------- |
@@ -259,14 +351,6 @@ Try solving these hands-on:
 | `CREATE INDEX` | Performance tuning         | Speed up queries in reporting tools   |
 | `CREATE VIEW`  | Logical abstraction        | Simplify complex joins for dashboards |
 
----
 
-## ⚙️ **Pro Tip: DDL vs DML Quick Summary**
 
-| Feature   | DDL                      | DML                            |
-| --------- | ------------------------ | ------------------------------ |
-| Full Form | Data Definition Language | Data Manipulation Language     |
-| Purpose   | Defines structure        | Manipulates data               |
-| Rollback  | ❌ Not possible           | ✅ Possible                     |
-| Examples  | CREATE, ALTER, DROP      | SELECT, INSERT, UPDATE, DELETE |
-
+# _____________________________________________________

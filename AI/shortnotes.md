@@ -6,6 +6,7 @@ What is LLM ?
 _____________________________________________________________________________________
 
 
+
 “LLM learns language structure using transformers,
  but frameworks like LangChain give it logic, memory, and real-world control.” ⚙️
 
@@ -14,6 +15,9 @@ ________________________________________________________________________________
 
 What is LongChain?
 _____________________________________________________________________________________
+
+
+
 
 # LangChain = the bridge between LLMs and real-world applications.
 
@@ -104,6 +108,7 @@ LLM            Tools           Memory
 1️⃣ …  
 2️⃣ …  
 3️⃣ …"
+streamlit run app.py
 
 
 
@@ -134,13 +139,55 @@ Return Response (No Tool Needed)
 
 
 
+# _____________________________________
+     ***####  Memory ####*****
+# _____________________________________
+
+
+
+
+
+User Query
+   │
+   ▼
+Check Memory
+   ├── ✅ Found → Send context → LLM → Respond
+   └── ❌ Not Found
+           ↓
+         LLM Reasoning
+           ↓
+        Decide Tool Call
+           ↓
+        TMDb API → Data
+           ↓
+        LLM Summarize + Store in Memory
+           ↓
+        Return Response
+
+
+Memory check happens before LLM call.
+
+LLM never calls tools if memory already satisfies the question.
+
+Short-term memory = session context.
+
+Long-term (Vector DB) = cross-session recall (knowledge retention).
+
+
+1️⃣ when memory already has the answer, and
+2️⃣ when no memory is found → LLM decides to use a Tool (like TMDb API).
+
+
+🧠 Memory is always checked first.
+If it fails → the LLM decides which tool (API, DB, etc.) to use → then the result is stored back into memory for next time.
+
 
 
 
 
 | Layer               | Tool / Framework        | Description                     |
 | ------------------- | ----------------------- | ------------------------------- |
-| **Frontend**        | Streamlit / React       | User Interface                  |
+| **Frontend**        | Streamlit / React       | User Interface                  |streamlit run app.py
 | **API Layer**       | FastAPI / Flask         | Communication + Logic           |
 | **Orchestration**   | LangChain               | Manages flow & prompt logic     |
 | **LLM**             | GPT-5 / Claude / Gemini | Generates summaries             |
@@ -157,12 +204,17 @@ Return Response (No Tool Needed)
 | **External API (TMDb)** | Returns JSON data                           |
 | **Response Path**       | API → Tool → LangChain → LLM → Backend → UI |
 
+streamlit run app.py
 
 
 
 _____________________________________________________________________________________
 LANGCHAIN — CONCEPTS SUMMARY ?
 _____________________________________________________________________________________
+
+
+
+“LangChain is not an AI model — it’s the framework that helps manage how AI models (LLMs) interact with tools, memory, and external data in a structured, reusable way.
 
 
 | Concept       | Role              | Analogy           |
@@ -285,4 +337,317 @@ EduBot = your final assembled app that uses all of them.
 
 
 
-# __________________________________________________________________
+# __________________________________________________________________________________
+*          [ ] Day 8: Dissect 1 new library (ChromaDB) → folder + API flow
+# __________________________________________________________________________________
+
+
+ChromaDB stores **vectors**, **documents**, and **metadata**, enabling fast information retrieval based on meaning.
+
+
+
+my_rag_app/
+│
+├── data/
+│   └── chroma/            # ChromaDB persistent storage
+│
+├── src/
+│   ├── ingest.py          # Add documents + embed
+│   ├── query.py           # Query the DB
+│   └── utils.py           # Helpers
+│
+└── requirements.txt
+
+
+
+
+
+## **5. Core API Flow (Explained)**
+          Raw Text → Embedding → Stored in ChromaDB → Semantic Search → Relevant Output
+
+
+
+
+
+## **10. ChromaDB + LangChain Flow**
+            Documents → Embeddings → Chroma Vector Store → LangChain Retriever → LLM
+
+
+
+
+## **15. Architecture Diagram (Text-Based)**
+
+```
+              +------------------------+
+              |      Your Dataset      |
+              |  (PDF, TXT, HTML, etc) |
+              +-----------+------------+
+                          |
+                          v
+                 +--------+--------+
+                 |  Text Splitter   |
+                 |  (Chunking)      |
+                 +--------+--------+
+                          |
+                          v
+             +------------+-------------+
+             |   Embedding Model        |
+             | (OpenAI / HF / Others)   |
+             +------------+-------------+
+                          |
+                          v
+          +---------------+-----------------+
+          |              ChromaDB           |
+          |  - Store vectors                |
+          |  - Store documents              |
+          |  - Store metadata               |
+          |  - Semantic search              |
+          +---------------+-----------------+
+                          |
+                          v
+                 +--------+--------+
+                 |   Retriever     |
+                 | (Top‑K Search)  |
+                 +--------+--------+
+                          |
+                          v
+            +-------------+--------------+
+            |          LLM Model         |
+            |   (GPT, Claude, etc.)      |
+            |  Combines query + context   |
+            +-------------+--------------+
+                          |
+                          v
+                 +--------+--------+
+                 |  Final Response  |
+                 | (Answer Output)  |
+                 +------------------+
+```
+
+##  One-Page Summary**
+
+
+ChromaDB = Fast vector database for storing embeddings + semantic search.
+           Perfect for RAG and LLM apps.
+
+
+
+# __________________________________________________________________________________
+* # Break code on purpose → fix & learn
+# __________________________________________________________________________________
+
+
+ollama run llama3
+
+
+
+
+# **PART 1 — INGEST WORKFLOW**
+          (You upload document → create chunks → embed → store in Chroma)
+
+
+
+{
+  "path": "D:/PYTHON FULL STACK DEVELOPMENT/DJANGO_FLASK_CLASS/AI/rag_project1/data/notes.txt"
+}
+{
+  "question": "What is Python decorator?"
+}
+
+
+| Layer                      | Purpose                                          |
+| -------------------------- | ------------------------------------------------ |
+| **1. Embeddings (Ollama)** | Convert text into meaningful numbers             |
+| **2. ChromaDB**            | Store those vectors and retrieve similar chunks  |
+| **3. Chunking**            | Break big documents into small, searchable parts |
+| **4. RAG Pipeline**        | Query → retrieve chunks → generate answer        |
+| **5. Flask API**           | Expose everything as HTTP endpoints              |
+
+
+
+
+
+# _________________________________________________________
+
+What Is Ollama? 
+    Ollama is an offline platform that lets you run LLM models locally on your own system.
+    It does not require internet, and no data goes to any cloud.
+
+✔ Runs fully offline
+✔ Supports many open-source LLMs
+✔ Works on Windows, macOS, Linux
+
+
+
+What Ollama Can Do
+   ✔ Download open-source models
+
+Like:
+  Llama 3 / 3.1 / 3.2
+  Qwen 2.5
+  Phi-3
+  Mistral / Mixtral
+  DeepSeek-R1
+  StarCoder2
+  Gemma 2
+
+
+
+Why Companies Use Ollama
+
+| Benefit                | Explanation                                 |
+| ---------------------- | ------------------------------------------- |
+| **Privacy**            | No data leaves your laptop or server        |
+| **Cost saving**        | No API charges like GPT/Claude              |
+| **Full control**       | You choose the model, version, quantization |
+| **Offline capability** | Works without internet                      |
+| **Fast inference**     | Uses GPU/CPU efficiently                    |
+
+
+Ollama Is NOT a Model — It Is a Platform
+
+Ollama = local LLM engine
+LLM = actual model (Llama, Qwen, etc.)
+
+
+          Text documents
+                 |
+      [Embedding Model]
+     (bge, e5, llama-embed)
+                 ↓
+         VECTOR embeddings
+                 |
+        Vector Database
+                 |
+         Query → Embedding
+                 |
+         Similarity Search
+                 |
+        Top chunks retrieved
+                 |
+      [Chat Model - GPT / Llama]
+                 ↓
+            Final Answer
+
+
+Install **Python 3.10+**
+python --version
+[https://ollama.com](https://ollama.com)
+
+
+
+
+
+
+
+ollama --version
+ollama pull llama3
+ollama pull nomic-embed-text
+
+ollama serve
+   Error: listen tcp 127.0.0.1:11434: bind:
+   Only one usage of each socket address is normally permitted
+
+   Ollama server already background-la run aagudhu,
+   models install pannita,
+   ippo direct ah Flask RAG app run panna podhum
+
+ollama list
+   
+
+
+python app.py
+
+
+
+
+
+chroma.sqlite3 is being used by another process
+   👉 Your Flask app (Python) is still running
+   👉 ChromaDB keeps chroma.sqlite3 OPEN
+   👉 Windows does NOT allow deleting open files
+    So PowerShell cannot delete db folder.
+
+Windows-la file open irundha delete panna mudiyadhu
+Flask + ChromaDB sqlite file use pannitu irukkum
+CTRL+C / taskkill panna app stop aagi
+apram Remove-Item work aagum
+
+
+
+taskkill /IM python.exe /F  --use to  close powershell
+Remove-Item db -Recurse -Force
+python rag.py
+
+DO NOT delete DB at app startup in production
+You currently have code that resets Chroma every time.
+That causes locks + crashes.
+
+
+FINAL TEST FLOW (Clean)
+
+1️⃣ CTRL + C
+2️⃣ Remove-Item db -Recurse -Force
+3️⃣ python rag.py
+4️⃣ /ingest
+5️⃣ /ask
+
+
+
+
+# __________________________________________________
+client = chromadb.PersistentClient(path="db")
+# __________________________________________________
+
+
+Idhu ChromaDB client
+👉 path="db" kuduthurukkom na:
+
+🔹 Data ellam hard disk-la save aagum
+🔹 App stop pannalum data delete aagathu
+🔹 Next time app start pannalum data irukkum
+PersistentClient na ChromaDB-la data disk-la permanent-ah store pannra client
+
+
+
+# __________________________________________________
+client.reset()
+print("🔥 Chroma reset successfully.")
+# __________________________________________________
+
+ChromaDB-la already irukkura ellaa data / collections clear panna
+WHY use pannrom?
+Old vectors irukkum
+Old embeddings mismatch aagum
+Testing time-la confusion varum
+“Fresh-ah start panna”
+
+
+
+# __________________________________________________
+shutil.rmtree(DB_PATH)
+print("🔥 Old DB folder deleted.")
+# __________________________________________________
+
+
+Disk-la irukkura old Chroma files delete pannrom
+WHY?
+
+SQLite file corrupt aagirukkalam
+Old index mismatch
+Fresh DB create panna easy
+“Hard reset”
+
+
+
+
+
+# __________________________________________________
+except PermissionError:
+    print("❌ Windows locked the DB folder.")
+# __________________________________________________ 
+
+Meaning:
+Flask / Python still DB use pannitu irundha
+Windows delete panna allow pannaadhu
+“File open irundha Windows lock pannum”
