@@ -478,7 +478,7 @@ What Is Ollama?
 ✔ Works on Windows, macOS, Linux
 
 
-
+# __________________________________________________
 What Ollama Can Do
    ✔ Download open-source models
 
@@ -491,7 +491,7 @@ Like:
   StarCoder2
   Gemma 2
 
-
+# __________________________________________________
 
 Why Companies Use Ollama
 
@@ -503,6 +503,8 @@ Why Companies Use Ollama
 | **Offline capability** | Works without internet                      |
 | **Fast inference**     | Uses GPU/CPU efficiently                    |
 
+
+# __________________________________________________
 
 Ollama Is NOT a Model — It Is a Platform
 
@@ -536,7 +538,7 @@ python --version
 
 
 
-
+# __________________________________________________
 
 
 
@@ -559,7 +561,7 @@ ollama list
 python app.py
 
 
-
+# __________________________________________________
 
 
 chroma.sqlite3 is being used by another process
@@ -583,7 +585,7 @@ DO NOT delete DB at app startup in production
 You currently have code that resets Chroma every time.
 That causes locks + crashes.
 
-
+# __________________________________________________
 FINAL TEST FLOW (Clean)
 
 1️⃣ CTRL + C
@@ -597,7 +599,7 @@ FINAL TEST FLOW (Clean)
 
 # __________________________________________________
 client = chromadb.PersistentClient(path="db")
-# __________________________________________________
+
 
 
 Idhu ChromaDB client
@@ -613,7 +615,7 @@ PersistentClient na ChromaDB-la data disk-la permanent-ah store pannra client
 # __________________________________________________
 client.reset()
 print("🔥 Chroma reset successfully.")
-# __________________________________________________
+
 
 ChromaDB-la already irukkura ellaa data / collections clear panna
 WHY use pannrom?
@@ -627,7 +629,7 @@ Testing time-la confusion varum
 # __________________________________________________
 shutil.rmtree(DB_PATH)
 print("🔥 Old DB folder deleted.")
-# __________________________________________________
+
 
 
 Disk-la irukkura old Chroma files delete pannrom
@@ -645,9 +647,11 @@ Fresh DB create panna easy
 # __________________________________________________
 except PermissionError:
     print("❌ Windows locked the DB folder.")
-# __________________________________________________ 
+
 
 Meaning:
 Flask / Python still DB use pannitu irundha
 Windows delete panna allow pannaadhu
 “File open irundha Windows lock pannum”
+
+# __________________________________________________
