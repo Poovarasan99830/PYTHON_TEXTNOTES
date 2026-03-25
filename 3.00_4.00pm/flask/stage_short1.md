@@ -5,11 +5,19 @@
 
 
 * **Customers** → Browser (Users)
+
 * **Waiter** → Flask
+
 * **Kitchen** → Python Logic
+
+
 * **Menu Card** → HTML Templates
+
 * **Tables, Chairs, Design** → CSS / Images (Static files)
+
 * **Ledger Book** → Database
+
+
 
 
 
@@ -132,8 +140,6 @@ Flask is a waiter who takes requests, talks to the kitchen, prints smart menus, 
 
 Route        → Entry point
 Template     → UI
-
-
 Static       → Assets
 Redirect     → Flow control
 url_for      → Safe linking
@@ -151,6 +157,8 @@ ORM          → DB abstraction
 
 ## 🔹 FLASK
        **Flask** is a lightweight Python web framework used to build web applications and REST APIs.
+         flask follow  MVC architecture....
+
 
 🧠 **Why**
 `Flask()` creates the WSGI app object. Everything (routes, config, extensions) attaches to this.
@@ -1235,6 +1243,8 @@ def create_user():
 0005sqlite3
 flask app1--app6
 
+
+
 ## 🔹 Database Connections
        **Database connections** allow Flask applications to store and retrieve persistent data.
 
@@ -1252,6 +1262,8 @@ flask app1--app6
 
 ## 🔹 ORM (SQLAlchemy)
          **SQLAlchemy ORM** lets developers interact with databases using Python objects instead of SQL queries.
+
+
 
 
 SQLite  ---> comes built-in with Python.

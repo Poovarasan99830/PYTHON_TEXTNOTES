@@ -1,59 +1,89 @@
+## 🟢 **Day 3 – Prefix Sum**
 
-# 🌟 **Day 2 — Basic Array Operations**
+### ⏱ Learn
+
+* Prefix sum idea
+* Range sum
+
+### 🧠 Problems
+
+1. Build prefix sum
+2. Subarray sum equals K
+3. Equilibrium index *(optional)*
+
+🎯 **Pattern:** Precomputation
 
 ---
 
-##  **Problem 1 — Find the Largest Number**
 
-**Example Input:**
-`[12, 45, 7, 22, 9]`
-
-**Expected Output:**
-`45`
+# _____________________________________
+Question 1: Build Prefix Sum Array
+# _____________________________________
 
 
 
-## **Problem 2 — Sum of All Elements**
+Problem Statement:
+Given an array of integers, construct its prefix sum array.
 
-**Example Input:**
-`[4, 6, 1, 3]`
+A prefix sum array is an array where each element at index i stores the sum of all elements from index 0 to i of the original array.
+# _____________________________________
+Input:
+arr = [1, 2, 3, 4, 5]
 
-**Expected Output:**
-`14`
+Output:
+prefix = [1, 3, 6, 10, 15]
 
-
-
-## **Problem 3 — Count Positive, Negative, Zero**
-
-**Example Input:**
-`[-2, 0, 5, -1, 8, 0]`
-
-**Expected Output:**
-Positive: 2
-Negative: 2
-Zero: 2
+# _____________________________________
 
 
 
 
 
+arr = [1, 2, 3, 4, 5]
 
 
-# 🚀 **Future-Thinking Questions**
-
-
-
-### **Q4. How will automation change small businesses?**
-
-**Expected Answer:**
-Automation reduces manual work, saves time, lowers errors, and helps small businesses operate like big companies.
+          0     5 
+prefix = [0] * len(arr)
 
 
 
-### **Q5. Why should students learn programming early?**
+prefix=[0,0,0,0,0]
 
-**Expected Answer:**
-It improves logic, creativity, problem-solving skills and prepares them for future tech-driven careers.
+  0            1
+prefix[0] = arr[0]
+
+
+prefix=[1,0,0,0,0]
+
+1+arr[1]=3
+3+arr[2]=6
+6+arr[3]=10
+10+arr[4]=15
+
+                      5
+
+for i in range(1, len(arr)):
+           2          1           2
+           1          0           1       
+    prefix[i] = prefix[i-1] + arr[i]
+           0          1+2
+          (3) 
+           0           3          3
+          (6)
+        
+          
+
+
+
+
+print(prefix)
+
+
+
+
+
+
+
 
 
 

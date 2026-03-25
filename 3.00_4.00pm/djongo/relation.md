@@ -562,3 +562,498 @@ One (created) to know whether it was newly created or already existed.
 | `MEDIA_URL`       | `/media/`                                 | URL path used to access uploaded files in browser |
 | Example File Path | `C:/project/media/profile.jpg`            | Real file location                                |
 | Example File URL  | `http://127.0.0.1:8000/media/profile.jpg` | How you view it on the site                       |
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+| Relationship | Meaning     |
+| ------------ | ----------- |
+| One-to-One   | 1 ↔ 1       |
+| One-to-Many  | 1 ↔ many    |
+| Many-to-Many | many ↔ many |
+
+
+
+
+A One-to-One relationship is a relationship where each record in one table is associated with exactly one record in another table.
+
+
+USER (1)  --------  (1) PROFILE
+
+
+
+
++------------+          1 : 1          +---------------+
+|   USER     |------------------------|   REGISTER    |
++------------+                        +---------------+
+| PK id      |                        | PK id         |
+| username   |                        | FK user_id    |
+| email      |                        | bio           |
+| password   |                        | avatar        |
++------------+                        +---------------+
+
+
+
+
+Key Explanation 
+
+PK → Primary Key
+
+FK → Foreign Key
+
+Register.user_id → references User.id
+
+user_id is UNIQUE → ensures One-to-One
+
+
+
+The User entity is connected to the Register entity using a One-to-One relationship, where each user has exactly one profile and each profile belongs to exactly one user.
+
+
+
+
+# 🔹 2. OneToOne (1:1)
+
+  
+
+from django.db import models
+from django.contrib.auth.models import User
+
+class Register(models.Model):
+    user = models.OneToOneField(User, on_delete=models.CASCADE)
+    bio = models.TextField(max_length=500, blank=True)
+    avatar = models.ImageField(upload_to='avatars/', blank=True)
+
+    def __str__(self):
+        return f"{self.user.username}'s profile"
+    
+
+
+we did NOT write user_id in the model.
+Then how are both tables connected?
+Where is the foreign key?”
+
+
+
+user = OneToOneField(User)
+
+↓ Django creates ↓
+
+user_id  → Foreign Key → User.id
+(unique)
+
+
+
+
+user = models.OneToOneField(User, on_delete=models.CASCADE)
+
+user_id   INTEGER   UNIQUE   FOREIGN KEY → User(id) 
+
+
+
+
+
+
+
+Django automatically creates a user_id column in the database when we use OneToOneField. This column acts as a foreign key referencing the User table and enforces a one-to-one relationship using a unique constraint.
+
+
+
+
+TABLE 1: User (Already in Django)
+
+| id | username | email                                   |
+| -- | -------- | --------------------------------------- |
+| 1  | arun     | [arun@gmail.com](mailto:arun@gmail.com) |
+| 2  | bala     | [bala@gmail.com](mailto:bala@gmail.com) |
+
+
+
+
+TABLE 2: Register (Profile Table)
+
+| id | user_id | bio            | avatar   |
+| -- | ------- | -------------- | -------- |
+| 1  | 1       | I love coding  | arun.jpg |
+| 2  | 5      | Django student | bala.png |
+
+
+
+
+
+Visual Diagram
+
+User Table                 Register Table
+-----------               ----------------
+id  username               id  user_id  bio
+1   arun      --------->   1   1        I love coding
+2   bala      --------->   2   2        Django student
+
+
+
+
+
+The Register table has a foreign key (user_id) that uniquely connects to the User table, ensuring one profile per user.
+
+In OneToOneField, Django creates a foreign key with a UNIQUE constraint, ensuring one record per related object.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+---
+
+## 1️⃣ What is One-to-Many (1:M)?
+
+**Definition (simple):**
+
+> **One Author can write MANY Books**
+> **But each Book belongs to ONLY ONE Author**
+
+📌 Real-world meaning:
+
+* One author → multiple books ✅
+* One book → multiple authors ❌ (not here)
+
+
+
+
+
+author = models.ForeignKey(Author, on_delete=models.CASCADE)
+
+* `Book` table **depends on** `Author` table
+* Each book stores **author_id**
+* One author_id can appear **many times** in Book table
+
+
+
+
+
+
+
+
+### 🗄️ Author Table
+
+| id | name | bio      |
+| -- | ---- | -------- |
+| 1  | Ram  | Writer   |
+| 2  | Ravi | Novelist |
+
+---
+
+### 🗄️ Book Table
+
+| id | title  | publication_date | author_id |
+| -- | ------ | ---------------- | --------- |
+| 1  | Book A | 2022-01-01       | 1         |
+| 2  | Book B | 2023-05-10       | 1         |
+| 3  | Book C | 2021-03-15       | 2         |
+
+
+### Key Insight
+
+* Author **1** → Book A, Book B
+* Author **2** → Book C
+
+
+
+
+
+
+## 4️⃣ What Django Automatically Does
+
+When you write:
+
+```python
+author = models.ForeignKey(Author, on_delete=models.CASCADE)
+```
+
+Django does **ALL** this automatically:
+
+✅ Creates `author_id` column
+✅ Adds **foreign key constraint**
+✅ Links Book → Author
+✅ Enables reverse access (`author.book_set`)
+✅ Handles delete behavior
+
+
+
+
+
+
+
+
+
+
+### Other options (FYI):
+
+* `SET_NULL`
+* `PROTECT`
+* `RESTRICT`
+* `DO_NOTHING`
+
+But `CASCADE` is **most common for 1:M**.
+
+---
+
+## 6️⃣ How Data Is Inserted (Step by Step)
+
+### Step 1: Create Author
+
+```python
+author = Author.objects.create(
+    name="Chetan Bhagat",
+    bio="Indian author"
+)
+```
+
+### Step 2: Create Books for that Author
+
+```python
+Book.objects.create(
+    title="2 States",
+    publication_date="2009-10-08",
+    author=author
+)
+
+Book.objects.create(
+    title="Half Girlfriend",
+    publication_date="2014-10-01",
+    author=author
+)
+```
+
+👉 Django internally stores:
+
+```
+author_id = author.id
+```
+
+---
+
+## 7️⃣ How to FETCH Data (Very Important Concept)
+
+---
+
+### 🔹 Book → Author (Forward Relation)
+
+```python
+book = Book.objects.get(title="2 States")
+print(book.author.name)
+```
+
+🧠 Django does:
+
+```sql
+SELECT * FROM author WHERE id = book.author_id;
+```
+
+---
+
+### 🔹 Author → Books (Reverse Relation)
+
+This is **magic created by Django** 🔮
+
+```python
+author = Author.objects.get(name="Chetan Bhagat")
+books = author.book_set.all()
+```
+
+👉 Output:
+
+* 2 States
+* Half Girlfriend
+
+### Why `book_set`?
+
+* Django automatically names it:
+
+```
+<modelname>_set
+```
+
+You can customize it 👇
+
+```python
+author = models.ForeignKey(
+    Author,
+    on_delete=models.CASCADE,
+    related_name="books"
+)
+```
+
+Now:
+
+```python
+author.books.all()
+```
+
+---
+
+## 8️⃣ Django ORM Query Examples
+
+### All books of one author
+
+```python
+Book.objects.filter(author__name="Chetan Bhagat")
+```
+
+### Count books of author
+
+```python
+author.books.count()
+```
+
+### Get author from book
+
+```python
+book.author
+```
+
+---
+
+## 9️⃣ Django Admin (Behind the Scenes)
+
+When registered in admin:
+
+* Author page shows authors
+* Book form shows **dropdown of Authors**
+* Dropdown comes from ForeignKey relation
+
+📌 Admin UI knows relationship automatically.
+
+---
+
+
+
+
+
+## 🔟 Why UNIQUE is NOT on ForeignKey
+
+```python
+author = models.ForeignKey(...)
+```
+
+If you add `unique=True`:
+
+* One author can have only ONE book
+* That becomes **One-to-One**
+
+So:
+
+* `unique=True` → OneToOne
+* No unique → OneToMany
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+🔹 courses = models.ManyToManyField(Course)
+Django does ALL this automatically:
+
+✅ Creates a third table (junction / intermediate table)
+✅ Stores student_id and course_id
+✅ Adds foreign key constraints to both tables
+✅ Links Student ↔ Course
+✅ Enables reverse access (course.student_set)
+✅ Prevents duplicate connections
+✅ Handles add / remove relations without deleting data
+
+| id | name |    
+| -- | ---- |
+| 1  | Arun |
+| 2  | Bala |
+
+
+| id | name   |
+| -- | ------ |
+| 1  | Python |
+| 2  | Django |
+
+
+| id | student_id | course_id |
+| -- | ---------- | --------- |
+| 1  | 1          | 1         |
+| 2  | 1          | 2         |
+| 3  | 2          | 1         |
+
+
+
+
+
+One student → many courses
+
+One course → many students
+
+
+student = Student.objects.create(name="Arun")
+course1 = Course.objects.create(name="Python")
+course2 = Course.objects.create(name="Django")
+
+student.courses.add(course1, course2)
+
+
+
+🔹 Full Concept Summary
+
+✔ Many-to-Many = ManyToManyField
+✔ Uses a third (intermediate) table
+✔ Both tables connect via IDs
+✔ No direct ForeignKey in main tables
+✔ Django auto-creates relation table
+✔ Reverse relation created automatically
+✔ related_name improves readability
+✔ ORM hides SQL but SQL still runs
+
+
+Simple Sentence (Very Important ⭐)
+
+ManyToMany means:
+
+“One Student can learn MANY Courses,
+and ONE Course can have MANY Students.”
+
+
+
+| Relationship | Key                         |
+| ------------ | --------------------------- |
+| One-to-Many  | ForeignKey                  |
+| Many-to-Many | ManyToManyField + 3rd Table |

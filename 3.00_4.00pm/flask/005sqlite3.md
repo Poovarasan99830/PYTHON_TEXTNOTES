@@ -1,4 +1,11 @@
+
+
+# _________________________________
 ## 1. Fundamentals
+# _________________________________
+
+
+
 
 * **What is SQLite?**
 
@@ -14,8 +21,12 @@
 
 
 
-
+# _________________________________
 ## 2. Core Concepts
+# _________________________________
+
+
+
 
 ### 📌 Connecting to a Database
 
@@ -64,9 +75,12 @@ conn.commit()
 
 
 
-
-
+# _________________________________
 ## 3. Intermediate Concepts
+# _________________________________
+
+
+
 
 ### 📌 Parameterized Queries (prevent SQL Injection)
 
@@ -86,10 +100,11 @@ cur.fetchall()   # all rows
 ### 📌 Using `with` (auto-commit and close)
 
 ```python
+
 with sqlite3.connect("mydb.db") as conn:
     cur = conn.cursor()
     cur.execute("SELECT * FROM users")
-    print(cur.fetchall())
+    cur.fetchall()
 ```
 
 ### 📌 Row Factory (fetch as dictionary)
@@ -102,9 +117,12 @@ for row in cur.fetchall():
     print(dict(row))
 ```
 
----
-
+# _________________________________
 ## 4. Advanced Features
+# _________________________________
+
+
+
 
 ### 📌 Transactions
 
@@ -153,9 +171,13 @@ CREATE TABLE orders (
 cur.execute("CREATE VIEW IF NOT EXISTS user_orders AS SELECT users.name, orders.amount FROM users JOIN orders ON users.id=orders.user_id")
 ```
 
----
 
+# _________________________________
 ## 5. Best Practices
+# _________________________________
+
+
+
 
 * Always use **parameterized queries** (`?`) → prevent SQL Injection.
 * Use **indexes** for faster search on frequently queried columns.
@@ -164,7 +186,39 @@ cur.execute("CREATE VIEW IF NOT EXISTS user_orders AS SELECT users.name, orders.
 * For frequent reads → use **row\_factory** for dict-style access.
 * For scaling → migrate to **PostgreSQL/MySQL** when needed.
 
----
+
+# _________________________________
+## 6. Interview / Advanced Knowledge
+# _________________________________
+
+
+
+
+* **Difference b/w SQLite & other DBs**
+
+  * Serverless, file-based, lightweight.
+  * Not ideal for high concurrency.
+
+* **Data types in SQLite**
+
+  * `NULL`, `INTEGER`, `REAL`, `TEXT`, `BLOB` (flexible typing).
+
+* **Limitations**
+
+  * Limited write concurrency (single writer at a time).
+  * File-size limit \~ 140TB.
+  * No stored procedures or advanced user management.
+
+* **Optimization**
+
+  * Use **transactions** to speed up bulk inserts.
+  * Use **indexes** on search-heavy columns.
+  * VACUUM command to optimize DB file.
+
+
+
+
+
 
 ## 6. Debugging & Utilities
 

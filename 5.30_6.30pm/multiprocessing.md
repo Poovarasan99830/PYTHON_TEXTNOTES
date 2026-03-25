@@ -28,6 +28,45 @@ if __name__ == "__main__":
     for t in tasks: t.join()
     print("All done!")
 
+
+
+
+
+
+from multiprocessing import Process
+
+def task(name):
+    for i in range(5):
+        print(f"Task running in process: {name}, iteration: {i}")
+
+if __name__ == "__main__":
+    process1 = Process(target=task, args=("Process 1",))
+    process2 = Process(target=task, args=("Process 2",))
+
+    process1.start()
+    process2.start()
+
+    process1.join()  # Wait for process1 to finish
+    process2.join()  # Wait for process2 to finish
+
+
+| Feature           | Threading 🧵  | Multiprocessing ⚙️ |
+| ----------------- | ------------- | ------------------ |
+| Unit of execution | Thread        | Process            |
+| Memory            | Shared        | Separate           |
+| Speed (CPU tasks) | Not very fast | Faster             |
+| Module used       | `threading`   | `multiprocessing`  |
+
+
+
+
+
+“Threads are like workers in the same room sharing everything.
+Processes are like workers in different rooms working independently.”
+
+
+
+
 # ___________________________________________________
 
 ✅ Each task runs in **parallel** → reduces total time.

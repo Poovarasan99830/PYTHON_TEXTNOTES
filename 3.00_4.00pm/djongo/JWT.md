@@ -430,3 +430,349 @@ ACCESS TOKEN EXPIRES → REFRESH TOKEN USED
     ↓
 REFRESH EXPIRES → LOGIN AGAIN
 ───────────────────────────────────────────────────────────────
+
+
+
+
+
+
+
+# JWT (JSON Web Token) 
+
+
+
+# _________________________
+## 1️⃣ What is JWT?
+# _________________________
+
+
+
+
+JWT (JSON Web Token) is a **compact, URL-safe token** used for **secure authentication and authorization** between client and server.
+
+👉 Commonly used in:
+
+* REST APIs
+* Microservices
+* Single Page Applications (React, Angular, Vue)
+* Mobile Apps
+
+
+# _________________________
+## 2️⃣ Why JWT is Needed?
+# _________________________
+
+
+
+Traditional session-based authentication:
+
+* Stores session in server memory
+* Not scalable for distributed systems
+
+JWT advantages:
+✅ Stateless authentication
+✅ No server-side session storage
+✅ Works across multiple services
+✅ Faster & scalable
+
+
+# _________________________
+## 3️⃣ JWT Structure
+# _________________________
+
+A JWT consists of **three parts**, separated by dots (`.`):
+
+```
+HEADER.PAYLOAD.SIGNATURE
+```
+
+Example:
+
+```
+eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9
+.eyJ1c2VybmFtZSI6IkFydWwiLCJyb2xlIjoiYWRtaW4ifQ
+.y8F3QwZKz...
+```
+# _________________________
+## 4️⃣ JWT Parts Explained
+# _________________________
+
+
+
+# _________________________
+### 🟦 1. Header
+# _________________________
+
+
+
+
+Contains:
+
+* Token type
+* Signing algorithm
+
+```json
+{
+  "alg": "HS256",
+  "typ": "JWT"
+}
+```
+
+Encoded using **Base64URL**.
+
+
+# ________________________
+## 2. Payload (Claims)
+# _________________________
+
+
+Contains **user data & metadata**
+
+Example:
+
+```json
+{
+  "user_id": 101,
+  "username": "Arul",
+  "role": "admin",
+  "exp": 1700000000
+}
+```
+Payload is **NOT encrypted**, only encoded.
+
+
+# _________________________
+### 3. Signature
+# _________________________
+
+
+
+Used to **verify token integrity**.
+
+Formula:
+
+```
+HMACSHA256(
+  base64UrlEncode(header) + "." +
+  base64UrlEncode(payload),
+  secret_key
+)
+```
+
+
+
+
+---
+
+
+
+
+## 6️⃣ JWT Authentication Flow (Very Important)
+
+### 🔁 Login Flow
+
+1. User sends **username & password**
+2. Server validates credentials
+3. Server generates **JWT**
+4. Token sent to client
+5. Client stores token (localStorage / cookies)
+
+---
+
+### 🔁 API Request Flow
+
+1. Client sends request with token
+2. Token sent in **Authorization Header**
+3. Server verifies token
+4. Access granted or denied
+
+```http
+Authorization: Bearer <JWT_TOKEN>
+```
+
+---
+
+## 7️⃣ JWT with Python (Flask / FastAPI)
+
+### 📦 Install PyJWT
+
+```bash
+pip install pyjwt
+```
+
+---
+
+### 🔹 Generate JWT Token
+
+```python
+import jwt
+import datetime
+
+secret_key = "mysecretkey"
+
+payload = {
+    "username": "Arul",
+    "role": "admin",
+    "exp": datetime.datetime.utcnow() + datetime.timedelta(minutes=10)
+}
+
+token = jwt.encode(payload, secret_key, algorithm="HS256")
+print(token)
+```
+
+---
+
+### 🔹 Decode & Verify JWT
+
+```python
+try:
+    decoded = jwt.decode(token, secret_key, algorithms=["HS256"])
+    print(decoded)
+except jwt.ExpiredSignatureError:
+    print("Token expired")
+except jwt.InvalidTokenError:
+    print("Invalid token")
+```
+
+---
+
+## 8️⃣ JWT in Flask API (Example)
+
+### 🔐 Token Required Decorator
+
+```python
+from functools import wraps
+from flask import request, jsonify
+import jwt
+
+def token_required(f):
+    @wraps(f)
+    def decorated(*args, **kwargs):
+        token = request.headers.get("Authorization")
+        if not token:
+            return jsonify({"message": "Token missing"}), 401
+
+        token = token.split(" ")[1]
+
+        try:
+            jwt.decode(token, "mysecretkey", algorithms=["HS256"])
+        except:
+            return jsonify({"message": "Invalid token"}), 401
+
+        return f(*args, **kwargs)
+    return decorated
+```
+
+---
+
+### 🔹 Protected Route
+
+```python
+@app.route("/dashboard")
+@token_required
+def dashboard():
+    return jsonify({"message": "Welcome Admin"})
+```
+
+---
+
+## 9️⃣ JWT Algorithms
+
+### 🔑 Symmetric
+
+* HS256
+* HS384
+* HS512
+
+👉 Same secret key for sign & verify
+
+---
+
+### 🔐 Asymmetric
+
+* RS256
+* ES256
+
+👉 Uses **public/private key pair**
+
+---
+
+## 🔟 JWT Storage Options (Important for Security)
+
+| Storage         | Risk             |
+| --------------- | ---------------- |
+| localStorage    | ❌ XSS vulnerable |
+| sessionStorage  | ❌ XSS            |
+| HttpOnly Cookie | ✅ Most secure    |
+
+✅ **Best Practice**:
+JWT in **HttpOnly + Secure cookies**
+
+---
+
+## 1️⃣1️⃣ JWT Expiration & Refresh Token
+
+### Access Token
+
+* Short-lived (5–15 mins)
+
+### Refresh Token
+
+* Long-lived (days)
+* Used to generate new access tokens
+
+---
+
+## 1️⃣2️⃣ JWT Security Best Practices 🔒
+
+✔ Always use HTTPS
+✔ Keep token short-lived
+✔ Never store sensitive data in payload
+✔ Use HttpOnly cookies
+✔ Rotate secret keys
+✔ Validate algorithm explicitly
+
+---
+
+## 1️⃣3️⃣ JWT vs Session
+
+| Feature          | JWT  | Session |
+| ---------------- | ---- | ------- |
+| Stateless        | ✅    | ❌       |
+| Scalable         | ✅    | ❌       |
+| Stored on Server | ❌    | ✅       |
+| Revocation       | Hard | Easy    |
+
+---
+
+## 1️⃣4️⃣ Common JWT Errors
+
+| Error              | Meaning                 |
+| ------------------ | ----------------------- |
+| Token expired      | `exp` passed            |
+| Invalid signature  | Token modified          |
+| Algorithm mismatch | Wrong `alg`             |
+| Missing token      | No Authorization header |
+
+---
+
+## 1️⃣5️⃣ Real-World Use Cases
+
+* Login authentication
+* Role-based authorization
+* Microservices auth
+* Mobile API security
+* OAuth access tokens
+
+---
+
+## 1️⃣6️⃣ Interview Questions (Must Know)
+
+🔹 What is JWT?
+🔹 Difference between JWT & session?
+🔹 Is JWT encrypted?
+🔹 How JWT is verified?
+🔹 Where do you store JWT?
+🔹 Access vs Refresh token?
+
+

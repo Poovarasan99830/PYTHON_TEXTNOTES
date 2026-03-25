@@ -127,8 +127,17 @@ thread1.start()
 thread2.start()
 
 thread1.join()
-thread2.join()
+thread2.join()  # Wait for thread to complete
 ```
+
+
+
+Why we use join()?
+     Normally, threads run independently (parallel).
+     But sometimes, we need:
+     Main program should wait for thread result
+     Ensure tasks happen in correct order
+     Avoid incomplete execution
 
 ➡ Threads will interleave execution, but **not run CPU-heavy code in parallel** due to the GIL.
 

@@ -1,23 +1,25 @@
-Perfect 👏 — let’s go step by step and cover everything you asked about:
+
 
 ✅ **Django Model Fields**
 ✅ **Constraints**
 ✅ **Choices (for dropdown-like fields)**
 
-All explained in **clear, simple English with examples**.
 
----
 
-# 🧩 **Django Models — Fields, Constraints, and Choices**
 
----
+# **Django Models — Fields, Constraints, and Choices**
 
-## 🌱 1. What is a Model Field?
+
+
+#________________________________________
+## 1. What is a Model Field?
+#________________________________________
+
 
 A **model field** defines a **column in the database table**.
 Each field represents one piece of data for every row (object).
 
-### 🧠 Example:
+### Example:
 
 ```python
 from django.db import models
@@ -36,9 +38,13 @@ class Student(models.Model):
 * `email` → Email, must be unique
 * `joined_date` → Date added automatically
 
----
 
+#________________________________________
 ## 🧰 2. Commonly Used Django Model Fields
+#________________________________________
+
+
+
 
 | Field Name                                 | Description           | Example                                                             |
 | ------------------------------------------ | --------------------- | ------------------------------------------------------------------- |
@@ -56,9 +62,14 @@ class Student(models.Model):
 | `ManyToManyField()`                        | Many-to-Many relation | `skills = models.ManyToManyField(Skill)`                            |
 | `OneToOneField()`                          | One-to-One relation   | `profile = models.OneToOneField(Profile, on_delete=models.CASCADE)` |
 
----
 
+
+
+#________________________________________
 ## 🧩 3. Model **Constraints**
+#________________________________________
+
+
 
 Constraints control **rules or restrictions** on data stored in the table.
 
@@ -73,9 +84,14 @@ Constraints control **rules or restrictions** on data stored in the table.
 | `choices=[()]`          | Restrict to certain options | (see below 👇)                                                  |
 | `validators=[function]` | Custom validation           | `age = models.IntegerField(validators=[MinValueValidator(18)])` |
 
----
 
+
+
+#________________________________________
 ### ⚙️ Database-Level Constraints (inside `Meta` class)
+#________________________________________
+
+
 
 ```python
 class Product(models.Model):
@@ -92,9 +108,13 @@ class Product(models.Model):
 ✅ **This creates a unique pair** → (`name`, `code`)
 You cannot insert two rows with the same name and code combination.
 
----
 
+
+#________________________________________
 ## 🎯 4. Field **Choices** (Dropdown-like options)
+#________________________________________
+
+
 
 Use `choices` when you want to **limit valid values**.
 
@@ -110,15 +130,21 @@ class Student(models.Model):
     gender = models.CharField(max_length=1, choices=GENDER_CHOICES)
 ```
 
-✅ **In admin panel or form:**
+#________________________________________
+**In admin panel or form:**
+#________________________________________
+
+
 You’ll see a **dropdown menu** with *Male, Female, Other*.
 
 ✅ **In database:**
 It stores `'M'`, `'F'`, or `'O'`.
 
 ---
+#________________________________________
+# ## Pro tip — Better readability
+#________________________________________
 
-### 💡 Pro tip — Better readability
 
 You can access choice labels easily:
 
@@ -137,4 +163,4 @@ print(s.get_gender_display())   # Output: Male
 | **Constraint** | Control data rules  | `unique=True`, `null=False`, `validators`, `UniqueConstraint` |
 | **Choices**    | Restrict options    | `choices=[('A', 'Active'), ('I', 'Inactive')]`                |
 
-
+#________________________________________#________________________________________#______________________
