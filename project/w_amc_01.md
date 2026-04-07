@@ -27,22 +27,32 @@ Lifecycle management na
 (from purchase → usage → maintenance → expiry → renewal)
 
 
-# --------------------------------------------------------------
+
+# -----------------------------------------------------------------------------
+
+I faced challenges in implementing accurate notification scheduling and complex claim validation, which I resolved by optimizing backend logic and improving API design
+
+Problem → What happened → How you solved → Result
 
 
-“While creating the models, I faced a few challenges.
+
+More Good Problems You Can Mention
+1. Database Design Issue
+
+“Designing the database schema was challenging because we had multiple modules like warranty, AMC, and insurance linked together. I solved this by properly structuring relationships and normalizing the database to avoid redundancy.”
+
+2. Claim Processing Complexity
+
+“Handling warranty claim logic was complex due to different conditions like coverage, expiry, and exclusions. I implemented clear validation rules in Django to ensure only valid claims were processed.”
+
+3. Team Integration Issue
+
+“Integrating backend APIs with frontend was initially difficult due to data mismatches. I worked closely with frontend developers and standardized API responses to ensure seamless functionality.”
 
 
-First, circular imports between apps like Appliance and WarrantyAMC — I solved it by using string references in ForeignKeys.
-
-# --------------------------------------------------------------
-
-Second, with a custom User model, I encountered migration order issues; I fixed it by setting AUTH_USER_MODEL before migrations and resetting dev migrations.
+“Initially, integrating backend APIs with the frontend was difficult due to data mismatches—different formats for dates, fields, and missing values. I analyzed the issue, standardized API responses across modules, and created unit tests to ensure consistent output. I also worked closely with frontend developers to confirm expected formats and shared documentation. As a result, the integration became smooth, and the UI displayed accurate data without errors.”
 
 
-# --------------------------------------------------------------
-Third, I needed automatic status updates for warranties, which I implemented using a property and overriding save().
 
-# --------------------------------------------------------------
-Finally, for efficiency, I added indexes and created a separate NotificationLog model to keep logs scalable and clean.”
-# --------------------------------------------------------------
+# -----------------------------------------------------------------------------
+

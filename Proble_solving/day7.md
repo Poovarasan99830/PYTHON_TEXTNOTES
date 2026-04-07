@@ -41,8 +41,24 @@ HashMap / Dictionary
 /CODE REVIEW — Evaluate and explain code quality and structure
 /BUG FINDER — Locate logical or syntactic issues in code
 /OPTIMIZE CODE — Rewrite for efficiency or readability
+/SWOT — Create a strengths/weaknesses/opportunities/threats table.
+/BRIEFLY — Reply in 3 lines or less.
 
 
+
+
+
+
+/FIRST PRINCIPLES — Rebuild the concept from the ground up
+/HIGHLIGHTS — Extract key points or insights.
+/5WHYS — Apply the “Five Whys” method to trace cause and effect
+/BRIEFLY — Reply in 3 lines or less.
+/ Best suital 3 real aworld analogy
+/ one single analogy covering ALL topics (full deep learning flow)
+
+
+/TEACH MODE       — Explain as if mentoring or teaching. 
+/DEV MODE         — Respond like a raw developer (code-focused).
 
 
 # __________________________________________________________________

@@ -184,10 +184,16 @@ RAG concept
 
 Sunday
 
+
+
+
+
+
 Build Ask-PDF chatbot
 
 🔴 Month 3 – Deployment + MLOps
 Week 9 – Model API
+
 
 Saturday
 
@@ -200,6 +206,11 @@ Sunday
 Build prediction API
 
 Test endpoints
+
+
+
+
+
 
 Week 10 – Docker
 
@@ -216,6 +227,11 @@ Sunday
 Containerize ML API
 
 Run locally
+
+
+
+
+
 
 Week 11 – MLOps Basics
 

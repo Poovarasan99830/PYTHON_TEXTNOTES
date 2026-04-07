@@ -515,6 +515,24 @@ ollama run llama3
 
 
 
+## 🔹 Flask API Endpoints
+
+### Home API
+### Ingest API --->POST /ingest
+       {
+          "path": "data.txt"
+       }
+
+     👉 File content-a vector DB-la store pannum
+
+
+
+### Ask API --->POST /ask
+         {
+         "question": "Explain two pointer approach"
+         }
+
+
 
 # _________________________________________________________
 

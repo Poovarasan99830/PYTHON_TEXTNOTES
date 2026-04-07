@@ -333,7 +333,171 @@ ROLLING UPDATES –---> Safe Version Change
 
 
 
+# ---------------------------------------------------------
+
+
+Kubernetes cluster = Apartment building
+🚪 Ingress = Security gate
+
+Visitors (users) gateல வருவாங்க
+Gate decide பண்ணும் யாரை எந்த flatக்கு அனுப்பணும்
+
+Ingress-na oru security gate madhiri…
+Outside traffic ellam check panni, correct service-ku anupum
+
+
+
+# ---------------------------------------------------------
+Without Ingress (Problem)
+# ---------------------------------------------------------
+
+Ingress இல்லாம இருந்தா:
+
+    ஒவ்வொரு service-க்கும்
+         separate LoadBalancer / NodePort expose பண்ணணும்
+         Too many IPs / ports 😵
+         Manage பண்ண ரொம்ப kashtam
+
+    Tanglish:
+          "Every service ku thani thani public IP kudutha… total mess aagidum 😅"
+
+
+
+
+✅ With Ingress (Solution)
+
+Ingress use பண்ணா:
+     Single public IP / domain
+     Inside Kubernetes: 
+        Different services-ku route pannalam
+
+example.com → frontend service
+example.com/api → backend service
+example.com/admin → admin service
+
+"Oru single domain use pannitu, different paths moolama different services reach pannalam 🔥"
+
+
+
+Ingress Controller (Main Brain 🧠)
+     Ingress itself rules dhaan…
+     Actual work pannradhu 👉 Ingress Controller
+
+
+      Examples:
+         NGINX Ingress
+         Traefik
+
+      Tanglish:
+            "Ingress rules sollum… aana work panna oru controller venum (like NGINX) 😎"
+
+
+Ingress → Service → Pod ku request pogum
+User → Ingress → Service → Pod
+
+
+
+Sample Ingress YAML (Simple)
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: myapp-ingress
+spec:
+  rules:
+  - host: myapp.com
+    http:
+      paths:
+      - path: /
+        backend:
+          service:
+            name: frontend
+      - path: /api
+        backend:
+          service:
+            name: backend
+
+
+Key Features of Ingress
+
+1. Path-based Routing
+2. Host-based Routing
+3. SSL / HTTPS Support
+4. Load Balancing
+
+
+
+
+# --------------------------------------------------------
+**Day 36–45: Practice Project**
+# --------------------------------------------------------
+
+
+# --------------------------------------------------------
+# Docker Build Optimization
+# --------------------------------------------------------
+
+
+https://chatgpt.com/share/69d4789d-a830-83e8-aca7-5d4e61301e57
+
+
+
+
+# How to optimize Docker build?
+
+Say:
+  Use slim base image
+  Use layer caching (copy requirements first)
+  Avoid reinstalling dependencies
+  Use .dockerignore
+  Reduce dependency size
+
+
+
+# example
+
+✅ Optimized Dockerfile (Production Style 🚀)
+
+```dockerfile
+# Use lightweight Python image
+FROM python:3.10-slim
+
+# Set working directory
+WORKDIR /app
+
+# Copy only requirements first (for caching)
+COPY requirements.txt .
+
+# Upgrade pip + install dependencies
+RUN pip install --upgrade pip \
+    && pip install --no-cache-dir --prefer-binary -r requirements.txt
+
+# Copy remaining files
+COPY . .
+
+# Expose Streamlit port
+EXPOSE 8501
+
+# Run Streamlit app
+CMD ["streamlit", "run", "app.py", "--server.port=8501", "--server.address=0.0.0.0"]
+```
+
+
+
+
+.
+
+# --------------------------------------------------------
+# Deployment.yaml VS Service.yaml
+# --------------------------------------------------------
+
+
+
+https://chatgpt.com/share/69d32d61-03bc-83e8-87a6-72995234acbf
+
+
+# Locust 
+For load testing EduBot, we expose a backend API endpoint and use Locust to simulate concurrent users sending requests, measuring response time, throughput, and system stability under load.
+
+
+
 # ________________________________________________
-
-
-
