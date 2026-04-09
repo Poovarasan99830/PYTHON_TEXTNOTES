@@ -482,6 +482,8 @@ CMD ["streamlit", "run", "app.py", "--server.port=8501", "--server.address=0.0.0
 ```
 
 
+docker build -t edubot-app .
+docker run -p 8501:8501 -e GROQ_API_KEY=your_api_key_here edubot-app
 
 
 .
@@ -489,15 +491,114 @@ CMD ["streamlit", "run", "app.py", "--server.port=8501", "--server.address=0.0.0
 # --------------------------------------------------------
 # Deployment.yaml VS Service.yaml
 # --------------------------------------------------------
-
-
-
 https://chatgpt.com/share/69d32d61-03bc-83e8-87a6-72995234acbf
+
+
+
+
+# Deployment.yaml VS Service.yaml
+
+Deployment is used to manage application pods (scaling, updates, availability), while Service is used to provide stable networking and expose those pods to internal or external clients.
+
+Deployment = Run the app
+Service = Make app accessible
+
+
+kubectl apply -f deployment.yaml
+kubectl apply -f service.yaml
+
+
+
+# How to access app (Docker Desktop Kubernetes)
+
+kubectl get svc   ---->First check your service type
+Example output:
+    edubot-service   NodePort   10.x.x.x   <none>   8501:30007/TCP
+
+Then open browser:
+   http://localhost:30007
+    
+Use Port Forwarding
+   kubectl port-forward service/edubot-service 8501:8501
+   http://localhost:8501
+
+
+
 
 
 # Locust 
 For load testing EduBot, we expose a backend API endpoint and use Locust to simulate concurrent users sending requests, measuring response time, throughput, and system stability under load.
 
+
+
+# Why 2 files? (Deployment + Service)
+
+  1. Deployment → “Create & Manage Pods”
+     
+     kind: Deployment
+
+     What it does:
+        Pods create pannum (your app run aagum place)
+        How many replicas (2 pods nu sonna → 2 copies run aagum)
+        Auto restart if crash
+        Scaling (increase/decrease pods)
+
+     Deployment = App oda brain (manager)
+        Real-life analogy:
+           🏢 Factory manager madhiri
+                  Workers (pods) assign pannuvaar
+                  Worker down na replace pannuvaar
+
+    2. Service → “Expose & Connect Pods”
+
+       kind: Service
+
+       What it does:
+            Pods-ku stable network provide pannum
+            Load balancing (2 pods irundha → traffic split)
+            External/internal access allow pannum
+       Important:
+         👉 Pods IP change aagum (temporary)
+         👉 Service gives fixed IP / DNS name
+      
+       Simple meaning:
+          👉 Service = Reception / Router
+        
+        Real-life analogy:
+             🏢 Office reception madhiri
+             Outside people → inside correct employee-kku conne
+             Employees change aanaalum reception number same
+
+# ________________________________________________
+
+
+
+
+
+
+1. Docker Commands
+
+
+Build image                ---->docker build -t edubot-app .    
+Run container              ---->docker run -p 8501:8501 edubot-app  
+List images                ---->docker images
+List running containers    ---->docker ps
+Stop container             ---->docker stop <container-id>
+
+
+
+2. Kubernetes Basic Commands
+
+Check cluster    --->kubectl cluster-info
+Check nodes      --->kubectl get nodes
+
+
+3. Deployment Commands
+
+
+Apply deployment --->kubectl apply -f deployment.yaml
+Check deployments --->kubectl get deployment
+Describe deployment --->kubectl describe deployment edubot
 
 
 # ________________________________________________
