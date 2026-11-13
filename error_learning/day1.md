@@ -13,3 +13,9 @@ your vscode  continuely running  on that time...use above commed to solve thtat 
 
 
 <!-- This will completely reset everything -->
+
+
+
+
+dir -Force  ---show all hidden file git repo
+Remove-Item -Recurse -Force .git

@@ -1,0 +1,1583 @@
+______________________________________________________________
+
+Student
+
+| id | name  | class |
+| -- | ----- | ----- |
+| 1  | Anu   | 10    |
+| 2  | Ravi  | 10    |
+| 3  | Meena | 11    |
+
+
+marks
+
+| id | student\_id | subject | marks |
+| -- | ----------- | ------- | ----- |
+| 1  | 1           | Maths   | 88    |
+| 2  | 2           | Science | 75    |
+| 3  | 1           | English | 90    |
+| 4  | 3           | Maths   | 85    |
+
+
+
+#__________________________________________________________________
+
+Find average marks per student.
+
+List subject-wise toppers.
+
+List students who scored below 50 in any subject.
+
+Join more than 2 tables (add a teachers table).
+
+Use RIGHT JOIN (swap table order) and interpret the results.
+
+
+
+Question: List all students along with their subjects and marks.
+Question: List all students and their marks. Include students even if they don’t have marks.
+Question: Find the number of subjects each student has marks for.
+Question: Show the highest mark scored by each student.
+Question: List all students who have not appeared for any subject.
+
+
+SELECT students.name, students.class, marks.subject, marks.marks
+FROM students
+JOIN marks ON students.id = marks.student_id;
+
+
+SELECT students.name, marks.subject, marks.marks
+FROM students
+LEFT JOIN marks ON students.id = marks.student_id;
+
+
+SELECT students.name, COUNT(marks.subject) AS subject_count
+FROM students
+JOIN marks ON students.id = marks.student_id
+GROUP BY students.name;
+
+
+SELECT students.name, MAX(marks.marks) AS highest_mark
+FROM students
+JOIN marks ON students.id = marks.student_id
+GROUP BY students.name;
+
+
+SELECT students.name
+FROM students
+LEFT JOIN marks ON students.id = marks.student_id
+WHERE marks.id IS NULL;
+
+
+
+
+
+
+
+
+
+
+| Clause  | Purpose                                                                |
+| ------- | ---------------------------------------------------------------------- |
+| `ON`    | Specifies how to **join** the tables (which rows match).               |
+| `WHERE` | Filters the result **after** joining – it can remove NULLs from joins. |
+
+
+| Join Type    | Includes students with no marks? | Use Case                   |
+| ------------ | -------------------------------- | -------------------------- |
+| `LEFT JOIN`  | ✅ Yes                            | Show all students          |
+| `INNER JOIN` | ❌ No                             | Show only those with marks |
+
+
+#left join
+
+| id | name  | subject\_count |                              |
+| -- | ----- | -------------- | ---------------------------- |
+| 1  | Anu   | 2              |                              |
+| 2  | Ravi  | 1              |                              |
+| 3  | Meena | 1              |                              |
+| 4  | Latha | 0              | ← Suppose Latha has no marks |
+This gives a complete picture of all students, including those who didn’t appear in any subject.
+
+
+INNER JOIN:
+This would exclude students with no marks. So subject_count would only be shown for students who appeared in at least one subject.
+
+SELECT s.id, s.name, COUNT(m.subject) AS subject_count
+FROM Student s
+INNER JOIN Marks m ON s.id = m.student_id
+GROUP BY s.id, s.name;
+
+
+
+| Syntax         | Meaning                |
+| -------------- | ---------------------- |
+| `Student AS s` | Alias `Student` as `s` |
+| `Student s`    | Alias `Student` as `s` |
+| `SELECT s.id`  | Refers to `Student.id` |
+
+
+Best Practice?
+Using AS is more explicit and can help beginners understand better.
+
+But experienced developers often omit it for brevity.
+
+
+department
+
+
+| dept_id | dept_name   |
+| ------- | ----------- |
+| 1       | Electronics |
+| 2       | Clothing    |
+| 3       | Groceries   |
+| 4       | Furniture   |
+
+
+
+order
+
+| order_id | product_name | dept_id |
+| -------- | ------------ | ------- |
+| 101      | Mobile Phone | 1       |
+| 102      | Laptop       | 1       |
+| 103      | Jeans        | 2       |
+| 104      | Dining Table | NULL    |
+
+
+
+Show all orders including departments even if no products exist 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Perfect.
+You want **FIRST PRINCIPLES** → meaning:
+
+✅ Start from ZERO
+✅ No big examples
+✅ Build concepts slowly
+✅ Understand fundamentals of
+
+* Tables
+* Relations
+* Keys
+* Foreign Key
+* Joins
+
+Let’s rebuild EVERYTHING from the **ground up**, like a teacher teaching a new student.
+
+---
+
+# 🧠 **FIRST PRINCIPLE 1: What is a TABLE?**
+
+A table is a **collection of data** arranged in **rows** and **columns**, like an Excel sheet.
+
+```
+Columns → Structure  
+Rows → Data
+```
+
+Example:
+
+| id | name  |
+| -- | ----- |
+| 1  | Ram   |
+| 2  | Priya |
+
+✔ A table stores **one type** of entity.
+✔ Each row is **one record**.
+
+---
+
+# 🧠 **FIRST PRINCIPLE 2: What is a PRIMARY KEY?**
+
+A **primary key (PK)** is a column that uniquely identifies each row.
+
+Rules:
+
+* Cannot be duplicate
+* Cannot be null
+* Used to **identify** one specific record
+
+Example:
+
+```sql
+student_id INT PRIMARY KEY
+```
+
+Every student must have a unique ID.
+
+✔ PK = Identity of the row
+✔ PK is the starting point of relations
+
+---
+
+
+
+
+# 🧠 **FIRST PRINCIPLE 3: Why do we need MULTIPLE TABLES?**
+
+Real life data is NOT stored in one table, because:
+
+❌ Data becomes repeated
+❌ Updates become difficult
+❌ Searching becomes slow
+❌ Mistakes happen
+
+So we break data into **different tables**.
+
+
+
+
+
+
+
+
+
+Example:
+
+### students table
+
+```
+student_id | student_name | dept_id
+```
+
+
+
+
+
+
+### departments table
+
+```
+dept_id | dept_name
+```
+
+
+
+
+
+BUT → now how do we **connect** them?
+
+Answer = relation.
+
+
+
+
+
+---
+
+#________________________________________________
+#  **FIRST PRINCIPLE 4: What is a RELATION?**
+#________________________________________________
+
+    A relation is how **two tables connect**.
+    To connect, both tables must have **one common value**.
+
+
+
+Example:
+
+   students.dept_id = departments.dept_id
+
+So a student belongs to a department.
+
+   ✔ Relation = Mapping between tables
+  ✔ Relation only works if values match
+
+---
+
+
+#________________________________________________
+#  **FIRST PRINCIPLE 5: What is a FOREIGN KEY?**
+#________________________________________________
+
+    A **foreign key (FK)** is the *bridge* between tables.
+
+
+
+Definition:
+
+🔹 A Primary Key in one table
+🔹 Appears as a normal column in another table
+🔹 And is used to connect them
+
+
+
+Example:
+
+### departments table
+
+```sql
+
+   dept_id INT PRIMARY KEY
+
+
+```
+
+### students table
+
+```sql
+     dept_id INT  -- becomes foreign key here
+```
+
+Add relation using FOREIGN KEY:
+
+```sql
+ALTER TABLE students
+ADD FOREIGN KEY (dept_id)
+REFERENCES departments(dept_id);
+```
+
+Meaning:
+
+✔ students.dept_id must exist in departments.dept_id
+✔ No invalid data allowed
+✔ Keeps database correct (integrity)
+
+---
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+# 🧠 **FIRST PRINCIPLE 6: Why do we need JOINS?**
+
+After connecting tables, you need to **read data across tables**.
+
+Example question:
+
+➡ Show student name with department name
+
+But:
+
+* Student name is in students table
+* Department name is in departments table
+
+So we combine data → using **JOIN**.
+
+JOIN reads from **multiple tables** at the same time.
+
+---
+
+# 🧠 **FIRST PRINCIPLE 7: How a JOIN works (From scratch)**
+
+Think like this:
+
+* Table A: students
+* Table B: departments
+* Common column: dept_id
+
+JOIN rule:
+
+➡ Match rows where the common values are equal.
+
+```
+students.dept_id = departments.dept_id
+```
+
+---
+
+# 🎯 **INNER JOIN (First Principle version)**
+
+Show only matching records.
+
+```sql
+SELECT s.student_name, d.dept_name
+FROM students s
+INNER JOIN departments d
+ON s.dept_id = d.dept_id;
+```
+
+Meaning:
+
+✔ Only students whose dept_id exists in departments will appear.
+
+---
+
+# 🎯 **LEFT JOIN (First Principle version)**
+
+Take all rows from LEFT table, match from RIGHT.
+
+```sql
+SELECT s.student_name, d.dept_name
+FROM students s
+LEFT JOIN departments d
+ON s.dept_id = d.dept_id;
+```
+
+Meaning:
+
+✔ All students
+✔ Department name if exists
+✔ NULL if department missing
+
+---
+
+# 🎯 **RIGHT JOIN (First Principle version)**
+
+Take all rows from RIGHT table.
+
+```sql
+SELECT s.student_name, d.dept_name
+FROM students s
+RIGHT JOIN departments d
+ON s.dept_id = d.dept_id;
+```
+
+Meaning:
+
+✔ All departments
+✔ Students if exist
+✔ NULL if no student in that department
+
+---
+
+# 🧠 **FIRST PRINCIPLE 8: Why Relational Database Exists?**
+
+Relational Database = store data in:
+
+* Tables
+* Connect with Keys
+* Read with Joins
+
+It solves:
+
+✔ Data duplication
+✔ Data integrity
+✔ Faster searching
+✔ Proper relationships
+✔ Real-world modeling (students, teachers, fees, marks)
+
+---
+
+# 🧠 **FIRST PRINCIPLE 9: How to design ANY database (simple formula)**
+
+1️⃣ Identify entities → students, departments
+2️⃣ Create separate tables
+3️⃣ Add primary keys
+4️⃣ Decide relations
+5️⃣ Add foreign keys
+6️⃣ Use joins to read combined data
+
+This is the **foundation** for ANY database.
+
+
+
+
+
+Below is the **FIRST-PRINCIPLES** explanation of
+**
+
+
+One-to-One, 
+One-to-Many, 
+Many-to-many,
+
+
+
+relationships **in MySQL**, written in a **small-step → big-concept** style.
+
+---
+
+
+
+
+
+# ✅ **1. ONE-TO-ONE (1:1) RELATIONSHIP — FIRST PRINCIPLES**
+
+### **🟦 Step 1: Start from the logic**
+
+
+
+One real-world thing ↔ one real-world detail.
+
+
+
+Example:
+
+
+
+One person has **one** passport.
+
+
+
+
+### **🟦 Step 2: Why do we need a 1:1 table?**
+
+
+To separate rarely-used or sensitive data into another table.
+
+
+
+### **🟦 Step 3: How it is stored in MySQL**
+
+
+
+→ Keep the second table’s **primary key as a foreign key** referencing the first.
+
+
+
+
+
+### **🟦 Step 4: Table Structure**
+
+#### **Table: persons**
+
+```sql
+CREATE TABLE persons (
+    person_id INT PRIMARY KEY,
+    name VARCHAR(50)
+);
+```
+
+#### **Table: passports**
+
+```sql
+CREATE TABLE passports (
+    passport_id INT PRIMARY KEY,
+    person_id INT UNIQUE,
+    passport_number VARCHAR(20),
+    FOREIGN KEY (person_id) REFERENCES persons(person_id)
+);
+```
+
+### **🟦 Step 5: Why UNIQUE?**
+
+Because one person must have only one passport → ensures 1:1.
+
+---
+
+
+
+
+
+
+
+
+
+
+
+# ✅ **2. ONE-TO-MANY (1:N) RELATIONSHIP — FIRST PRINCIPLES**
+
+
+
+### **🟧 Step 1: Start from the logic**
+
+One real-world thing → many connected items.
+
+
+
+
+Example:
+One department has **many** employees.
+
+
+
+
+### **🟧 Step 2: Why separate tables?**
+
+Because department information should not repeat for every employee.
+
+
+
+
+### **🟧 Step 3: How MySQL stores it**
+
+→ The **child** table stores the **foreign key**.
+
+
+
+
+### **🟧 Step 4: Table Structure**
+
+
+
+#### **Table: departments**
+
+```sql
+CREATE TABLE departments (
+    dept_id INT PRIMARY KEY,
+    dept_name VARCHAR(50)
+);
+```
+
+#### **Table: employees**
+
+```sql
+CREATE TABLE employees (
+    emp_id INT PRIMARY KEY,
+    name VARCHAR(50),
+    dept_id INT,
+    FOREIGN KEY (dept_id) REFERENCES departments(dept_id)
+);
+```
+
+### **🟧 Step 5: Why this works**
+
+One department ID appears in many employee rows → 1:N.
+
+---
+
+
+
+
+
+
+# ✅ **3. MANY-TO-MANY (M:N) RELATIONSHIP — FIRST PRINCIPLES**
+
+
+
+### **🟥 Step 1: Start from the logic**
+
+One A connects to many B
+and
+one B connects to many A.
+
+
+
+
+
+Example:
+A student can enroll in many courses,
+and a course can have many students.
+
+
+
+
+
+### **🟥 Step 2: Why MySQL cannot store M:N directly**
+
+Because a table cell cannot hold multiple values.
+
+
+
+### **🟥 Step 3: Solution → Create a **bridge table**
+
+### **🟥 Step 4: Table Structure**
+
+
+
+
+#### **Table: students**
+
+```sql
+CREATE TABLE students (
+    student_id INT PRIMARY KEY,
+    name VARCHAR(50)
+);
+```
+
+#### **Table: courses**
+
+```sql
+CREATE TABLE courses (
+    course_id INT PRIMARY KEY,
+    course_name VARCHAR(50)
+);
+```
+
+#### **Bridge Table: student_courses**
+
+```sql
+CREATE TABLE student_courses (
+    student_id INT,
+    course_id INT,
+    PRIMARY KEY(student_id, course_id),
+    FOREIGN KEY (student_id) REFERENCES students(student_id),
+    FOREIGN KEY (course_id) REFERENCES courses(course_id)
+);
+```
+
+### **🟥 Step 5: Why composite PRIMARY KEY?**
+
+To avoid duplicate combinations like:
+
+```
+student_id = 1, course_id = 5 (duplicate)
+```
+
+---
+
+# 🎯 SUMMARY TABLE (Small → Big)
+
+
+
+
+| Relationship | How to Identify       | How MySQL Implements | Example                |
+| ------------ | --------------------- | -------------------- | ---------------------- |
+| **1:1**      | One item ↔ One item   | FK + UNIQUE          | Person ↔ Passport      |
+| **1:N**      | One item ↔ Many items | FK in child table    | Department ↔ Employees |
+| **M:N**      | Many ↔ Many           | Bridge table         | Students ↔ Courses     |
+
+---
+
+
+
+
+
+
+
+
+
+# If you want next tables (RIGHT JOIN, LEFT JOIN, INNER JOIN examples)
+
+Tell me:
+**“I need next all tables”** → I will generate all SQL tables with sample data in the same FIRST-PRINCIPLES format.
+
+
+
+
+
+
+
+Below is a **FIRST-PRINCIPLES** explanation of **ALL SQL JOINS**
+using the **same tables (1:1, 1:N, M:N)** you learned earlier.
+Everything is **small-step → big concept**, with **question + answer format**.
+
+---
+
+# ⭐ **BASE TABLES (We will use these for all join questions)**
+
+### **Table: departments (1:N parent)**
+
+```sql
+dept_id | dept_name
+-------------------
+10      | CSE
+20      | ECE
+30      | Mech
+```
+
+### **Table: employees (1:N child)**
+
+```sql
+emp_id | name   | dept_id
+--------------------------
+1      | Ramesh | 10
+2      | Priya  | 20
+3      | John   | 10
+4      | Arun   | NULL   ← employee without department
+```
+
+---
+
+# ⭐ **REAL MEANING OF JOIN (FIRST PRINCIPLES)**
+
+Tables are separate because of **1:N relationships**.
+Join = **mathematically reconnecting** the separated data.
+
+---
+
+# ✅ **1. INNER JOIN (only matching data)**
+
+## **Question 1:**
+
+**Show employees with their department names. (Only matched rows)**
+
+### **FIRST PRINCIPLE:**
+
+Take only rows where **employees.dept_id = departments.dept_id** AND both sides exist.
+
+### **Answer:**
+
+```sql
+SELECT e.name, d.dept_name
+FROM employees e
+INNER JOIN departments d
+ON e.dept_id = d.dept_id;
+```
+
+### **Output**
+
+| name   | dept_name |
+| ------ | --------- |
+| Ramesh | CSE       |
+| Priya  | ECE       |
+| John   | CSE       |
+
+**Why Arun not shown?**
+→ Because INNER JOIN removes rows without a match.
+
+---
+
+# ✅ **2. LEFT JOIN (all from left + matched from right)**
+
+## **Question 2:**
+
+**Show all employees—even if they don’t have a department.**
+
+### **FIRST PRINCIPLE:**
+
+Keep **all employees**
+→ If dept exists, attach it
+→ If not, show NULL
+
+### **Answer:**
+
+```sql
+SELECT e.name, d.dept_name
+FROM employees e
+LEFT JOIN departments d
+ON e.dept_id = d.dept_id;
+```
+
+### **Output**
+
+| name   | dept_name |
+| ------ | --------- |
+| Ramesh | CSE       |
+| Priya  | ECE       |
+| John   | CSE       |
+| Arun   | NULL      |
+
+---
+
+# ✅ **3. RIGHT JOIN (all from right + matched from left)**
+
+## **Question 3:**
+
+**Show all departments—even if no employee belongs to them.**
+
+### **FIRST PRINCIPLE:**
+
+Keep **all departments**
+→ employees appear only if matched
+
+### **Answer:**
+
+```sql
+SELECT e.name, d.dept_name
+FROM employees e
+RIGHT JOIN departments d
+ON e.dept_id = d.dept_id;
+```
+
+### **Output**
+
+| name   | dept_name |                       |
+| ------ | --------- | --------------------- |
+| Ramesh | CSE       |                       |
+| Priya  | ECE       |                       |
+| John   | CSE       |                       |
+| NULL   | Mech      | ← No employee in Mech |
+
+---
+
+# ✅ **4. FULL OUTER JOIN (MySQL using UNION)**
+
+## **Question 4:**
+
+**Show all employees and all departments—even if unmatched.**
+
+### **FIRST PRINCIPLE:**
+
+FULL JOIN = LEFT JOIN + RIGHT JOIN
+
+### **Answer:**
+
+```sql
+SELECT e.name, d.dept_name
+FROM employees e
+LEFT JOIN departments d ON e.dept_id = d.dept_id
+
+UNION
+
+SELECT e.name, d.dept_name
+FROM employees e
+RIGHT JOIN departments d ON e.dept_id = d.dept_id;
+```
+
+### **Output**
+
+| name   | dept_name |
+| ------ | --------- |
+| Ramesh | CSE       |
+| Priya  | ECE       |
+| John   | CSE       |
+| Arun   | NULL      |
+| NULL   | Mech      |
+
+---
+
+# ⭐ **NOW — USING MANY-TO-MANY TABLES**
+
+Students ↔ Courses via student_courses
+
+### students
+
+```
+1 | Asha
+2 | Karan
+```
+
+### courses
+
+```
+101 | Math
+102 | Physics
+```
+
+### student_courses
+
+```
+student_id | course_id
+----------------------
+1          | 101
+1          | 102
+2          | 101
+```
+
+---
+
+# ✅ **5. JOIN for Many-to-Many**
+
+## **Question 5:**
+
+**List all students and the courses they take.**
+
+### **FIRST PRINCIPLE:**
+
+You must join **three tables**:
+students → student_courses → courses
+
+### **Answer:**
+
+```sql
+SELECT s.name, c.course_name
+FROM students s
+INNER JOIN student_courses sc ON s.student_id = sc.student_id
+INNER JOIN courses c ON sc.course_id = c.course_id;
+```
+
+### **Output**
+
+| student | course  |
+| ------- | ------- |
+| Asha    | Math    |
+| Asha    | Physics |
+| Karan   | Math    |
+
+---
+
+# ⭐ **6. EXTRA: LEFT JOIN in M:N**
+
+## **Question 6:**
+
+**Show all students—even if they are not enrolled in any course.**
+
+### **Answer:**
+
+```sql
+SELECT s.name, c.course_name
+FROM students s
+LEFT JOIN student_courses sc ON s.student_id = sc.student_id
+LEFT JOIN courses c ON sc.course_id = c.course_id;
+```
+
+---
+
+# 🎉 **SUMMARY (EASY MEMORY FORMULA)**
+
+| Join Type    | What it Keeps  | Best Used For      |
+| ------------ | -------------- | ------------------ |
+| **INNER**    | Only matches   | clean matched data |
+| **LEFT**     | All left rows  | parent → child     |
+| **RIGHT**    | All right rows | child → parent     |
+| **FULL**     | All rows       | complete view      |
+| **M:N JOIN** | bridge table   | many-to-many cases |
+
+---
+
+# If you want:
+
+✅ More join questions (20+ real-time)
+✅ ER diagram using these tables
+✅ More practice tasks + answers
+
+Just type: **“next set of join questions”**
+
+
+
+
+
+
+Great — here comes the **NEXT SET OF JOIN QUESTIONS (FIRST PRINCIPLES STYLE)**.
+Each question comes with:
+
+✔ **Real-time scenario**
+✔ **Small-step → big-concept explanation**
+✔ **Correct SQL answer**
+✔ **Easy logic diagram**
+
+We continue using the same tables:
+
+* **departments**
+* **employees**
+* **students**
+* **courses**
+* **student_courses**
+
+---
+
+# 🟦 **SET 2 — INTERMEDIATE JOIN QUESTIONS**
+
+---
+
+# ✅ **Question 1: Show employees who DO NOT belong to any department.**
+
+### **First Principles Thinking**
+
+To find "no match", we use:
+
+* LEFT JOIN
+* Check NULL on right table
+
+Because unmatched rows show **NULL** after LEFT JOIN.
+
+### **SQL Answer**
+
+```sql
+SELECT e.emp_id, e.name
+FROM employees e
+LEFT JOIN departments d
+ON e.dept_id = d.dept_id
+WHERE d.dept_id IS NULL;
+```
+
+---
+
+# ✅ **Question 2: Show departments that have NO employees.**
+
+### **First Principles**
+
+To find empty departments:
+
+* RIGHT JOIN
+* Check NULL on left table
+
+### **SQL Answer**
+
+```sql
+SELECT d.dept_id, d.dept_name
+FROM employees e
+RIGHT JOIN departments d
+ON e.dept_id = d.dept_id
+WHERE e.emp_id IS NULL;
+```
+
+---
+
+# ✅ **Question 3: Count how many employees are in each department.**
+
+### **First Principles**
+
+We use GROUP BY after a JOIN.
+
+### **SQL Answer**
+
+```sql
+SELECT d.dept_name, COUNT(e.emp_id) AS total_employees
+FROM departments d
+LEFT JOIN employees e
+ON d.dept_id = e.dept_id
+GROUP BY d.dept_name;
+```
+
+---
+
+# ✅ **Question 4: Show student names with number of courses they enrolled in.**
+
+(Many-to-Many count)
+
+### **First Principles**
+
+students → student_courses (child table)
+
+### **SQL Answer**
+
+```sql
+SELECT s.name, COUNT(sc.course_id) AS total_courses
+FROM students s
+LEFT JOIN student_courses sc
+ON s.student_id = sc.student_id
+GROUP BY s.name;
+```
+
+---
+
+# ✅ **Question 5: Show course names with list of students enrolled.**
+
+### **First Principles**
+
+Reverse the join direction.
+
+### **SQL Answer**
+
+```sql
+SELECT c.course_name, s.name
+FROM courses c
+LEFT JOIN student_courses sc ON c.course_id = sc.course_id
+LEFT JOIN students s ON s.student_id = sc.student_id;
+```
+
+---
+
+# ✅ **Question 6: Show only students who enrolled in at least 1 course.**
+
+### **First Principles**
+
+INNER JOIN removes NULL rows.
+
+### **SQL Answer**
+
+```sql
+SELECT DISTINCT s.name
+FROM students s
+INNER JOIN student_courses sc 
+ON s.student_id = sc.student_id;
+```
+
+---
+
+# 🟥 **SET 3 — REAL-TIME JOIN QUESTIONS**
+
+---
+
+# ✅ **Question 7: Show employee name, department name, and label “NO DEPT” if NULL.**
+
+### **First Principles**
+
+Use LEFT JOIN + IFNULL()
+
+### **SQL Answer**
+
+```sql
+SELECT 
+    e.name,
+    IFNULL(d.dept_name, 'NO DEPT') AS department
+FROM employees e
+LEFT JOIN departments d
+ON e.dept_id = d.dept_id;
+```
+
+---
+
+# ✅ **Question 8: Show each department and its top employee (highest emp_id).**
+
+### **SQL Answer**
+
+```sql
+SELECT d.dept_name, e.name
+FROM departments d
+LEFT JOIN employees e
+ON e.dept_id = d.dept_id
+WHERE e.emp_id = (
+    SELECT MAX(emp_id)
+    FROM employees
+    WHERE dept_id = d.dept_id
+);
+```
+
+---
+
+# 🟧 **SET 4 — ADVANCED JOIN QUESTIONS**
+
+---
+
+# ✅ **Question 9: Show students who take BOTH Math and Physics.**
+
+(Advanced M:N)
+
+### **First Principles**
+
+Use self-join on bridge table.
+
+### **SQL Answer**
+
+```sql
+SELECT s.name
+FROM students s
+JOIN student_courses sc1 ON s.student_id = sc1.student_id
+JOIN student_courses sc2 ON s.student_id = sc2.student_id
+WHERE sc1.course_id = 101   -- Math
+AND sc2.course_id = 102;   -- Physics
+```
+
+---
+
+# ✅ **Question 10: Show courses with ZERO students.**
+
+### **SQL Answer**
+
+```sql
+SELECT c.course_name
+FROM courses c
+LEFT JOIN student_courses sc
+ON c.course_id = sc.course_id
+WHERE sc.student_id IS NULL;
+```
+
+---
+
+# 🟩 **SET 5 — JOIN CHALLENGE QUESTIONS (INTERVIEW LEVEL)**
+
+---
+
+# 🔥 **Question 11: Show employees with their department, but employees without a department should appear LAST.**
+
+### **SQL Answer**
+
+```sql
+SELECT e.name, d.dept_name
+FROM employees e
+LEFT JOIN departments d
+ON e.dept_id = d.dept_id
+ORDER BY d.dept_name IS NULL, d.dept_name;
+```
+
+---
+
+# 🔥 **Question 12: Show combinations of all students and all courses (CROSS JOIN).**
+
+### **SQL Answer**
+
+```sql
+SELECT s.name, c.course_name
+FROM students s
+CROSS JOIN courses c;
+```
+
+---
+
+# 🔥 **Question 13: Show employee and department name, but if NO match, show “Not Assigned”.**
+
+### **SQL Answer**
+
+```sql
+SELECT 
+    e.name,
+    COALESCE(d.dept_name, 'Not Assigned') AS department
+FROM employees e
+LEFT JOIN departments d
+ON e.dept_id = d.dept_id;
+```
+
+---
+
+# 🎉 **DONE — 13 JOIN QUESTIONS COMPLETED**
+
+If you want, I can also give:
+
+### ✔ NEXT: **15 JOIN Practice Tasks** (with answers)
+
+### ✔ FULL **ER DIAGRAM** for all tables
+
+### ✔ More **real-time SQL interview questions**
+
+### ✔ Combined **JOIN + GROUP BY + SUBQUERY** problems
+
+Just say **“next set”** or tell me what you need next.
+
+
+
+
+Great — here is the **NEXT SET of JOIN PRACTICE TASKS (WITH ANSWERS)**
+in **FIRST-PRINCIPLES → small-step → big concept** style.
+
+We continue using the same 5 tables:
+
+* **departments**
+* **employees**
+* **students**
+* **courses**
+* **student_courses**
+
+---
+
+# 🟦 **SET 6 — 15 NEW JOIN QUESTIONS (Practice + Answers)**
+
+Each question contains:
+✔ What the question REALLY means
+✔ How to think (first principles)
+✔ SQL answer
+
+---
+
+# ✅ **Q1. Show employees with their department name and department ID.**
+
+### First Principle
+
+Simple INNER JOIN → show matching only.
+
+### SQL
+
+```sql
+SELECT e.emp_id, e.name, d.dept_id, d.dept_name
+FROM employees e
+INNER JOIN departments d
+ON e.dept_id = d.dept_id;
+```
+
+---
+
+# ✅ **Q2. Show employees who belong to the “CSE” department.**
+
+### First Principle
+
+Filter after join.
+
+### SQL
+
+```sql
+SELECT e.name
+FROM employees e
+JOIN departments d
+ON e.dept_id = d.dept_id
+WHERE d.dept_name = 'CSE';
+```
+
+---
+
+# ✅ **Q3. Show departments with total employees including zero.**
+
+### First Principle
+
+Parent table LEFT JOIN child table.
+
+### SQL
+
+```sql
+SELECT d.dept_name, COUNT(e.emp_id) AS total
+FROM departments d
+LEFT JOIN employees e
+ON d.dept_id = e.dept_id
+GROUP BY d.dept_name;
+```
+
+---
+
+# ✅ **Q4. List employees who belong to CSE or ECE.**
+
+### SQL
+
+```sql
+SELECT e.name, d.dept_name
+FROM employees e
+JOIN departments d
+ON e.dept_id = d.dept_id
+WHERE d.dept_name IN ('CSE', 'ECE');
+```
+
+---
+
+# ✅ **Q5. Show student names along with the courses they registered.**
+
+### First Principle
+
+M:N requires **three table joins**.
+
+### SQL
+
+```sql
+SELECT s.name, c.course_name
+FROM students s
+JOIN student_courses sc ON s.student_id = sc.student_id
+JOIN courses c ON sc.course_id = c.course_id;
+```
+
+---
+
+# ✅ **Q6. Show students who have NOT taken any course.**
+
+### First Principle
+
+Check NULL in child table.
+
+### SQL
+
+```sql
+SELECT s.name
+FROM students s
+LEFT JOIN student_courses sc
+ON s.student_id = sc.student_id
+WHERE sc.course_id IS NULL;
+```
+
+---
+
+# ✅ **Q7. Show courses with NO students enrolled.**
+
+### SQL
+
+```sql
+SELECT c.course_name
+FROM courses c
+LEFT JOIN student_courses sc
+ON c.course_id = sc.course_id
+WHERE sc.student_id IS NULL;
+```
+
+---
+
+# ✅ **Q8. Show total courses taken by each student (including students taking zero).**
+
+### SQL
+
+```sql
+SELECT s.name, COUNT(sc.course_id) AS total_courses
+FROM students s
+LEFT JOIN student_courses sc
+ON s.student_id = sc.student_id
+GROUP BY s.name;
+```
+
+---
+
+# ✅ **Q9. Show employees even if they don’t have departments, but put “NO DEPT”.**
+
+### SQL
+
+```sql
+SELECT e.name, COALESCE(d.dept_name, 'NO DEPT') AS department
+FROM employees e
+LEFT JOIN departments d
+ON e.dept_id = d.dept_id;
+```
+
+---
+
+# ✅ **Q10. Show employees who belong to departments with ID between 10 and 20.**
+
+### SQL
+
+```sql
+SELECT e.name, d.dept_name
+FROM employees e
+JOIN departments d
+ON e.dept_id = d.dept_id
+WHERE d.dept_id BETWEEN 10 AND 20;
+```
+
+---
+
+# ✅ **Q11. Show department name with highest employee count.**
+
+### First Principle
+
+Find count → order → limit.
+
+### SQL
+
+```sql
+SELECT d.dept_name, COUNT(e.emp_id) AS total
+FROM departments d
+LEFT JOIN employees e
+ON d.dept_id = e.dept_id
+GROUP BY d.dept_name
+ORDER BY total DESC
+LIMIT 1;
+```
+
+---
+
+# ✅ **Q12. Show student–course pairs for only “Math” course.**
+
+### SQL
+
+```sql
+SELECT s.name, c.course_name
+FROM students s
+JOIN student_courses sc ON s.student_id = sc.student_id
+JOIN courses c ON sc.course_id = c.course_id
+WHERE c.course_name = 'Math';
+```
+
+---
+
+# ✅ **Q13. Show all students and all courses (CROSS JOIN).**
+
+### SQL
+
+```sql
+SELECT s.name, c.course_name
+FROM students s
+CROSS JOIN courses c;
+```
+
+---
+
+# ✅ **Q14. Show employees and departments sorted so that employees with no departments appear LAST.**
+
+### SQL
+
+```sql
+SELECT e.name, d.dept_name
+FROM employees e
+LEFT JOIN departments d
+ON e.dept_id = d.dept_id
+ORDER BY d.dept_name IS NULL, d.dept_name;
+```
+
+---
+
+# ✅ **Q15. Show each department and the first employee alphabetically.**
+
+### SQL
+
+```sql
+SELECT d.dept_name, e.name
+FROM departments d
+LEFT JOIN employees e
+ON e.dept_id = d.dept_id
+WHERE e.name = (
+    SELECT MIN(name)
+    FROM employees
+    WHERE dept_id = d.dept_id
+);
+```
+
+---
+
+# 🎉 **15 More JOIN Questions Completed!**
+
+If you want next:
+
+### 🔥 **SET 7 — JOIN + SUBQUERY COMBO QUESTIONS**
+
+### 🔥 **SET 8 — Real-time Company Join Problems**
+
+### 🔥 **SET 9 — Exam-level tricky joins**
+
+### 🔥 **FULL COLLEGE ERP Database with all JOIN queries**
+
+Just tell me: **"next set"**

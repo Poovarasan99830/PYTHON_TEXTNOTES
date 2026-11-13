@@ -1023,6 +1023,9 @@ Description:
 EduBot is an interactive learning assistant built using LangChain + OpenAI API.
 It helps students understand complex topics, summarize notes, and answer study-related questions in a conversational way.
 
+
+
+
 🛠 Tech Stack:
 
 Frontend: Streamlit / React (for chat UI)
@@ -1034,6 +1037,10 @@ LLM Engine: OpenAI GPT (via LangChain)
 Memory: ConversationBufferMemory (for chat history)
 
 Tools: LangChain chains + prompt templates
+
+
+
+
 
 🎯 Features:
 

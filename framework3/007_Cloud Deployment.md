@@ -21,6 +21,22 @@
 * Use a managed DB (AWS RDS / GCP CloudSQL).
 * Connect Kubernetes pods to cloud DB securely.
 
+# ------------------------------------------------------------------
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 # ------------------------------------------------------------------
@@ -37,6 +53,8 @@
 docker login
 docker tag myapp username/myapp:v1
 docker push username/myapp:v1
+# ------------------------------------------------------------------
+
 
 
 
@@ -79,6 +97,9 @@ since you **already know Kubernetes basics**, I’ll give you the **best practic
 👉 Then EKS becomes EASY 🔥
 
 ---
+
+
+
 
 # Your Learning Path
 

@@ -1,0 +1,75 @@
+Here are clear and concise answers to your SQL questions:
+
+---
+
+### **1. What is DML? Name common DML operations.**
+
+**DML (Data Manipulation Language)** is a subset of SQL used to manipulate data stored in the database.
+
+**Common DML operations:**
+
+* `SELECT` – Retrieve data from the table
+* `INSERT` – Add new records
+* `UPDATE` – Modify existing records
+* `DELETE` – Remove records
+
+
+
+### **2. What’s the difference between `UPDATE` and `REPLACE`?**
+
+| Feature  | `UPDATE`                      | `REPLACE`                                                                                     |
+| -------- | ----------------------------- | --------------------------------------------------------------------------------------------- |
+| Purpose  | Modify existing data          | Deletes existing row and inserts a new one                                                    |
+| Behavior | Changes only specified fields | Deletes matching row (based on primary key or unique constraint), then inserts a full new row |
+| Use case | Partial update                | Full row replacement                                                                          |
+| Rollback | Can be rolled back            | Can be rolled back                                                                            |
+
+
+-- UPDATE
+UPDATE users SET name = 'John' WHERE id = 1;
+
+-- REPLACE (Deletes old and inserts new)
+REPLACE INTO users (id, name) VALUES (1, 'John');
+
+
+ **3. How does `DELETE` differ from `TRUNCATE` in terms of performance and rollback?**
+
+| Feature     | `DELETE`                       | `TRUNCATE`                                                  |
+| ----------- | ------------------------------ | ----------------------------------------------------------- |
+| Row-by-row? | Yes (logs each row deletion)   | No (deletes all rows instantly)                             |
+| Rollback?   | Yes (transaction-safe)         | Depends on DB (e.g., not rollback-able in MySQL by default) |
+| Triggers?   | Activates `ON DELETE` triggers | Triggers not fired                                          |
+| Performance | Slower for large tables        | Faster                                                      |
+
+
+
+#*4. What is the difference between `INSERT INTO ... VALUES` and `INSERT INTO ... SELECT`?**
+
+| Feature  | `INSERT INTO ... VALUES`                              | `INSERT INTO ... SELECT`                                             |
+| -------- | ----------------------------------------------------- | -------------------------------------------------------------------- |
+| Purpose  | Insert explicit data                                  | Insert data copied from another table/query                          |
+| Syntax   | `INSERT INTO table (col1, col2) VALUES (val1, val2);` | `INSERT INTO table (col1, col2) SELECT colA, colB FROM other_table;` |
+| Use case | Insert single or multiple hardcoded rows              | Transfer data from one table to another                              |
+
+---
+
+### **5. What happens if you omit the `WHERE` clause in a `DELETE` or `UPDATE` statement?**
+
+* **`DELETE` without `WHERE`**: Deletes **all rows** from the table.
+* **`UPDATE` without `WHERE`**: Updates **all rows** in the table.
+
+⚠️ **Warning:** Omitting `WHERE` can lead to unintentional data loss or modification.
+
+**Examples:**
+
+```sql
+-- Deletes all users
+DELETE FROM users;
+
+-- Updates all users' status to 'inactive'
+UPDATE users SET status = 'inactive';
+```
+
+---
+
+Let me know if you need real-time examples or want these formatted as interview questions and answers.

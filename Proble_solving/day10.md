@@ -1,5 +1,21 @@
 
 
+
+
+### **📌 Sliding Window (Days 10–12)**
+
+Learn: fixed window, variable window
+Problems:
+
+* Max sum window
+* Longest substring without repeat
+* Count anagrams
+* Fruits into basket
+
+
+
+
+
 # __________________________________________________________________
 
 ## 🟢 **Day 10 – Sliding Window (Fixed Window)**
@@ -153,3 +169,135 @@ print(max_sum_subarray(arr, k))
 
 
 
+
+# ---------------------------------------------------
+### **📌 Sliding Window (Days 10–12)**
+
+# ---------------------------------------------------
+✅ What is Sliding Window?
+# ---------------------------------------------------
+
+Sliding Window is an optimization technique used for:
+
+Arrays
+Strings
+Subarrays
+Substrings
+
+
+
+# ---------------------------------------------------
+Instead of checking every possible combination, we maintain a “window” and move it efficiently.
+   
+   Learn: fixed window, variable window
+   Problems:
+     * Max sum window
+     * Longest substring without repeat
+     * Count anagrams
+     * Fruits into basket
+
+
+# ---------------------------------------------------
+# Step 1:problem and definition of the problem statement
+# ---------------------------------------------------
+
+Problem:
+   Longest Substring Without Repeating Characters
+   This is one of the MOST ASKED sliding window questions.
+
+Find longest substring without duplicate characters.
+s = "abcabcbb"
+
+
+
+# ---------------------------------------------------
+# step 2 -->real world analogy
+# ---------------------------------------------------
+
+Real World Analogy
+Neenga oru room la students ah allow panreenga.
+Ore name rendu thadava irukka koodathu
+Duplicate name வந்தா ❌
+
+Example
+ "abcabcbb"
+
+ Ithu room ku students வர்ற மாதிரி imagine pannunga.
+
+ [a]        Room la: a Duplicate illa --->Length = 1
+ [a b]      Room la: a,b Duplicate illa --->Length = 2
+ [a b c]    Room la: a,b,c Duplicate illa --->Length = 3
+
+ Next character:  
+ [a b c a]   Room la: a,b,c,a Duplicate a வந்துருச்சு ❌
+ ✅ Solution:
+       Left side la irundhu remove pannuvom.
+       Remove first a
+       Now:[b c a] --Ippo duplicate illa ✅
+
+Sliding Window Meaning
+   current active group
+   Duplicate வந்தா    :👉 left side shrink pannuvom
+   Duplicate இல்லனா :👉 right side expand pannuvom
+
+
+# ---------------------------------------------------
+# step 3 -->Solution of the Problem
+# ---------------------------------------------------
+
+def longest_substring(s):
+
+    seen = set()
+    left = 0
+    max_len = 0
+
+    for right in range(len(s)):
+
+        while s[right] in seen:
+            seen.remove(s[left])
+            left += 1
+
+        seen.add(s[right])
+
+        max_len = max(max_len, right-left+1)
+
+    return max_len
+
+print(longest_substring("abcabcbb"))
+
+
+
+
+# ---------------------------------------------------
+# step 3 -->Coding Explanation
+## ---------------------------------------------------
+
+1. `seen = set()`
+
+   * Unique characters store panna use pannrom.
+   * Duplicate vara koodathu.
+
+2. `left = 0` and `for right in range(len(s))`
+
+   * `left` = window start index
+   * `right` = window end index
+   * Ithu sliding window concept.
+
+3. `while s[right] in seen:`
+
+   * Current character already irundha duplicate nu meaning.
+   * So left side character remove pannuvom.
+
+4. `seen.add(s[right])`
+
+   * Duplicate remove aana apram current character set la add pannrom.
+   * Ippo substring unique ah irukum.
+
+5. `max_len = max(max_len, right-left+1)`
+
+   * Current substring length calculate pannrom.
+   * Biggest length save pannuvom.
+   * `"abcabcbb"` ku output = `3` because `"abc"` longest unique substring.
+
+
+## ---------------------------------------------------

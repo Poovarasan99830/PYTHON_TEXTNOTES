@@ -1,6 +1,211 @@
 
 
 
+# 1️⃣ Natural Language Processing (NLP)
+
+##  Purpose – Why We Need This
+       Natural Language Processing (NLP) helps computers understand, process, and respond to human language like English, Tamil, Hindi, etc.
+
+We use NLP in:
+ * Chatbots
+ * Google Translate
+ * Voice assistants
+ * Sentiment analysis
+ * Text summarization
+ * AI applications
+
+
+## Concept – What It Does
+  NLP combines:
+  * **Language understanding**
+  * **Machine Learning**
+  * **Artificial Intelligence**
+
+It converts human text into a format that computers can understand.
+
+
+Example:**Input:**> "I love Python"
+NLP process:
+   1. Break sentence into words → `["I", "love", "Python"]`
+   2. Analyze meaning
+   3. Find sentiment → Positive
+
+
+## Common NLP Tasks
+
+| Task               | Example                       |
+| ------------------ | ----------------------------- |
+| Tokenization       | Split sentence into words     |
+| Sentiment Analysis | Positive / Negative detection |
+| Translation        | English → Tamil               |
+| Text Summarization | Short summary generation      |
+| Chatbot            | Human-like conversation       |
+
+
+## Real-Time Examples
+
+* Google Translate
+* OpenAI ChatGPT
+* Amazon Alexa
+* Apple Siri
+
+
+
+
+
+##  NLP Pipeline
+
+1️⃣ Collect Text Data
+2️⃣ Clean Text
+3️⃣ Tokenization
+4️⃣ Remove Stopwords
+5️⃣ Feature Extraction
+6️⃣ Train Model
+7️⃣ Prediction / Output
+
+
+## Conclusion
+
+NLP allows machines to communicate with humans using natural language. It is one of the most important technologies used in modern Generative AI systems.
+
+
+
+
+
+
+
+# ---------------------------------------------------
+1️⃣ Text Preprocessing
+# ---------------------------------------------------
+            Text preprocessing is the process of cleaning and preparing text data before giving it to an AI/ML model.
+
+           It removes unnecessary things like:
+              Special characters
+              Punctuation
+              Extra spaces
+              Stop words
+              Uppercase/lowercase differences
+
+    Why We Need It
+        Computers cannot understand raw human language properly.
+        So we clean the text to make:
+           faster processing
+           better accuracy
+           easier learning for models
+# ---------------------------------------------------
+2️⃣ Tokenization
+# ---------------------------------------------------
+    Tokenization means splitting text into smaller pieces called tokens.
+    Tokens can be:
+       words
+       sentences
+       characters
+
+     Why We Need It
+      AI models cannot understand full paragraphs directly.
+      So we break text into smaller units.
+   
+    Types of Tokenization
+      1.Word Tokenization--->Split into words.
+      2.Sentence Tokenization--->Split into sentences.
+      3.Character Tokenization--->Split into characters.
+      4.Subword Tokenization  -->Used in AI models like GPT-2 and Google BERT.
+                             --->"unhappiness" -->['un', 'happi', 'ness']
+
+# ---------------------------------------------------
+3️⃣ Stemming
+# ---------------------------------------------------
+
+     Stemming means reducing a word to its root/base form by removing endings.
+     Different word forms should be treated as the same word.
+
+    | Original Word | Stemmed Word |
+    | ------------- | ------------ |
+    | playing       | play         |
+    | played        | play         |
+    | player        | player       |
+    | studies       | studi        |
+
+# ---------------------------------------------------
+4️⃣ Lemmatization
+# ---------------------------------------------------
+
+    Definition-->Lemmatization converts words into their meaningful dictionary base form (lemma).
+              -->To get proper root words with meaning.
+
+| Original Word | Lemmatized Word |
+| ------------- | --------------- |
+| running       | run             |
+| better        | good            |
+| studies       | study           |
+
+
+| Stemming                 | Lemmatization            |
+| ------------------------ | ------------------------ |
+| Fast                     | Slower                   |
+| May create invalid words | Creates meaningful words |
+| studies → studi          | studies → study          |
+
+
+# ---------------------------------------------------
+5️⃣ Sentiment Analysis
+# ---------------------------------------------------
+   sentiment Analysis is the process of finding the emotion or opinion in a sentence.
+   Usually classified as:
+       Positive
+       Negative
+       Neutral
+   Why We Need It--->Companies use it to understand customer opinions.
+
+
+# ---------------------------------------------------
+6️⃣ Named Entity Recognition (NER)
+# ---------------------------------------------------
+
+   Named Entity Recognition identifies important entities from text.
+   Entities can be:
+     Person names
+       Locations
+       Organizations
+       Dates
+       Money
+       Time
+
+
+| Topic              | Main Purpose                |
+| ------------------ | --------------------------- |
+| Text Preprocessing | Clean text                  |
+| Tokenization       | Split text                  |
+| Stemming           | Remove endings              |
+| Lemmatization      | Find meaningful root word   |
+| Sentiment Analysis | Find emotion/opinion        |
+| NER                | Identify important entities |
+
+
+
+# ---------------------------------------------------
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 # ---------------------------------------------------
 # 🚀 **NLP COMPLETE NOTES (MNC READY)**
 # ---------------------------------------------------

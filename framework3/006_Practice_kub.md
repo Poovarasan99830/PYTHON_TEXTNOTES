@@ -1004,3 +1004,76 @@ I can help you with:
 
 
 
+Tanglish la explain panren 👇
+
+### Full Flow
+
+```
+Docker build
+      ↓
+Image created
+      ↓
+Kubernetes Deployment
+      ↓
+Pods created
+      ↓
+Pods run container
+      ↓
+Service exposes app
+      ↓
+Browser access
+```
+
+### Step by Step (Tanglish)
+
+* Docker build → Namma code-a package pannrom.
+
+* Image created → Oru ready-made application image create aagum.
+
+* Kubernetes Deployment → Kubernetes kitte “indha image-la irundhu app run pannu” nu sollrom.
+
+* Pods created → Kubernetes Pods create pannum.
+
+* Pods run container → Andha Pods ullae namma Docker container run aagum.
+
+* Service exposes app → Service browser-la irundhu varra request-ah Pod-ku anuppum.
+
+* Browser access → Finally user application-ah open pannuvanga.
+
+### “NEXT LEVEL” na enna?
+
+Idhu basic deployment. Adhukku mela industry-la use pannra next steps:
+
+NEXT LEVEL
+
+Production deployment skills
+
+1
+
+Push to Docker Hub
+
+Local-la create pannina image-ah Docker Hub-ku upload pannuvom. Vera server-ku andha image download panna mudiyum.
+
+2
+
+Deploy to Cloud (AWS / GCP)
+
+Local system illa, internet-la irukkura cloud server-la application run pannuvom.
+
+3
+
+CI/CD Pipeline
+
+Code GitHub-ku push panna automatic-ah build, test, Docker image create, Kubernetes-la deploy aagum.
+
+4
+
+Ingress (Real Domain URL)
+
+IP address use pannama `myapp.com` maadhiri real domain-la application open pannuvanga.
+
+### Interview-la eppadi sollalam?
+
+“First Docker image create pannuvom. Adha Kubernetes Deployment use panni Pods create pannuvom. Pods-la container run aagum. Service moolama application expose pannuvom. User browser-la access pannuvanga. Production environment-la Docker Hub, Cloud deployment, CI/CD, and Ingress use pannuvom.”
+
+Idha sonna basic + production knowledge rendu irukku nu interviewer-ku nalla impression varum.
